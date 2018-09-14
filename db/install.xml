@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/assign/submission/cloudpoodll/db" VERSION="20140524" COMMENT="XMLDB file for Moodle mod/assign/submission/cloudpoodll"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="assignsubmission_cpoodll" COMMENT="Info about cloudpoodll submission">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" />
+        <FIELD NAME="assignment" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" />
+        <FIELD NAME="submission" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" />
+        <FIELD NAME="recorder" TYPE="char" LENGTH="255"  NOTNULL="true" DEFAULT="0" SEQUENCE="false" />
+        <FIELD NAME="filename" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The filename of the recorded file." />
+        <FIELD NAME="transcript" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="text transcript of file" />
+        <FIELD NAME="fulltranscript" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="full transcript data of file" />
+        <FIELD NAME="vttdata" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="vtt data associated with file" />
+        <FIELD NAME="fileexpiry" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="file expiry date" />
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this cloudpoodll submission." NEXT="assignment"/>
+        <KEY NAME="assignment" TYPE="foreign" FIELDS="assignment" REFTABLE="assign" REFFIELDS="id" COMMENT="The assignment instance this cloud poodll submission relates to." PREVIOUS="primary" NEXT="submission"/>
+        <KEY NAME="submission" TYPE="foreign" FIELDS="submission" REFTABLE="assign_submission" REFFIELDS="id" COMMENT="The submission this cloud poodll submission relates to." PREVIOUS="assignment" />
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

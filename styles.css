@@ -1,0 +1,19 @@
+
+
+.assignsubmission_cloudpoodll_recording_cont {
+    display: block;
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    background-image: url([[pix:assignsubmission_cloudpoodll|loader]]);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.assignsubmission_cloudpoodll_center {
+    text-align: center;
+}
+.assignsubmission_cloudpoodll_center > div, .assignsubmission_cloudpoodll_center > table /* insert any other block-level elements here */ {
+    margin-left: auto;
+    margin-right: auto;
+}

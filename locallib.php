@@ -77,32 +77,36 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         global $CFG, $COURSE;
 
         $adminconfig = get_config(constants::M_COMPONENT);
-        //$recordertype = $this->get_config('recordertype');
-		//$timelimit = $this->get_config('timelimit');
+        $recordertype = $this->get_config('recordertype') ? $this->get_config('recordertype') :  $adminconfig->defaultrecorder;
+        $recorderskin = $this->get_config('recorderskin') ? $this->get_config('recorderskin') : constants::SKIN_BMR;
+		$timelimit = $this->get_config('timelimit') ? $this->get_config('timelimit') :  0;
+        $expiredays = $this->get_config('expiredays') ? $this->get_config('expiredays') : $adminconfig->expiredays;
+
+
 
 
 
         $rec_options = utils::fetch_options_recorders();
 		$mform->addElement('select', constants::M_COMPONENT . '_recordertype', get_string("recordertype", constants::M_COMPONENT), $rec_options);
-        $mform->setDefault(constants::M_COMPONENT . '_recordertype', $adminconfig->defaultrecorder);
+        $mform->setDefault(constants::M_COMPONENT . '_recordertype',$recordertype);
 		$mform->disabledIf(constants::M_COMPONENT . '_recordertype', constants::M_COMPONENT . '_enabled', 'eq', 0);
 
 
         $skin_options = utils::fetch_options_skins();
         $mform->addElement('select', constants::M_COMPONENT . '_recorderskin', get_string("recorderskin", constants::M_COMPONENT), $skin_options);
-        $mform->setDefault(constants::M_COMPONENT . '_recorderskin', constants::SKIN_BMR);
+        $mform->setDefault(constants::M_COMPONENT . '_recorderskin', $recorderskin);
         $mform->disabledIf(constants::M_COMPONENT . '_recorderskin', constants::M_COMPONENT . '_enabled', 'eq', 0);
 
 
         //Add a place to set a maximum recording time.
 	   $mform->addElement('duration', constants::M_COMPONENT . '_timelimit', get_string('timelimit', constants::M_COMPONENT));
-       $mform->setDefault(constants::M_COMPONENT . '_timelimit', 0);
+       $mform->setDefault(constants::M_COMPONENT . '_timelimit', $timelimit);
        $mform->disabledIf(constants::M_COMPONENT . '_timelimit', constants::M_COMPONENT . '_enabled', 'eq', 0);
 
         //Add expire days
         $expire_options = utils::get_expiredays_options();
         $mform->addElement('select', constants::M_COMPONENT . '_expiredays', get_string("expiredays", constants::M_COMPONENT), $expire_options);
-        $mform->setDefault(constants::M_COMPONENT . '_expiredays', $adminconfig->expiredays);
+        $mform->setDefault(constants::M_COMPONENT . '_expiredays', $expiredays);
         $mform->disabledIf(constants::M_COMPONENT . '_expiredays', constants::M_COMPONENT . '_enabled', 'eq', 0);
 
 

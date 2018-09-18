@@ -35,11 +35,6 @@ class renderer extends \plugin_renderer_base {
     public function fetch_recorder($r_options,$token){
         global $CFG;
 
-
-        $r_options->recordertype = 'audio';
-        $r_options->recorderskin = 'standard';
-        //recorder sizes (for now...)
-
         switch($r_options->recordertype) {
             case constants::REC_AUDIO:
                 //fresh

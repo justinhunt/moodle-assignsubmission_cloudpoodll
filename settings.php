@@ -61,6 +61,12 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
         new lang_string('defaultrecorder', constants::M_COMPONENT),
         new lang_string('defaultrecorderdetails', constants::M_COMPONENT), constants::REC_AUDIO, $rec_options));
 
+//Default html5 fallback
+    $fallback_options = utils::fetch_options_fallback();
+    $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/fallback',
+        new lang_string('fallback', constants::M_COMPONENT),
+        new lang_string('fallbackdetails', constants::M_COMPONENT), constants::FALLBACK_IOSUPLOAD, $fallback_options));
+
 						   
 	//show current submission on submission form
 	$yesno_options = array( 0 => get_string("no", constants::M_COMPONENT),

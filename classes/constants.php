@@ -22,11 +22,16 @@ const APPID='assignsubmission_cloudpoodll';
 
 const REC_AUDIO = 'audio';
 const REC_VIDEO = 'video';
+
 const SKIN_PLAIN = 'standard';
 const SKIN_BMR = 'bmr';
 const SKIN_123 = 'onetwothree';
 const SKIN_FRESH = 'fresh';
 const SKIN_ONCE = 'once';
+
+const FALLBACK_UPLOAD = 'upload';
+const FALLBACK_IOSUPLOAD = 'iosupload';
+const FALLBACK_WARNING = 'warning';
 
 const CLASS_REC_CONTAINER ='assignsubmission_cloudpoodll_rec_cont';
 const CLASS_REC_OUTER ='assignsubmission_cloudpoodll_rec_outer';

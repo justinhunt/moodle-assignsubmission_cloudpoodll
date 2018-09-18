@@ -23,9 +23,9 @@
  */
 
 
-$plugin->version   = 20180912000;
+$plugin->version   = 20180912001;
 $plugin->requires  = 2016052300;//moodle 3.1.0
 $plugin->component =  'assignsubmission_cloudpoodll';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0.0 (Build 2018191200)';
+$plugin->release   = '1.0.1 (Build 2018191201)';
 $plugin->dependencies = array('filter_poodll' => 2018012001);

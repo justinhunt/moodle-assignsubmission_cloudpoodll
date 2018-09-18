@@ -204,6 +204,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $r_options->timelimit=$this->get_config('timelimit');
         $r_options->expiredays=$this->get_config('expiredays');
         $r_options->awsregion= get_config(constants::M_COMPONENT, 'awsregion');
+        $r_options->fallback= get_config(constants::M_COMPONENT, 'fallback');
         //later we can add instance settings for these
         $r_options->language='en-US';
         $r_options->transcribe=false;

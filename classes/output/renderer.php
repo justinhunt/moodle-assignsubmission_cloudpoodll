@@ -105,6 +105,7 @@ class renderer extends \plugin_renderer_base {
                 'data-transcribelanguage'=>$r_options->language,
                 'data-expiredays'=>$r_options->expiredays,
                 'data-region'=>$r_options->awsregion,
+                'data-fallback'=>$r_options->fallback,
                 'data-hints'=>$string_hints,
                 'data-token'=>$token //localhost
                 //'data-token'=>"643eba92a1447ac0c6a882c85051461a" //cloudpoodll

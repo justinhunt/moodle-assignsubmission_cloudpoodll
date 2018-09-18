@@ -18,6 +18,13 @@ class utils
         return $rec_options;
     }
 
+    public static function fetch_options_fallback(){
+        $options = array( constants::FALLBACK_UPLOAD => get_string("fallbackupload", constants::M_COMPONENT),
+            constants::FALLBACK_IOSUPLOAD  => get_string("fallbackiosupload", constants::M_COMPONENT),
+            constants::FALLBACK_WARNING  => get_string("fallbackwarning", constants::M_COMPONENT));
+        return $options;
+    }
+
     public static function fetch_options_skins(){
         $rec_options = array( constants::SKIN_PLAIN => get_string("skinplain", constants::M_COMPONENT),
             constants::SKIN_BMR => get_string("skinbmr", constants::M_COMPONENT),

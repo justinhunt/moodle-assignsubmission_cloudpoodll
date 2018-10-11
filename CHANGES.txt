@@ -1,5 +1,12 @@
 Change List
 =========
+Version 1.0.2 (Build 20181012001)
+-messed up version numbers ouch
+- fixed size of video on 123 recorder
+- changed the labels for settings on instance page
+- added margin for delete current submission button
+- gave it a cloud icon (no imagination recently )
+
 Version 1.0.1 (Build 2018191201)
 - Added fallback option for non-HTML5 compatible browsers.
 

@@ -2,8 +2,6 @@ define(['jquery','core/log','assignsubmission_cloudpoodll/cloudpoodllloader'], f
     "use strict"; // jshint ;_;
 
     log.debug('submission helper: initialising');
-    //any functions from here can be used : http://fancyapps.com/fancybox/3/docs/#api
-    //just wrap them here to make it more convenient to call from elsewhere in the mod
 
     return {
 

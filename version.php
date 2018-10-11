@@ -18,14 +18,13 @@
  * This file contains the version information for the cloudpoodll submission plugin
  *
  * @package    assignsubmission_cloudpoodll
- * @copyright 2012 Justin Hunt {@link http://www.poodll.com}
+ * @copyright 2018 Justin Hunt {@link http://www.poodll.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 
-$plugin->version   = 20180912001;
+$plugin->version   = 20181012001;
 $plugin->requires  = 2016052300;//moodle 3.1.0
 $plugin->component =  'assignsubmission_cloudpoodll';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0.1 (Build 2018191201)';
-$plugin->dependencies = array('filter_poodll' => 2018012001);
+$plugin->release   = '1.0.2 (Build 20181012001)';

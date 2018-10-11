@@ -55,10 +55,10 @@ $string['en-us']='English (US)';
 $string['es-us']='Spanish (US)';
 $string['awsregion']='AWS Region';
 $string['region']='AWS Region';
-$string['expiredays']='Days to keep file';
+$string['expiredays']='Cloud Poodll Days to keep file';
 
 
-$string['timelimit'] = 'Recoording Time Limit';
+$string['timelimit'] = 'Cloud Poodll Rec. Time Limit';
 $string['currentsubmission'] = 'Current Submission:';
 $string['yes'] = 'yes';
 $string['no'] = 'no';
@@ -93,8 +93,8 @@ $string['cloudpoodll:use'] = 'Allow use of Cloud Poodll submissions';
 $string['privacy:metadata'] = 'The Cloud Poodll Assignment Submission plugin does store personal data.';
 $string['privacy:metadata:filepurpose'] = 'The recordings (Poodll file submissions) for this assignment submission.';
 
-$string['recordertype'] = 'Recorder Type';
-$string['recorderskin'] = 'Recorder Skin';
+$string['recordertype'] = 'Cloud Poodll Rec. Type';
+$string['recorderskin'] = 'Cloud Poodll Rec. Skin';
 $string['skinplain'] = 'Plain';
 $string['skinbmr'] = 'Burnt Rose';
 $string['skinfresh'] = 'Fresh';

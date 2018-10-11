@@ -39,7 +39,8 @@ $settings->add(new admin_setting_configtext(constants::M_COMPONENT .'/apisecret'
     get_string('apisecret', constants::M_COMPONENT), get_string('apisecret_details', constants::M_COMPONENT), '', PARAM_TEXT));
 
 $regions = utils::get_region_options();
-$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/awsregion', get_string('awsregion', constants::M_COMPONENT), '', 'useast1', $regions));
+$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/awsregion', get_string('awsregion', constants::M_COMPONENT),
+    '', constants::REGION_USEAST1, $regions));
 
 $expiredays = utils::get_expiredays_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/expiredays', get_string('expiredays', constants::M_COMPONENT), '', '365', $expiredays));
@@ -51,7 +52,7 @@ $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enable
 
 /*
 $langoptions = utils::get_lang_options();
-$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language', get_string('ttslanguage', constants::M_COMPONENT), '', 'en', $langoptions));
+$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language', get_string('ttslanguage', constants::M_COMPONENT), '', 'en-US', $langoptions));
 */
 
 

@@ -59,8 +59,8 @@ class renderer extends \plugin_renderer_base {
                     $width = "360";
                     $height = "450";
                 }elseif($r_options->recorderskin==constants::SKIN_123){
-                    $width = "360";
-                    $height = "410";
+                    $width = "450";//"360";
+                    $height = "550";//"410";
                 }elseif($r_options->recorderskin==constants::SKIN_ONCE){
                     $width = "350";
                     $height = "290";

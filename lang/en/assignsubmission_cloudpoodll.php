@@ -66,7 +66,7 @@ $string['no'] = 'no';
 $string['showcurrentsubmission'] = 'Show Current Submission';
 $string['showcurrentsubmissiondetails'] = 'Show previously recorded submission on submission form.';
 
-$string['displayaudioplayersingle'] = 'Show sub. audio player(normal)';
+$string['displayaudioplayersingle'] = 'Show audio player(normal)';
 $string['displayaudioplayerlist'] = 'Show audio player(lists)';
 
 $string['displaysizesingle'] = 'Video player size(normal)';
@@ -97,7 +97,7 @@ $string['recordertype'] = 'Cloud Poodll Rec. Type';
 $string['recorderskin'] = 'Cloud Poodll Rec. Skin';
 $string['skinplain'] = 'Plain';
 $string['skinbmr'] = 'Burnt Rose';
-$string['skinfresh'] = 'Fresh';
+$string['skinfresh'] = 'Fresh (audio only)';
 $string['skin123'] = 'One Two Three';
 $string['skinonce'] = 'Once';
 

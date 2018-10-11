@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.3 (Build 2018101202)
+-fixed language strings and version
+
 Version 1.0.2 (Build 20181012001)
 -messed up version numbers ouch
 - fixed size of video on 123 recorder

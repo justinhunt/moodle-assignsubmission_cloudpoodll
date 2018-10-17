@@ -100,6 +100,7 @@ $string['skinbmr'] = 'Burnt Rose';
 $string['skinfresh'] = 'Fresh (audio only)';
 $string['skin123'] = 'One Two Three';
 $string['skinonce'] = 'Once';
+$string['skinupload'] = 'Upload';
 
 $string['fallback'] = 'non-HTML5 Fallback';
 $string['fallbackdetails'] = 'If the browser does not support HTML5 recording for the selected mediatype, fallback to an upload screen or a warning.';

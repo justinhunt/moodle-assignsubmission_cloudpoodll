@@ -1,5 +1,11 @@
 Change List
 =========
+Version 1.0.4 (Build 2018102301)
+- Fixed recorder sizes
+- Setup instance form to disable/enable correctly
+- Added upload recorder
+- Set minimum version Moodle 2.9
+
 Version 1.0.3 (Build 2018101202)
 -fixed language strings and version
 

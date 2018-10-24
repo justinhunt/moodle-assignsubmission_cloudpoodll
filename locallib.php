@@ -89,25 +89,25 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $rec_options = utils::fetch_options_recorders();
 		$mform->addElement('select', constants::M_COMPONENT . '_recordertype', get_string("recordertype", constants::M_COMPONENT), $rec_options);
         $mform->setDefault(constants::M_COMPONENT . '_recordertype',$recordertype);
-		$mform->disabledIf(constants::M_COMPONENT . '_recordertype', constants::M_COMPONENT . '_enabled', 'eq', 0);
+		$mform->disabledIf(constants::M_COMPONENT . '_recordertype', constants::M_COMPONENT . '_enabled', 'notchecked');
 
 
         $skin_options = utils::fetch_options_skins();
         $mform->addElement('select', constants::M_COMPONENT . '_recorderskin', get_string("recorderskin", constants::M_COMPONENT), $skin_options);
         $mform->setDefault(constants::M_COMPONENT . '_recorderskin', $recorderskin);
-        $mform->disabledIf(constants::M_COMPONENT . '_recorderskin', constants::M_COMPONENT . '_enabled', 'eq', 0);
+        $mform->disabledIf(constants::M_COMPONENT . '_recorderskin', constants::M_COMPONENT . '_enabled', 'notchecked');
 
 
         //Add a place to set a maximum recording time.
 	   $mform->addElement('duration', constants::M_COMPONENT . '_timelimit', get_string('timelimit', constants::M_COMPONENT));
        $mform->setDefault(constants::M_COMPONENT . '_timelimit', $timelimit);
-       $mform->disabledIf(constants::M_COMPONENT . '_timelimit', constants::M_COMPONENT . '_enabled', 'eq', 0);
+       $mform->disabledIf(constants::M_COMPONENT . '_timelimit', constants::M_COMPONENT . '_enabled', 'notchecked');
 
         //Add expire days
         $expire_options = utils::get_expiredays_options();
         $mform->addElement('select', constants::M_COMPONENT . '_expiredays', get_string("expiredays", constants::M_COMPONENT), $expire_options);
         $mform->setDefault(constants::M_COMPONENT . '_expiredays', $expiredays);
-        $mform->disabledIf(constants::M_COMPONENT . '_expiredays', constants::M_COMPONENT . '_enabled', 'eq', 0);
+        $mform->disabledIf(constants::M_COMPONENT . '_expiredays', constants::M_COMPONENT . '_enabled', 'notchecked');
 
 
     }
@@ -173,28 +173,24 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $cloudpoodllsubmission = $this->get_cloudpoodll_submission($submission->id);
             $size=get_config(constants::M_COMPONENT, 'displaysize_single');
 
-            //show the previous response in a player or whatever
+            //show the previous response in a player or whatever and a delete button
             $responses = $this->fetchResponses($submission->id,false);
-
-            //get delete buttn
-            $deletesubmission = "";
             if($responses != ''){
                 $deletesubmission = $renderer->fetch_delete_submission();
+
+                //show current submission
+                $currentsubmission = $renderer->prepare_current_submission($responses,$deletesubmission);
+
+                $mform->addElement('static', 'currentsubmission',
+                    get_string('currentsubmission', constants::M_COMPONENT) ,
+                    $currentsubmission);
             }
-
-            //show current submission
-            $currentsubmission = $renderer->prepare_current_submission($responses,$deletesubmission);
-
-			$mform->addElement('static', 'currentsubmission', 
-				get_string('currentsubmission', constants::M_COMPONENT) ,
-				$currentsubmission);
-
             $opts = array(
                 "component"=> constants::M_COMPONENT
             );
+
             $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/submissionhelper", 'init', array($opts));
             $PAGE->requires->strings_for_js(array('reallydeletesubmission'),constants::M_COMPONENT);
-
         }
 
         //output our hidden field which has the filename

@@ -46,6 +46,11 @@ class renderer extends \plugin_renderer_base {
                 }elseif($r_options->recorderskin==constants::SKIN_PLAIN){
                     $width = "360";
                     $height = "190";
+
+                }elseif($r_options->recorderskin==constants::SKIN_UPLOAD){
+                    $width = "360";
+                    $height = "150";
+
                  //bmr 123 once standard
                 }else {
                     $width = "360";
@@ -64,6 +69,9 @@ class renderer extends \plugin_renderer_base {
                 }elseif($r_options->recorderskin==constants::SKIN_ONCE){
                     $width = "350";
                     $height = "290";
+                }elseif($r_options->recorderskin==constants::SKIN_UPLOAD){
+                    $width = "350";
+                    $height = "310";
                  //standard
                 }else {
                     $width = "360";

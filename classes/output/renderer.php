@@ -90,7 +90,7 @@ class renderer extends \plugin_renderer_base {
         $hints = new \stdClass();
         $string_hints = base64_encode (json_encode($hints));
 
-        $recorderdiv= \html_writer::div('', constants::M_COMPONENT  . '_center',
+        $recorderdiv= \html_writer::div('', constants::M_COMPONENT  . '_notcenter',
             array('id'=>constants::ID_REC,
                 'data-id'=>'therecorder',
                 'data-parent'=>$CFG->wwwroot,
@@ -114,7 +114,16 @@ class renderer extends \plugin_renderer_base {
                 //'data-token'=>"643eba92a1447ac0c6a882c85051461a" //cloudpoodll
             )
         );
+        //lets NOT center the recorder. .. why would we do that?
+        /*
+         *
+        //$recorderdiv= \html_writer::div('', constants::M_COMPONENT  . '_center', .......
+
+
         $containerdiv= \html_writer::div($recorderdiv,constants::CLASS_REC_CONTAINER . " " . constants::M_COMPONENT  . '_center',
+            array('id'=>constants::CLASS_REC_CONTAINER));
+        */
+        $containerdiv= \html_writer::div($recorderdiv,constants::CLASS_REC_CONTAINER . " ",
             array('id'=>constants::CLASS_REC_CONTAINER));
 
         //this is the finalhtml

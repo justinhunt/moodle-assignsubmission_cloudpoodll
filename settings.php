@@ -26,6 +26,7 @@
 use assignsubmission_cloudpoodll\constants;
 use assignsubmission_cloudpoodll\utils;
 
+defined('MOODLE_INTERNAL') || die();
 
 	//enable by default
 $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/default',

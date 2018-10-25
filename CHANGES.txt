@@ -1,5 +1,9 @@
 Change List
 =========
+Version 1.0.5 (Build 2018102501)
+-addition of MOODLE_INTERNAL check
+- better implementation of data provider in dataprivacy classes
+
 Version 1.0.4 (Build 2018102301)
 - Fixed recorder sizes
 - Setup instance form to disable/enable correctly

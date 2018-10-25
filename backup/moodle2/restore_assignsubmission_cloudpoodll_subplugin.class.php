@@ -24,6 +24,7 @@
 
 use assignsubmission_cloudpoodll\constants;
 
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * restore subplugin class that provides the necessary information needed to restore one assign_submission subplugin.

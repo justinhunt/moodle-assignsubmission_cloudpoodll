@@ -31,6 +31,10 @@ Moodle should show you the plugin settings after installation. The defaults shou
 https://poodll.com/member/?action=api
 
 
+5. A few notes
+============
+Cloud Poodll connects to https://cloud.poodll.com and https://maxcdn.bootstrapcdn.com and so will not work without access to the internet.
+
 Thats all.
 
 Justin Hunt

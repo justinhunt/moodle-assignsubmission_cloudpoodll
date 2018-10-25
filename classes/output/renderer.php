@@ -11,6 +11,7 @@ namespace assignsubmission_cloudpoodll\output;
 use assignsubmission_cloudpoodll\constants;
 use assignsubmission_cloudpoodll\utils;
 
+defined('MOODLE_INTERNAL') || die();
 
 class renderer extends \plugin_renderer_base {
 

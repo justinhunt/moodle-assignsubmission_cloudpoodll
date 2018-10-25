@@ -24,6 +24,8 @@
 
 use assignsubmission_cloudpoodll\constants;
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Stub for upgrade code
  * @param int $oldversion

@@ -32,6 +32,7 @@ use \core_privacy\local\metadata\collection;
 use \core_privacy\local\metadata\provider as metadataprovider;
 use \core_privacy\local\request\writer;
 use \core_privacy\local\request\contextlist;
+use \core_privacy\local\request;
 use \mod_assign\privacy\assign_plugin_request_data;
 use assignsubmission_cloudpoodll\constants;
 
@@ -47,7 +48,9 @@ use assignsubmission_cloudpoodll\constants;
 ///use \mod_assign\privacy\assignsubmission_provider\legacy_polyfill;
 
 class provider implements metadataprovider, \mod_assign\privacy\assignsubmission_provider {
+
     use \core_privacy\local\legacy_polyfill;
+    use \mod_assign\privacy\submission_legacy_polyfill;
 
 
 
@@ -58,7 +61,19 @@ class provider implements metadataprovider, \mod_assign\privacy\assignsubmission
      * @return collection Return the collection after adding to it.
      */
     public static function _get_metadata(collection $collection) {
-        $collection->link_subsystem('core_files', 'privacy:metadata:filepurpose');
+
+        $detail = [
+            'assignment' => 'privacy:metadata:assignmentid',
+            'submission' => 'privacy:metadata:submissionpurpose',
+            'filename' => 'privacy:metadata:filepurpose',
+            'transcript' => 'privacy:metadata:transcriptpurpose',
+            'fulltranscript' => 'privacy:metadata:fulltranscriptpurpose',
+            'vttdata' => 'privacy:metadata:vttpurpose'
+        ];
+        $collection->add_database_table('assignsubmission_cpoodll', $detail, 'privacy:metadata:tablepurpose');
+        $collection->add_external_location_link('cloud.poodll.com', [
+            'userid' => 'privacy:metadata:cloudpoodllcom:userid'
+        ], 'privacy:metadata:cloudpoodllcom');
         return $collection;
     }
 
@@ -68,9 +83,12 @@ class provider implements metadataprovider, \mod_assign\privacy\assignsubmission
      * @param  int $userid The user ID that we are finding contexts for.
      * @param  contextlist $contextlist A context list to add sql and params to for contexts.
      */
-    public static function get_context_for_userid_within_submission(int $userid, contextlist $contextlist) {
+    public static function get_context_for_userid_within_submission($userid, contextlist $contextlist) {
         // This is already fetched from mod_assign.
     }
+
+
+
     /**
      * This is also covered by the mod_assign provider and it's queries.
      *
@@ -85,28 +103,45 @@ class provider implements metadataprovider, \mod_assign\privacy\assignsubmission
      * @param  submission_request_data $exportdata Data used to determine which context and user to export and other useful
      * information to help with exporting.
      */
+    /**
+     * Export all user data for this plugin.
+     *
+     * @param  assign_plugin_request_data $exportdata Data used to determine which context and user to export and other useful
+     * information to help with exporting.
+     */
     public static function export_submission_user_data(assign_plugin_request_data $exportdata) {
         // We currently don't show submissions to teachers when exporting their data.
-        $context = $exportdata->get_context();
         if ($exportdata->get_user() != null) {
             return null;
         }
-        $user = new \stdClass();
-        $assign = $exportdata->get_assign();
-        $plugin = $assign->get_plugin_by_type('assignsubmission', constants::M_SUBPLUGIN);
+        // Retrieve text for this submission.
+        $submission = $exportdata->get_pluginobject();
+        $filename='';
+        if($submission) {
+            $filename = $submission->filename;
+            $context = $exportdata->get_context();
+        }
+        if (!empty($filename)) {
+            $submissiondata = new \stdClass();
+            $submissiondata->filename = $filename;
+            $submissiondata->transcript =  $submission->transcript;
+            $submissiondata->fulltranscript =  $submission->fulltranscript;
+            $submissiondata->vttdata =  $submission->vttdata;
+            $currentpath = $exportdata->get_subcontext();
+            $currentpath[] = get_string('privacy:path', 'assignsubmission_cloudpoodll');
+            writer::with_context($context)
+                // Add the text to the exporter.
+                ->export_data($currentpath, $submissiondata);
 
-        $files = $plugin->get_files($exportdata->get_pluginobject(), $user);
-        foreach ($files as $file) {
-            $userid = $exportdata->get_pluginobject()->userid;
-            writer::with_context($exportdata->get_context())->export_file($exportdata->get_subcontext(), $file);
-
-            // Plagiarism data.
+            // Handle plagiarism data.
             $coursecontext = $context->get_course_context();
-            \core_plagiarism\privacy\provider::export_plagiarism_user_data($userid, $context, $exportdata->get_subcontext(), [
+            $userid = $submission->userid;
+            \core_plagiarism\privacy\provider::export_plagiarism_user_data($userid, $context, $currentpath, [
                 'cmid' => $context->instanceid,
                 'course' => $coursecontext->instanceid,
                 'userid' => $userid,
-                'file' => $file
+                'content' => $filename,
+                'assignment' => $submission->assignment
             ]);
         }
     }

@@ -27,11 +27,12 @@
 /** Include eventslib.php */
 require_once($CFG->libdir.'/eventslib.php');
 
-defined('MOODLE_INTERNAL') || die();
+
 
 use assignsubmission_cloudpoodll\constants;
 use assignsubmission_cloudpoodll\utils;
 
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * library class for cloudpoodll submission plugin extending submission plugin base class

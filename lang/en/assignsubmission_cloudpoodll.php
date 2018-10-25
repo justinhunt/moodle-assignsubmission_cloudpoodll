@@ -90,8 +90,18 @@ $string['deletesubmission'] = 'Delete this submission.';
 $string['reallydeletesubmission'] = 'Really delete this submission?';
 
 $string['cloudpoodll:use'] = 'Allow use of Cloud Poodll submissions';
-$string['privacy:metadata'] = 'The Cloud Poodll Assignment Submission plugin does store personal data.';
-$string['privacy:metadata:filepurpose'] = 'The recordings (Poodll file submissions) for this assignment submission.';
+$string['privacy:metadata:cloudpoodllcom'] = 'The assignsubmission_cloudpoodll plugin stores recordings in AWS S3 buckets via cloud.poodll.com.';
+$string['privacy:metadata:cloudpoodllcom:userid'] = 'The assignsubmission_cloudpoodll plugin includes the moodle userid in the urls of recordings.';
+$string['privacy:metadata:assignmentid'] = 'Assignment identifier';
+$string['privacy:metadata:filepurpose'] = 'File urls of submitted recordings.';
+$string['privacy:metadata:submissionpurpose'] = 'The submission ID that links to submissions for the user.';
+$string['privacy:metadata:tablepurpose'] = 'Stores the text and URLs that make the submission for each attempt.';
+$string['privacy:metadata:transcriptpurpose'] = 'The transcript for this attempt of the assignment.';
+$string['privacy:metadata:fulltranscriptpurpose'] = 'The transcript with metadata for this attempt of the assignment.';
+$string['privacy:metadata:vttpurpose'] = 'The subtitle rendering of transcript for this attempt of the assignment.';
+$string['privacy:path'] = 'Submission Text';
+
+
 
 $string['recordertype'] = 'Cloud Poodll Rec. Type';
 $string['recorderskin'] = 'Cloud Poodll Rec. Skin';

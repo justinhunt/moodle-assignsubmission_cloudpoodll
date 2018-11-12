@@ -56,10 +56,14 @@ class utils
 
     public static function get_region_options(){
         return array(
-            "useast1" => get_string("useast1",constants::M_COMPONENT),
-            "tokyo" => get_string("tokyo",constants::M_COMPONENT),
-            "sydney" => get_string("sydney",constants::M_COMPONENT),
-            "dublin" => get_string("dublin",constants::M_COMPONENT)
+            constants::REGION_USEAST1 => get_string("useast1",constants::M_COMPONENT),
+            constants::REGION_TOKYO => get_string("tokyo",constants::M_COMPONENT),
+            constants::REGION_SYDNEY => get_string("sydney",constants::M_COMPONENT),
+            constants::REGION_DUBLIN => get_string("dublin",constants::M_COMPONENT),
+            constants::REGION_OTTAWA => get_string("ottawa",constants::M_COMPONENT),
+            constants::REGION_FRANKFURT => get_string("frankfurt",constants::M_COMPONENT),
+            constants::REGION_LONDON => get_string("london",constants::M_COMPONENT),
+            constants::REGION_SAOPAULO => get_string("saopaulo",constants::M_COMPONENT)
         );
     }
 

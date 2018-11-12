@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.6 (Build 2018111200)
+-added support for Ottawa, London, Sao Paulo, Frankfurt regions (slow best for short recordings)
+
 Version 1.0.5 (Build 2018102501)
 -addition of MOODLE_INTERNAL check
 - better implementation of data provider in dataprivacy classes

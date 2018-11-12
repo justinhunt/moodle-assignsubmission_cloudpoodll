@@ -111,4 +111,3 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_list',
 						new lang_string('displaysizelist', constants::M_COMPONENT),
 						new lang_string('displaysizelistdetails', constants::M_COMPONENT), '0', $size_options));
-

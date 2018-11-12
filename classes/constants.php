@@ -62,7 +62,9 @@ const REGION_USEAST1 = 'useast1';
 const REGION_TOKYO = 'tokyo';
 const REGION_DUBLIN = 'dublin';
 const REGION_SYDNEY = 'sydney';
-
-
+const REGION_OTTAWA = 'ottawa';
+const REGION_SAOPAULO = 'saopaulo';
+const REGION_FRANKFURT = 'frankfurt';
+const REGION_LONDON = 'london';
 
 }

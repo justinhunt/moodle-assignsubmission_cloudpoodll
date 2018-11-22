@@ -106,7 +106,7 @@ class renderer extends \plugin_renderer_base {
                 'data-timelimit'=> $r_options->timelimit,
                 'data-transcode'=>$transcode,
                 'data-transcribe'=>$transcribe,
-                'data-transcribelanguage'=>$r_options->language,
+                'data-language'=>$r_options->language,
                 'data-expiredays'=>$r_options->expiredays,
                 'data-region'=>$r_options->awsregion,
                 'data-fallback'=>$r_options->fallback,

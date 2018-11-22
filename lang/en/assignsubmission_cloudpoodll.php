@@ -57,6 +57,9 @@ $string['saopaulo']='Sao Paulo, Brazil (slow)';
 $string['forever']='Never expire';
 $string['en-us']='English (US)';
 $string['es-us']='Spanish (US)';
+$string['en-au']='English (Aus.)';
+$string['en-uk']='English (UK)';
+$string['fr-ca']='French (Can.)';
 $string['awsregion']='AWS Region';
 $string['region']='AWS Region';
 $string['expiredays']='Cloud Poodll Days to keep file';
@@ -121,4 +124,12 @@ $string['fallbackdetails'] = 'If the browser does not support HTML5 recording fo
 $string['fallbackupload'] = 'Upload';
 $string['fallbackiosupload'] = 'iOS: upload, else warning';
 $string['fallbackwarning'] = 'Warning';
+
+$string['displaysubs'] = '{$a->subscriptionname} : expires {$a->expiredate}';
+$string['noapiuser'] = "No API user entered. Read Aloud will not work correctly.";
+$string['noapisecret'] = "No API secret entered. Read Aloud will not work correctly.";
+$string['credentialsinvalid'] = "The API user and secret entered could not be used to get access. Please check them.";
+$string['appauthorised']= $string['pluginname'] . " is authorised for this site.";
+$string['appnotauthorised']= $string['pluginname'] . " is NOT authorised for this site.";
+$string['refreshtoken']= "Refresh license information";
 

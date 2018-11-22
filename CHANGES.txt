@@ -1,5 +1,9 @@
 Change List
 =========
+Version 1.0.7 (Build 2018111800)
+-added support for auth details in token
+-refresh link on the user settings page
+
 Version 1.0.6 (Build 2018111200)
 -added support for Ottawa, London, Sao Paulo, Frankfurt regions (slow best for short recordings)
 

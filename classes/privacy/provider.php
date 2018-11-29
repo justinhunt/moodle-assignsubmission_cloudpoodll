@@ -44,7 +44,7 @@ use assignsubmission_cloudpoodll\constants;
  */
 
 class provider implements metadataprovider,
-    \mod_assign\privacy\assignsubmission_provide,
+    \mod_assign\privacy\assignsubmission_provider,
     \mod_assign\privacy\assignsubmission_user_provider {
 
     use \core_privacy\local\legacy_polyfill;

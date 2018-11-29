@@ -58,7 +58,7 @@ class provider implements metadataprovider,
      * @param  collection $collection A list of information to add to.
      * @return collection Return the collection after adding to it.
      */
-    public static function _get_metadata(collection $collection) {
+    public static function _get_metadata($collection) {
 
         $detail = [
             'assignment' => 'privacy:metadata:assignmentid',
@@ -103,7 +103,7 @@ class provider implements metadataprovider,
     public static function _get_userids_from_context($userlist) {
         // Not required.
     }
-    
+
     /**
      * Export all user data for this plugin.
      *

@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.8 (Build 2018112600) [not released]
+- improved reliability of cron call to fetch token
+
 Version 1.0.7 (Build 2018111800)
 -added support for auth details in token
 -refresh link on the user settings page

@@ -24,9 +24,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-/** Include eventslib.php */
-require_once($CFG->libdir.'/eventslib.php');
-
 
 
 use assignsubmission_cloudpoodll\constants;
@@ -82,10 +79,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $recorderskin = $this->get_config('recorderskin') ? $this->get_config('recorderskin') : constants::SKIN_BMR;
 		$timelimit = $this->get_config('timelimit') ? $this->get_config('timelimit') :  0;
         $expiredays = $this->get_config('expiredays') ? $this->get_config('expiredays') : $adminconfig->expiredays;
-
-
-
-
 
         $rec_options = utils::fetch_options_recorders();
 		$mform->addElement('select', constants::M_COMPONENT . '_recordertype', get_string("recordertype", constants::M_COMPONENT), $rec_options);

@@ -43,11 +43,9 @@ use assignsubmission_cloudpoodll\constants;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-///class provider implements metadataprovider, \mod_assign\privacy\assignsubmission_provider {
-///  use \core_privacy\local\legacy_polyfill;
-///use \mod_assign\privacy\assignsubmission_provider\legacy_polyfill;
-
-class provider implements metadataprovider, \mod_assign\privacy\assignsubmission_provider {
+class provider implements metadataprovider,
+    \mod_assign\privacy\assignsubmission_provide,
+    \mod_assign\privacy\assignsubmission_user_provider {
 
     use \core_privacy\local\legacy_polyfill;
     use \mod_assign\privacy\submission_legacy_polyfill;
@@ -83,20 +81,29 @@ class provider implements metadataprovider, \mod_assign\privacy\assignsubmission
      * @param  int $userid The user ID that we are finding contexts for.
      * @param  contextlist $contextlist A context list to add sql and params to for contexts.
      */
-    public static function get_context_for_userid_within_submission($userid, contextlist $contextlist) {
+    public static function _get_context_for_userid_within_submission($userid, $contextlist) {
         // This is already fetched from mod_assign.
     }
-
-
 
     /**
      * This is also covered by the mod_assign provider and it's queries.
      *
      * @param  \mod_assign\privacy\useridlist $useridlist An object for obtaining user IDs of students.
      */
-    public static function _get_student_user_ids(\mod_assign\privacy\useridlist $useridlist) {
+    public static function _get_student_user_ids($useridlist) {
         // No need.
     }
+
+    /**
+     * If you have tables that contain userids and you can generate entries in your tables without creating an
+     * entry in the assign_submission table then please fill in this method.
+     *
+     * @param  userlist $userlist The userlist object
+     */
+    public static function _get_userids_from_context($userlist) {
+        // Not required.
+    }
+    
     /**
      * Export all user data for this plugin.
      *
@@ -109,7 +116,7 @@ class provider implements metadataprovider, \mod_assign\privacy\assignsubmission
      * @param  assign_plugin_request_data $exportdata Data used to determine which context and user to export and other useful
      * information to help with exporting.
      */
-    public static function export_submission_user_data(assign_plugin_request_data $exportdata) {
+    public static function _export_submission_user_data($exportdata) {
         // We currently don't show submissions to teachers when exporting their data.
         if ($exportdata->get_user() != null) {
             return null;
@@ -151,7 +158,7 @@ class provider implements metadataprovider, \mod_assign\privacy\assignsubmission
      *
      * @param  submission_request_data $requestdata Information useful for deleting user data.
      */
-    public static function delete_submission_for_context(assign_plugin_request_data $requestdata) {
+    public static function _delete_submission_for_context($requestdata) {
         global $DB;
 
         \core_plagiarism\privacy\provider::delete_plagiarism_for_context($requestdata->get_context());
@@ -167,7 +174,7 @@ class provider implements metadataprovider, \mod_assign\privacy\assignsubmission
      *
      * @param  submission_request_data $exportdata Details about the user and context to focus the deletion.
      */
-    public static function delete_submission_for_userid(assign_plugin_request_data $deletedata) {
+    public static function _delete_submission_for_userid($deletedata) {
         global $DB;
 
         \core_plagiarism\privacy\provider::delete_plagiarism_for_user($deletedata->get_user()->id, $deletedata->get_context());
@@ -180,12 +187,26 @@ class provider implements metadataprovider, \mod_assign\privacy\assignsubmission
     }
 
     /**
-     * This is also covered by the mod_assign provider and it's queries.
-     *
-     * @param  \mod_assign\privacy\useridlist $useridlist An object for obtaining user IDs of students.
+     * Deletes all submissions for the submission ids / userids provided in a context.
+     * assign_plugin_request_data contains:
+     * - context
+     * - assign object
+     * - submission ids (pluginids)
+     * - user ids
+     * @param  assign_plugin_request_data $deletedata A class that contains the relevant information required for deletion.
      */
-    public static function get_student_user_ids(\mod_assign\privacy\useridlist $useridlist) {
-        // No need.
+    public static function _delete_submissions($deletedata) {
+        global $DB;
+
+        \core_plagiarism\privacy\provider::delete_plagiarism_for_users($deletedata->get_userids(), $deletedata->get_context());
+        if (empty($deletedata->get_submissionids())) {
+            return;
+        }
+
+        list($sql, $params) = $DB->get_in_or_equal($deletedata->get_submissionids(), SQL_PARAMS_NAMED);
+
+        $params['assignid'] = $deletedata->get_assignid();
+        $DB->delete_records_select(constants::M_TABLE, "assignment = :assignid AND submission $sql", $params);
     }
 
 

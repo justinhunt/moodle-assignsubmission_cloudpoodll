@@ -129,8 +129,8 @@ $string['displaysubs'] = '{$a->subscriptionname} : expires {$a->expiredate}';
 $string['noapiuser'] = "No API user entered. Read Aloud will not work correctly.";
 $string['noapisecret'] = "No API secret entered. Read Aloud will not work correctly.";
 $string['credentialsinvalid'] = "The API user and secret entered could not be used to get access. Please check them.";
-$string['appauthorised']= $string['pluginname'] . " is authorised for this site.";
-$string['appnotauthorised']= $string['pluginname'] . " is NOT authorised for this site.";
+$string['appauthorised']= "Assign Submission Cloud Poodll is authorised for this site.";
+$string['appnotauthorised']= "Assign Submission Cloud Poodll  is NOT authorised for this site.";
 $string['refreshtoken']= "Refresh license information";
 $string['notokenincache']= "Refresh to see license information. Contact Poodll support if there is a problem.";
 

@@ -35,7 +35,8 @@ use \core_privacy\local\request\contextlist;
 use \core_privacy\local\request;
 use \mod_assign\privacy\useridlist;
 use \mod_assign\privacy\assign_plugin_request_data;
-use assignsubmission_cloudpoodll\constants;
+use \assignsubmission_cloudpoodll\constants;
+use \assignsubmission_cloudpoodll\utils;
 
 //3.3 user_provider not backported so we use this switch to avoid errors when using same codebase for 3.3 and higher
 if (interface_exists('\mod_assign\privacy\assignsubmission_user_provider')) {
@@ -45,7 +46,7 @@ if (interface_exists('\mod_assign\privacy\assignsubmission_user_provider')) {
 }
 
 /**
- * Privacy Subsystem for assignsubmission_cloudpoodll implementing null_provider.
+ * Privacy Subsystem for assignsubmission_cloudpoodll
  *
  * @copyright  2018 Justin Hunt https://poodll.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -75,7 +76,7 @@ class provider implements metadataprovider,
             'fulltranscript' => 'privacy:metadata:fulltranscriptpurpose',
             'vttdata' => 'privacy:metadata:vttpurpose'
         ];
-        $collection->add_database_table('assignsubmission_cpoodll', $detail, 'privacy:metadata:tablepurpose');
+        $collection->add_database_table(constants::M_TABLE, $detail, 'privacy:metadata:tablepurpose');
         $collection->add_external_location_link('cloud.poodll.com', [
             'userid' => 'privacy:metadata:cloudpoodllcom:userid'
         ], 'privacy:metadata:cloudpoodllcom');
@@ -129,27 +130,28 @@ class provider implements metadataprovider,
             return null;
         }
         // Retrieve text for this submission.
-        $submission = $exportdata->get_pluginobject();
-        $filename='';
-        if($submission) {
+        $pluginobject = $exportdata->get_pluginobject();
+        $submission = utils::fetch_submission_data($pluginobject->id);
+
+        if($submission && isset($submission->filename)) {
+
             $filename = $submission->filename;
             $context = $exportdata->get_context();
-        }
-        if (!empty($filename)) {
+
             $submissiondata = new \stdClass();
             $submissiondata->filename = $filename;
             $submissiondata->transcript =  $submission->transcript;
             $submissiondata->fulltranscript =  $submission->fulltranscript;
             $submissiondata->vttdata =  $submission->vttdata;
             $currentpath = $exportdata->get_subcontext();
-            $currentpath[] = get_string('privacy:path', 'assignsubmission_cloudpoodll');
+            $currentpath[] = get_string('privacy:path', constants::M_COMPONENT);
             writer::with_context($context)
                 // Add the text to the exporter.
                 ->export_data($currentpath, $submissiondata);
 
             // Handle plagiarism data.
             $coursecontext = $context->get_course_context();
-            $userid = $submission->userid;
+            $userid = $pluginobject->userid;
             \core_plagiarism\privacy\provider::export_plagiarism_user_data($userid, $context, $currentpath, [
                 'cmid' => $context->instanceid,
                 'course' => $coursecontext->instanceid,

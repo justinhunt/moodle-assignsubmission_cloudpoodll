@@ -188,6 +188,13 @@ class utils
 
     }
 
+    //Fetch the plugin dn record for a submission id
+    //used when exporting data from privacy provider (at least)
+    public static function fetch_submission_data($submissionid){
+        global $DB;
+        return $DB->get_record(constants::M_TABLE,array('submission'=>$submissionid));
+    }
+
     //We need a Poodll token to make this happen
     public static function fetch_token($apiuser, $apisecret, $force=false)
     {

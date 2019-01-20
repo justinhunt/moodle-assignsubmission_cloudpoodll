@@ -30,6 +30,9 @@ define(['jquery','core/log','assignsubmission_cloudpoodll/cloudpoodllloader'], f
                         }
                         that.uploadstate='posted';
                         break;
+                    case 'error':
+                        alert('PROBLEM:' + evt.message);
+                        break;
                 }
             };
 

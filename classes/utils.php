@@ -44,6 +44,12 @@ class utils
         return $options;
     }
 
+    public static function fetch_options_playertype(){
+        $options = array( constants::PLAYERTYPE_DEFAULT => get_string("playertypedefault", constants::M_COMPONENT),
+            constants::PLAYERTYPE_TRANSCRIPT  => get_string("playertypetranscript", constants::M_COMPONENT));
+        return $options;
+    }
+
     public static function fetch_options_skins(){
         $rec_options = array( constants::SKIN_PLAIN => get_string("skinplain", constants::M_COMPONENT),
             constants::SKIN_BMR => get_string("skinbmr", constants::M_COMPONENT),
@@ -260,5 +266,15 @@ class utils
             $token='';
         }
         return $token;
+    }
+
+    //transcripts become ready in their own time, fetch them here
+    public static function fetch_transcriptdata($fileurl){
+        $url = $fileurl;
+        $transcript = self::curl_fetch($url);
+        if(strpos($transcript,"<Error><Code>AccessDenied</Code>")>0){
+            return false;
+        }
+        return $transcript;
     }
 }

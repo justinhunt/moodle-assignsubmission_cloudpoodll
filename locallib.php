@@ -79,6 +79,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $recorderskin = $this->get_config('recorderskin') ? $this->get_config('recorderskin') : constants::SKIN_BMR;
 		$timelimit = $this->get_config('timelimit') ? $this->get_config('timelimit') :  0;
         $expiredays = $this->get_config('expiredays') ? $this->get_config('expiredays') : $adminconfig->expiredays;
+        $language = $this->get_config('language') ? $this->get_config('language') : $adminconfig->language;
+        $playertype = $this->get_config('playertype') ? $this->get_config('playertype') : $adminconfig->audioplayertype;
+        $enabletranscription = $this->get_config('enabletranscription') ? $this->get_config('enabletranscription') : $adminconfig->enabletranscription;
+        $enabletranscode = $this->get_config('enabletranscode') ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
 
         $rec_options = utils::fetch_options_recorders();
 		$mform->addElement('select', constants::M_COMPONENT . '_recordertype', get_string("recordertype", constants::M_COMPONENT), $rec_options);
@@ -103,6 +107,27 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->setDefault(constants::M_COMPONENT . '_expiredays', $expiredays);
         $mform->disabledIf(constants::M_COMPONENT . '_expiredays', constants::M_COMPONENT . '_enabled', 'notchecked');
 
+        //transcode settings
+        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_enabletranscode', get_string("enabletranscode", constants::M_COMPONENT));
+        $mform->setDefault(constants::M_COMPONENT . '_enabletranscode', $enabletranscode);
+        $mform->disabledIf(constants::M_COMPONENT . '_enabletranscode', constants::M_COMPONENT . '_enabled', 'notchecked');
+
+        //transcription settings
+        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_enabletranscription', get_string("enabletranscription", constants::M_COMPONENT));
+        $mform->setDefault(constants::M_COMPONENT . '_enabletranscription', $enabletranscription);
+        $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabled', 'notchecked');
+
+        //lang options
+        $lang_options = utils::get_lang_options();
+        $mform->addElement('select', constants::M_COMPONENT . '_language', get_string("language", constants::M_COMPONENT), $lang_options);
+        $mform->setDefault(constants::M_COMPONENT . '_language', $language);
+        $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabled', 'notchecked');
+
+        //playertypes
+        $playertype_options = utils::fetch_options_playertype();
+        $mform->addElement('select', constants::M_COMPONENT . '_playertype', get_string("playertype", constants::M_COMPONENT), $playertype_options);
+        $mform->setDefault(constants::M_COMPONENT . '_playertype', $playertype);
+        $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabled', 'notchecked');
 
     }
     
@@ -115,10 +140,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
     public function save_settings(stdClass $data) {
         //recorder type
         $this->set_config('recordertype', $data->{constants::M_COMPONENT . '_recordertype'});
-
         //recorder skin
         $this->set_config('recorderskin', $data->{constants::M_COMPONENT . '_recorderskin'});
-
 		
 		//if we have a time limit, set it
 		if(isset($data->{constants::M_COMPONENT . '_timelimit'})){
@@ -126,9 +149,17 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 		}else{
 			$this->set_config('timelimit', 0);
 		}
-
         //expiredays
         $this->set_config('expiredays', $data->{constants::M_COMPONENT . '_expiredays'});
+
+		//language
+        $this->set_config('language', $data->{constants::M_COMPONENT . '_language'});
+        //trancribe
+        $this->set_config('enabletranscription', $data->{constants::M_COMPONENT . '_enabletranscription'});
+        //transcode
+        $this->set_config('enabletranscode', $data->{constants::M_COMPONENT . '_enabletranscode'});
+        //playertype
+        $this->set_config('playertype', $data->{constants::M_COMPONENT . '_playertype'});
 
         return true;
     }
@@ -156,6 +187,13 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
     public function get_form_elements($submission, MoodleQuickForm $mform, stdClass $data) {
 		 global $CFG, $USER, $PAGE;
 
+		 //prepare the AMD javascript for deletesubmission and showing the recorder
+        $opts = array(
+            "component"=> constants::M_COMPONENT
+        );
+        $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/submissionhelper", 'init', array($opts));
+        $PAGE->requires->strings_for_js(array('reallydeletesubmission'),constants::M_COMPONENT);
+
         //Get our renderers
         $renderer = $PAGE->get_renderer(constants::M_COMPONENT);
         $elements = array();
@@ -179,12 +217,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     get_string('currentsubmission', constants::M_COMPONENT) ,
                     $currentsubmission);
             }
-            $opts = array(
-                "component"=> constants::M_COMPONENT
-            );
-
-            $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/submissionhelper", 'init', array($opts));
-            $PAGE->requires->strings_for_js(array('reallydeletesubmission'),constants::M_COMPONENT);
         }
 
         //output our hidden field which has the filename
@@ -197,13 +229,11 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $r_options->recorderskin=$this->get_config('recorderskin');
         $r_options->timelimit=$this->get_config('timelimit');
         $r_options->expiredays=$this->get_config('expiredays');
+        $r_options->transcode=$this->get_config('enabletranscode');
+        $r_options->transcribe=$this->get_config('enabletranscription');
+        $r_options->language=$this->get_config('language');
         $r_options->awsregion= get_config(constants::M_COMPONENT, 'awsregion');
         $r_options->fallback= get_config(constants::M_COMPONENT, 'fallback');
-        //later we can add instance settings for these
-        $r_options->language='en-US';
-        $r_options->transcribe=false;
-        $r_options->transcode=true;
-
 
         //fetch API token
         $api_user = get_config(constants::M_COMPONENT,'apiuser');
@@ -224,7 +254,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 	*
 	*/
 	function fetchResponses($submissionid, $checkfordata=false){
-		global $CFG;
+		global $CFG, $PAGE;
 		
 
 		$responsestring = "";
@@ -234,13 +264,24 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $filename= $cloudpoodllsubmission->filename;
             $rawmediapath =$cloudpoodllsubmission->filename;
             $mediapath = urlencode($rawmediapath);
-        }else{
+            if(empty($cloudpoodllsubmission->vttdata)){
+                $vttdata = false;
+            }else{
+                $vttdata = $cloudpoodllsubmission->vttdata;
+            }
+        } else {
             return '';
         }
 
         //size params for our response players/images
         //audio is a simple 1 or 0 for display or not
         $size = $this->fetch_response_size($this->get_config('recordertype'));
+        //player type
+        if($vttdata) {
+           $playertype = $this->get_config('playertype');
+        }else{
+            $playertype = constants::PLAYERTYPE_DEFAULT;
+        }
 
 		//if this is a playback area, for teacher, show a string if no file
 		if ($checkfordata  && (empty($filename) || strlen($filename)<3)){
@@ -257,19 +298,75 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
                 case constants::REC_AUDIO:
 				    if($size) {
-                        $responsestring .= format_text("<a href='$rawmediapath'>$filename</a>", FORMAT_HTML);
+				        switch($playertype) {
+				            case constants::PLAYERTYPE_DEFAULT:
+                                $responsestring .= format_text("<a href='$rawmediapath'>$filename</a>", FORMAT_HTML);
+                                break;
+                            case constants::PLAYERTYPE_TRANSCRIPT:
+                                $playerid= html_writer::random_id(constants::M_COMPONENT . '_');
+                                $containerid= html_writer::random_id(constants::M_COMPONENT . '_');
+                                $container = html_writer::div('',constants::M_COMPONENT . '_transcriptcontainer',array('id'=>$containerid));
+
+                                //player template
+                                $audioplayer = "<audio id='@PLAYERID@' crossorigin='anonymous' controls='true'>";
+                                $audioplayer .= "<source src='@MEDIAURL@'>";
+                                $audioplayer .= "<track src='@VTTURL@' kind='captions' srclang='@LANG@' label='@LANG@' default='true'>";
+                                $audioplayer .= "</audio>";
+                                //template -> player
+                                $audioplayer =str_replace('@PLAYERID@',$playerid,$audioplayer);
+                                $audioplayer =str_replace('@MEDIAURL@',$rawmediapath,$audioplayer);
+                                $audioplayer =str_replace('@LANG@',$this->get_config('language'),$audioplayer);
+                                $audioplayer =str_replace('@VTTURL@',$rawmediapath . '.vtt',$audioplayer);
+                                $responsestring .= $audioplayer . $container;
+
+                                 //prepare AMD javascript for displaying submission
+                                $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid, 'cssprefix'=>constants::M_COMPONENT .'_transcript');
+                                $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init', array($transcriptopts));
+                                $PAGE->requires->strings_for_js(array('transcripttitle'),constants::M_COMPONENT);
+                        }
                     }else{
                         $responsestring=get_string('audioplaceholder',constants::M_COMPONENT);
                     }
                     break;
 					
 				case constants::REC_VIDEO:
-						if($size->width==0){
-							$responsestring=get_string('videoplaceholder',constants::M_COMPONENT);
-							break;
-						}
-						$responsestring .= format_text("<a href='$rawmediapath?d=$size->width" . 'x' . "$size->height'>$filename</a>", FORMAT_HTML);
-						break;
+                    if($size) {
+                        switch ($playertype) {
+                            case constants::PLAYERTYPE_TRANSCRIPT:
+                                $playerid= html_writer::random_id(constants::M_COMPONENT . '_');
+                                $containerid= html_writer::random_id(constants::M_COMPONENT . '_');
+                                $container = html_writer::div('',constants::M_COMPONENT . '_transcriptcontainer',array('id'=>$containerid));
+
+                                //player template
+                                $videoplayer = "<video id='@PLAYERID@' crossorigin='anonymous' controls='true'>";
+                                $videoplayer .= "<source src='@MEDIAURL@'>";
+                                $videoplayer .= "<track src='@VTTURL@' kind='captions' srclang='@LANG@' label='@LANG@' default='true'>";
+                                $videoplayer .= "</video>";
+                                //template -> player
+                                $videoplayer =str_replace('@PLAYERID@',$playerid,$videoplayer);
+                                $videoplayer =str_replace('@MEDIAURL@',$rawmediapath,$videoplayer);
+                                $videoplayer =str_replace('@LANG@',$this->get_config('language'),$videoplayer);
+                                $videoplayer =str_replace('@VTTURL@',$rawmediapath . '.vtt',$videoplayer);
+                                $responsestring .= $videoplayer . $container;
+
+                                //prepare AMD javascript for displaying submission
+                                $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid, 'cssprefix'=>constants::M_COMPONENT .'_transcript');
+                                $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init', array($transcriptopts));
+                                $PAGE->requires->strings_for_js(array('transcripttitle'),constants::M_COMPONENT);
+                                break;
+
+                            case constants::PLAYERTYPE_DEFAULT:
+                            default:
+                                if ($size->width == 0) {
+                                    $responsestring = get_string('videoplaceholder', constants::M_COMPONENT);
+                                    break;
+                                }
+                                $responsestring .= format_text("<a href='$rawmediapath?d=$size->width" . 'x' . "$size->height'>$filename</a>", FORMAT_HTML);
+                        }
+                    }else{
+                        $responsestring=get_string('audioplaceholder',constants::M_COMPONENT);
+                    }
+                    break;
 					
 				default:
 					$responsestring .= format_text("<a href='$rawmediapath'>$filename</a>", FORMAT_HTML);
@@ -281,7 +378,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 		return $responsestring;
 		
 	}//end of fetchResponses
-	
+
+
     public function	fetch_response_size($recordertype){
 
 	        //is this a list view
@@ -355,6 +453,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                 $cloudpoodllsubmission->filename = $filename;
                 $cloudpoodllsubmission->fileexpiry = $fileexpiry;
                 $ret = $DB->update_record(constants::M_TABLE, $cloudpoodllsubmission);
+                $this->register_fetch_transcript_task($cloudpoodllsubmission);
             }
 
         } else {
@@ -364,12 +463,31 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $cloudpoodllsubmission->recorder = $this->get_config('recordertype');
 			$cloudpoodllsubmission->filename = $filename;
             $cloudpoodllsubmission->fileexpiry = $fileexpiry;
-            $ret = $DB->insert_record(constants::M_TABLE, $cloudpoodllsubmission) > 0;
+            $ret = $DB->insert_record(constants::M_TABLE, $cloudpoodllsubmission);
+            //register our adhoc task
+            if($ret){
+                $cloudpoodllsubmission->id = $ret;
+                $this->register_fetch_transcript_task($cloudpoodllsubmission);
+            }
         }
 		 return $ret;
 
     }
-    
+
+    //register an adhoc task to pick up transcripts
+    public function register_fetch_transcript_task($cloudpoodllsubmission){
+        $fetch_task = new \assignsubmission_cloudpoodll\task\cloudpoodll_s3_adhoc();
+        $fetch_task->set_component(constants::M_COMPONENT);
+
+        $customdata = new \stdClass();
+        $customdata->submission = $cloudpoodllsubmission;
+        $customdata->taskcreationtime = time();
+
+        $fetch_task->set_custom_data($customdata);
+        // queue it
+        \core\task\manager::queue_adhoc_task($fetch_task);
+        return true;
+    }
 
 
     /**

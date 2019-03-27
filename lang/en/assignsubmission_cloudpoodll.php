@@ -43,8 +43,10 @@ $string['apiuser_details']='The Poodll account username that authorises Poodll o
 $string['apisecret']='Poodll API Secret ';
 $string['apisecret_details']='The Poodll API secret. See <a href= "https://support.poodll.com/support/solutions/articles/19000083076-cloud-poodll-api-secret">here</a> for more details';
 $string['enabletranscription']='Enable Transcription';
-$string['enabletranscription_details']='Cloud Poodll can transcribe the student speaking if required (English or Spanish only)';
-
+$string['enabletranscription_details']='Cloud Poodll can transcribe the student speaking if required (English French or Spanish)';
+$string['enabletranscode']='Enable Transcode';
+$string['enabletranscode_details']='Cloud Poodll can transcode the recording to mp3/mp4';
+$string['language']='Language';
 
 $string['useast1']='US East';
 $string['tokyo']='Tokyo, Japan';
@@ -124,6 +126,15 @@ $string['fallbackdetails'] = 'If the browser does not support HTML5 recording fo
 $string['fallbackupload'] = 'Upload';
 $string['fallbackiosupload'] = 'iOS: upload, else warning';
 $string['fallbackwarning'] = 'Warning';
+
+$string['playertype']='Player type';
+$string['playertypedefault']='System Default';
+$string['playertypetranscript']='Transcript player';
+$string['audioplayertype']='Audio player type';
+$string['audioplayertypedetails']='Use the default audio player assigned by Moodle, or use the transcript player if you are transcribing.';
+$string['videoplayertype']='Audio player type';
+$string['videoplayertypedetails']='Use the default video player assigned by Moodle, or use the transcript player if you are transcribing.';
+$string['transcripttitle']='Transcript';
 
 $string['displaysubs'] = '{$a->subscriptionname} : expires {$a->expiredate}';
 $string['noapiuser'] = "No API user entered. Read Aloud will not work correctly.";

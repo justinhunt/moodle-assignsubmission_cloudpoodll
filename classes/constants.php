@@ -52,6 +52,9 @@ const FALLBACK_UPLOAD = 'upload';
 const FALLBACK_IOSUPLOAD = 'iosupload';
 const FALLBACK_WARNING = 'warning';
 
+const PLAYERTYPE_DEFAULT='default';
+const PLAYERTYPE_TRANSCRIPT='transcript';
+
 const CLASS_REC_CONTAINER ='assignsubmission_cloudpoodll_rec_cont';
 const CLASS_REC_OUTER ='assignsubmission_cloudpoodll_rec_outer';
 const ID_REC ='assignsubmission_cloudpoodll_therecorder';

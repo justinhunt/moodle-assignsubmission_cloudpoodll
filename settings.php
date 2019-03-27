@@ -48,15 +48,18 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/awsregio
 $expiredays = utils::get_expiredays_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/expiredays', get_string('expiredays', constants::M_COMPONENT), '', '365', $expiredays));
 
-/*
+//transcode settings
+$settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enabletranscode',
+    get_string('enabletranscode', constants::M_COMPONENT), get_string('enabletranscode_details',constants::M_COMPONENT), 1));
+
+
+//transcription settings
 $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enabletranscription',
     get_string('enabletranscription', constants::M_COMPONENT), get_string('enabletranscription_details',constants::M_COMPONENT), 1));
-*/
 
-/*
 $langoptions = utils::get_lang_options();
-$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language', get_string('ttslanguage', constants::M_COMPONENT), '', 'en-US', $langoptions));
-*/
+$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language', get_string('language', constants::M_COMPONENT), '', 'en-US', $langoptions));
+
 
 
 //Default recorders
@@ -92,6 +95,12 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
     $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displayaudioplayer_list',
     new lang_string('displayaudioplayerlist', constants::M_COMPONENT),
     '', '1', $yesno_options));
+
+    //player type
+    $playertype_options = utils::fetch_options_playertype();
+    $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/audioplayertype',
+        new lang_string('audioplayertype', constants::M_COMPONENT),
+        new lang_string('audioplayertypedetails', constants::M_COMPONENT), '320', $playertype_options));
 
 
 

@@ -24,7 +24,8 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 
 /* interactive transcript */
 .assignsubmission_cloudpoodll_transcriptcontainer {
-    width: 610px;
+    max-width: 610px;
+    width: 100%;
     font-family: Arial, sans-serif;
     overflow-x: scroll;
     /* max-height: 298px; */
@@ -41,7 +42,7 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     height: 25px;
 }
 .assignsubmission_cloudpoodll_transcript-body {
-    width: 600px;
+    /* width: 600px; */
     overflow-y: scroll;
     background-color: #e7e7e7;
     max-height: 298px;
@@ -85,4 +86,5 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 .assignsubmission_cloudpoodll_transcript-line.is-active .assignsubmission_cloudpoodll_transcript-text {
     background-color: #555;
     color: #e7e7e7;
+    width: auto;
 }

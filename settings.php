@@ -52,6 +52,11 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/expireda
 $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enabletranscode',
     get_string('enabletranscode', constants::M_COMPONENT), get_string('enabletranscode_details',constants::M_COMPONENT), 1));
 
+//player type
+$playertype_options = utils::fetch_options_interactivetranscript();
+$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/defaultplayertype',
+    new lang_string('defaultplayertype', constants::M_COMPONENT),
+    new lang_string('defaultplayertypedetails', constants::M_COMPONENT), constants::PLAYERTYPE_TRANSCRIPT, $playertype_options));
 
 //transcription settings
 $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enabletranscription',
@@ -95,14 +100,6 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
     $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displayaudioplayer_list',
     new lang_string('displayaudioplayerlist', constants::M_COMPONENT),
     '', '1', $yesno_options));
-
-    //player type
-    $playertype_options = utils::fetch_options_playertype();
-    $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/audioplayertype',
-        new lang_string('audioplayertype', constants::M_COMPONENT),
-        new lang_string('audioplayertypedetails', constants::M_COMPONENT), '320', $playertype_options));
-
-
 
     //Settings for video recordings
     $settings->add(new admin_setting_heading(constants::M_COMPONENT .'/video_heading',

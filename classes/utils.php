@@ -44,7 +44,7 @@ class utils
         return $options;
     }
 
-    public static function fetch_options_playertype(){
+    public static function fetch_options_interactivetranscript(){
         $options = array( constants::PLAYERTYPE_DEFAULT => get_string("playertypedefault", constants::M_COMPONENT),
             constants::PLAYERTYPE_TRANSCRIPT  => get_string("playertypetranscript", constants::M_COMPONENT));
         return $options;
@@ -90,11 +90,14 @@ class utils
     public static function get_lang_options()
     {
         return array(
-            'en-US' => get_string('en-us', constants::M_COMPONENT),
-            'en-UK' => get_string('en-uk', constants::M_COMPONENT),
-            'en-AU' => get_string('en-au', constants::M_COMPONENT),
-            'fr-CA' => get_string('fr-ca', constants::M_COMPONENT),
-            'es-US' => get_string('es-us', constants::M_COMPONENT),
+            constants::LANG_ENUS => get_string('en-us', constants::M_COMPONENT),
+            constants::LANG_ENAU => get_string('en-au', constants::M_COMPONENT),
+            constants::LANG_ENUK => get_string('en-uk', constants::M_COMPONENT),
+            constants::LANG_ESUS => get_string('es-us', constants::M_COMPONENT),
+            constants::LANG_FRCA => get_string('fr-ca', constants::M_COMPONENT),
+            constants::LANG_FRFR => get_string('fr-fr', constants::M_COMPONENT),
+            constants::LANG_ITIT => get_string('it-it', constants::M_COMPONENT),
+            constants::LANG_PTBR => get_string('pt-br', constants::M_COMPONENT)
         );
     }
 
@@ -111,6 +114,7 @@ class utils
             case "dublin":
             case "sydney":
             case "ottawa":
+            case "london":
                 break;
             default:
                 $ret = false;

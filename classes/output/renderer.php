@@ -117,15 +117,7 @@ class renderer extends \plugin_renderer_base {
                 //'data-token'=>"643eba92a1447ac0c6a882c85051461a" //cloudpoodll
             )
         );
-        //lets NOT center the recorder. .. why would we do that?
-        /*
-         *
-        //$recorderdiv= \html_writer::div('', constants::M_COMPONENT  . '_center', .......
 
-
-        $containerdiv= \html_writer::div($recorderdiv,constants::CLASS_REC_CONTAINER . " " . constants::M_COMPONENT  . '_center',
-            array('id'=>constants::CLASS_REC_CONTAINER));
-        */
         $containerdiv= \html_writer::div($recorderdiv,constants::CLASS_REC_CONTAINER . " ",
             array('id'=>constants::CLASS_REC_CONTAINER));
 

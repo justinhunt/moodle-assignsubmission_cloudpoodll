@@ -46,7 +46,7 @@ $string['enabletranscription']='Enable Transcription';
 $string['enabletranscription_details']='Cloud Poodll can transcribe the student speaking if required';
 $string['enabletranscode']='Enable Transcode';
 $string['enabletranscode_details']='Cloud Poodll can transcode the recording to mp3/mp4';
-$string['language']='Speaker Language';
+$string['language']='Cloud Poodll Speaker Language';
 
 $string['useast1']='US East';
 $string['tokyo']='Tokyo, Japan (no transcription)';
@@ -130,7 +130,7 @@ $string['fallbackupload'] = 'Upload';
 $string['fallbackiosupload'] = 'iOS: upload, else warning';
 $string['fallbackwarning'] = 'Warning';
 
-$string['playertype']='Player type';
+$string['playertype']='Cloud Poodll Player type';
 $string['playertypedefault']='System Default';
 $string['playertypetranscript']='Transcript player';
 $string['defaultplayertype']='Player type';

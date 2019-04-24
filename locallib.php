@@ -192,7 +192,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             "component"=> constants::M_COMPONENT
         );
         $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/submissionhelper", 'init', array($opts));
-        $PAGE->requires->strings_for_js(array('reallydeletesubmission'),constants::M_COMPONENT);
+        $PAGE->requires->strings_for_js(array('reallydeletesubmission','clicktohide','clicktoshow'),constants::M_COMPONENT);
 
         //Get our renderers
         $renderer = $PAGE->get_renderer(constants::M_COMPONENT);

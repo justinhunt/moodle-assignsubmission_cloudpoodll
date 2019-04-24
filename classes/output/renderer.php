@@ -25,8 +25,11 @@ class renderer extends \plugin_renderer_base {
     }
 
     public function prepare_current_submission($responses, $deletesubmission){
-        $cs = \html_writer::div($responses . $deletesubmission, constants::M_COMPONENT . '_currentsubmission');
-        return $cs;
+        $toggletext = \html_writer::tag('span',get_string('clicktoshow',constants::M_COMPONENT),array('class'=>'toggletext'));
+        $togglebutton = \html_writer::tag('span','',array('class'=>'fa fa-2x fa-toggle-off togglebutton','aria-hidden'=>'true'));
+        $toggle =\html_writer::div($togglebutton . $toggletext, constants::M_COMPONENT . '_togglecontainer');
+        $cs = \html_writer::div($responses . $deletesubmission, constants::M_COMPONENT . '_currentsubmission',array('style'=>'display: none;'));
+        return $toggle . $cs;
     }
 
    

@@ -20,6 +20,7 @@
 
 button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     margin-top: 10px;
+    max-width: 180px;
 }
 
 /* interactive transcript */
@@ -87,4 +88,14 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     background-color: #555;
     color: #e7e7e7;
     width: auto;
+}
+
+.assignsubmission_cloudpoodll_currentsubmission {
+    display: grid;
+}
+.assignsubmission_cloudpoodll_togglecontainer .toggletext {
+    padding: 5px;
+}
+.assignsubmission_cloudpoodll_togglecontainer {
+    margin-bottom: 8px;
 }

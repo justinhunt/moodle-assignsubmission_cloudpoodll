@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.11 (Build 201904XXXX)
+-added  toggle button to improve display of current submission
+
 Version 1.0.10 (Build 2019041200)
 -added support for transcription of users speaking to speed up grading
 

@@ -146,3 +146,6 @@ $string['appnotauthorised']= "Assign Submission Cloud Poodll  is NOT authorised 
 $string['refreshtoken']= "Refresh license information";
 $string['notokenincache']= "Refresh to see license information. Contact Poodll support if there is a problem.";
 
+$string['clicktohide']= "Hide current submission";
+$string['clicktoshow']= "Show current submission";
+

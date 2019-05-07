@@ -130,11 +130,12 @@ $string['fallbackupload'] = 'Upload';
 $string['fallbackiosupload'] = 'iOS: upload, else warning';
 $string['fallbackwarning'] = 'Warning';
 
-$string['playertype']='Cloud Poodll Player type';
-$string['playertypedefault']='System Default';
-$string['playertypetranscript']='Transcript player';
-$string['defaultplayertype']='Player type(teacher)';
-$string['defaultplayertypestudent']='Player type(student)';
+$string['playertype']='Cloud Poodll Transcript Player (teacher)';
+$string['playertypestudent']='Cloud Poodll Transcript Player(student)';
+$string['playertypedefault']='No. Use normal player';
+$string['playertypetranscript']='Yes. Use transcript player';
+$string['defaultplayertype']='Transcript player(teacher)';
+$string['defaultplayertypestudent']='Transcript player(student)';
 $string['defaultplayertypedetails']='Use the transcript player if you are transcribing, or system default';
 $string['transcripttitle']='Transcript';
 

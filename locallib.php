@@ -124,6 +124,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->addElement('select', constants::M_COMPONENT . '_language', get_string("language", constants::M_COMPONENT), $lang_options);
         $mform->setDefault(constants::M_COMPONENT . '_language', $language);
         $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabled', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabletranscription', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
+
 
         //playertype : teacher
         $playertype_options = utils::fetch_options_interactivetranscript();
@@ -131,13 +134,16 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->setDefault(constants::M_COMPONENT . '_playertype', $playertype);
         $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabled', 'notchecked');
         $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabletranscription', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
+
 
         //playertype: student
         $playertype_options = utils::fetch_options_interactivetranscript();
-        $mform->addElement('select', constants::M_COMPONENT . '_playertypestudent', get_string("playertype", constants::M_COMPONENT), $playertype_options);
+        $mform->addElement('select', constants::M_COMPONENT . '_playertypestudent', get_string("playertypestudent", constants::M_COMPONENT), $playertype_options);
         $mform->setDefault(constants::M_COMPONENT . '_playertypestudent', $playertypestudent);
         $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabled', 'notchecked');
         $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscription', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
 
     }

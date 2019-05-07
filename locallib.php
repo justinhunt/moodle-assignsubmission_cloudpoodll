@@ -81,6 +81,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $expiredays = $this->get_config('expiredays') ? $this->get_config('expiredays') : $adminconfig->expiredays;
         $language = $this->get_config('language') ? $this->get_config('language') : $adminconfig->language;
         $playertype = $this->get_config('playertype') ? $this->get_config('playertype') : $adminconfig->defaultplayertype;
+        $playertypestudent = $this->get_config('playertypestudent') ? $this->get_config('playertypestudent') : $adminconfig->defaultplayertypestudent;
         $enabletranscription = $this->get_config('enabletranscription') ? $this->get_config('enabletranscription') : $adminconfig->enabletranscription;
         $enabletranscode = $this->get_config('enabletranscode') ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
 
@@ -116,6 +117,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->addElement('advcheckbox', constants::M_COMPONENT . '_enabletranscription', get_string("enabletranscription", constants::M_COMPONENT));
         $mform->setDefault(constants::M_COMPONENT . '_enabletranscription', $enabletranscription);
         $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabled', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
         //lang options
         $lang_options = utils::get_lang_options();
@@ -123,11 +125,20 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->setDefault(constants::M_COMPONENT . '_language', $language);
         $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabled', 'notchecked');
 
-        //playertypes
+        //playertype : teacher
         $playertype_options = utils::fetch_options_interactivetranscript();
         $mform->addElement('select', constants::M_COMPONENT . '_playertype', get_string("playertype", constants::M_COMPONENT), $playertype_options);
         $mform->setDefault(constants::M_COMPONENT . '_playertype', $playertype);
         $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabled', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabletranscription', 'notchecked');
+
+        //playertype: student
+        $playertype_options = utils::fetch_options_interactivetranscript();
+        $mform->addElement('select', constants::M_COMPONENT . '_playertypestudent', get_string("playertype", constants::M_COMPONENT), $playertype_options);
+        $mform->setDefault(constants::M_COMPONENT . '_playertypestudent', $playertypestudent);
+        $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabled', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscription', 'notchecked');
+
 
     }
     
@@ -160,6 +171,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $this->set_config('enabletranscode', $data->{constants::M_COMPONENT . '_enabletranscode'});
         //playertype
         $this->set_config('playertype', $data->{constants::M_COMPONENT . '_playertype'});
+
+        //playertype student
+        $this->set_config('playertypestudent', $data->{constants::M_COMPONENT . '_playertypestudent'});
 
         return true;
     }
@@ -286,10 +300,16 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $size = $this->fetch_response_size($this->get_config('recordertype'));
 
         //player type
-        if($vttdata && $isgrader && !$islist) {
-           $playertype = $this->get_config('playertype');
-        }else{
-            $playertype = constants::PLAYERTYPE_DEFAULT;
+        $playertype = constants::PLAYERTYPE_DEFAULT;
+        if($vttdata && !$islist) {
+            switch($isgrader) {
+                case true:
+                    $playertype = $this->get_config('playertype');
+                    break;
+                case false:
+                    $playertype = $this->get_config('playertypestudent');
+                    break;
+            }
         }
 
 		//if this is a playback area, for teacher, show a string if no file

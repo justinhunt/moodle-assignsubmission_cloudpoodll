@@ -133,7 +133,8 @@ $string['fallbackwarning'] = 'Warning';
 $string['playertype']='Cloud Poodll Player type';
 $string['playertypedefault']='System Default';
 $string['playertypetranscript']='Transcript player';
-$string['defaultplayertype']='Player type';
+$string['defaultplayertype']='Player type(teacher)';
+$string['defaultplayertypestudent']='Player type(student)';
 $string['defaultplayertypedetails']='Use the transcript player if you are transcribing, or system default';
 $string['transcripttitle']='Transcript';
 

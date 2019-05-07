@@ -58,6 +58,14 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/defaultp
     new lang_string('defaultplayertype', constants::M_COMPONENT),
     new lang_string('defaultplayertypedetails', constants::M_COMPONENT), constants::PLAYERTYPE_TRANSCRIPT, $playertype_options));
 
+//student player type
+$playertype_options = utils::fetch_options_interactivetranscript();
+$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/defaultplayertypestudent',
+    new lang_string('defaultplayertypestudent', constants::M_COMPONENT),
+    new lang_string('defaultplayertypedetails', constants::M_COMPONENT), constants::PLAYERTYPE_TRANSCRIPT, $playertype_options));
+
+
+
 //transcription settings
 $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enabletranscription',
     get_string('enabletranscription', constants::M_COMPONENT), get_string('enabletranscription_details',constants::M_COMPONENT), 1));

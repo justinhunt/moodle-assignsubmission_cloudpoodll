@@ -357,14 +357,26 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                                 //just use the raw audio tags response string
                                 $responsestring .= $audioplayer;
                                 break;
-                            case constants::PLAYERTYPE_TRANSCRIPT:
+                            case constants::PLAYERTYPE_INTERACTIVETRANSCRIPT:
 
                                 $responsestring .= $audioplayer . $container;
 
                                  //prepare AMD javascript for displaying submission
-                                $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid, 'cssprefix'=>constants::M_COMPONENT .'_transcript');
+                                $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid,
+                                    'cssprefix'=>constants::M_COMPONENT .'_transcript');
                                 $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init', array($transcriptopts));
                                 $PAGE->requires->strings_for_js(array('transcripttitle'),constants::M_COMPONENT);
+                                break;
+
+                            case constants::PLAYERTYPE_STANDARDTRANSCRIPT:
+
+                                $responsestring .= $audioplayer . $container;
+                                //prepare AMD javascript for displaying submission
+                                $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid,
+                                    'cssprefix'=>constants::M_COMPONENT .'_transcript', 'transcripturl'=>$rawmediapath . '.txt');
+                                $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init', array($transcriptopts));
+                                $PAGE->requires->strings_for_js(array('transcripttitle'),constants::M_COMPONENT);
+                                break;
                         }
                     }else{
                         $responsestring=get_string('audioplaceholder',constants::M_COMPONENT);
@@ -383,7 +395,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                         $randomid = html_writer::random_id('cloudpoodll_');
 
                         switch ($playertype) {
-                            case constants::PLAYERTYPE_TRANSCRIPT:
+                            case constants::PLAYERTYPE_INTERACTIVETRANSCRIPT:
                                 if ($size->width == 0) {
                                     $responsestring = get_string('videoplaceholder', constants::M_COMPONENT);
                                     break;

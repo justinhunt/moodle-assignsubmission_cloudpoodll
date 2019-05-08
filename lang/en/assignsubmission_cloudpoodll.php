@@ -130,13 +130,14 @@ $string['fallbackupload'] = 'Upload';
 $string['fallbackiosupload'] = 'iOS: upload, else warning';
 $string['fallbackwarning'] = 'Warning';
 
-$string['playertype']='Cloud Poodll Transcript Player (teacher)';
-$string['playertypestudent']='Cloud Poodll Transcript Player(student)';
-$string['playertypedefault']='No. Use normal player';
-$string['playertypetranscript']='Yes. Use transcript player';
-$string['defaultplayertype']='Transcript player(teacher)';
-$string['defaultplayertypestudent']='Transcript player(student)';
-$string['defaultplayertypedetails']='Use the transcript player if you are transcribing, or system default';
+$string['playertype']='Cloud Poodll Transcript Display (teacher)';
+$string['playertypestudent']='Cloud Poodll Transcript Display(student)';
+$string['playertypedefault']='No transcript.';
+$string['playertypeinteractivetranscript']='Interactive transcript';
+$string['playertypestandardtranscript']='Static transcript';
+$string['defaultplayertype']='Transcript display(teacher)';
+$string['defaultplayertypestudent']='Transcript display(student)';
+$string['defaultplayertypedetails']='Use the interactive or static transcript player if you are transcribing or show no transcript';
 $string['transcripttitle']='Transcript';
 
 $string['displaysubs'] = '{$a->subscriptionname} : expires {$a->expiredate}';

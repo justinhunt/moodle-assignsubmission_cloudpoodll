@@ -46,7 +46,8 @@ class utils
 
     public static function fetch_options_interactivetranscript(){
         $options = array( constants::PLAYERTYPE_DEFAULT => get_string("playertypedefault", constants::M_COMPONENT),
-            constants::PLAYERTYPE_TRANSCRIPT  => get_string("playertypetranscript", constants::M_COMPONENT));
+            constants::PLAYERTYPE_INTERACTIVETRANSCRIPT  => get_string("playertypeinteractivetranscript", constants::M_COMPONENT),
+        constants::PLAYERTYPE_STANDARDTRANSCRIPT  => get_string("playertypestandardtranscript", constants::M_COMPONENT));
         return $options;
     }
 

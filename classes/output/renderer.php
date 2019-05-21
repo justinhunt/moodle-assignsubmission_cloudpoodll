@@ -87,9 +87,24 @@ class renderer extends \plugin_renderer_base {
         $can_transcribe = utils::can_transcribe($r_options);
         $transcribe = "0";
         if($can_transcribe && $r_options->transcribe){
-            $transcribe =  $r_options->transcribe;
+            if($r_options->recordertype==constants::REC_AUDIO) {
+                $transcribe = $r_options->transcribe;
+            }else{
+                $transcribe = constants::TRANSCRIBER_AMAZONTRANSCRIBE;
+            }
         }
 
+        //any recorder hints ... go here..
+        //Set encoder to stereoaudio if TRANSCRIBER_GOOGLECLOUDSPEECH:
+        $hints = new \stdClass();
+        if($transcribe == constants::TRANSCRIBER_AMAZONTRANSCRIBE) {
+            $hints->encoder = 'stereoaudio';
+        }else{
+            $hints->encoder = 'auto';
+        }
+        $string_hints = base64_encode(json_encode($hints));
+
+        //Set subtitles
         switch($transcribe){
             case constants::TRANSCRIBER_AMAZONTRANSCRIBE:
             case constants::TRANSCRIBER_GOOGLECLOUDSPEECH:
@@ -102,10 +117,6 @@ class renderer extends \plugin_renderer_base {
 
         //transcode
         $transcode = $r_options->transcode  ? "1" : "0";
-
-        //any recorder hints ... go here..
-        $hints = new \stdClass();
-        $string_hints = base64_encode (json_encode($hints));
 
         $recorderdiv= \html_writer::div('', constants::M_COMPONENT  . '_notcenter',
             array('id'=>constants::ID_REC,

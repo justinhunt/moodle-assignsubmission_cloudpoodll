@@ -159,5 +159,5 @@ $string['clicktoshow']= "Show current submission";
 
 $string['transcribernone']= "No transcription";
 $string['transcriberamazon']= "Normal transcription";
-$string['transcribergooglecloud']= "Fast transcription";
+$string['transcribergooglecloud']= "Fast transcription(audio only)";
 

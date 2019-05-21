@@ -74,6 +74,14 @@ class utils
         );
     }
 
+    public static function get_transcriber_options(){
+        return array(
+                constants::TRANSCRIBER_NONE => get_string("transcribernone",constants::M_COMPONENT),
+                constants::TRANSCRIBER_AMAZONTRANSCRIBE => get_string("transcriberamazon",constants::M_COMPONENT),
+                constants::TRANSCRIBER_GOOGLECLOUDSPEECH => get_string("transcribergooglecloud",constants::M_COMPONENT)
+        );
+    }
+
     public static function get_expiredays_options(){
         return array(
             "1"=>"1",
@@ -91,14 +99,19 @@ class utils
     public static function get_lang_options()
     {
         return array(
-            constants::LANG_ENUS => get_string('en-us', constants::M_COMPONENT),
-            constants::LANG_ENAU => get_string('en-au', constants::M_COMPONENT),
-            constants::LANG_ENUK => get_string('en-uk', constants::M_COMPONENT),
-            constants::LANG_ESUS => get_string('es-us', constants::M_COMPONENT),
-            constants::LANG_FRCA => get_string('fr-ca', constants::M_COMPONENT),
-            constants::LANG_FRFR => get_string('fr-fr', constants::M_COMPONENT),
-            constants::LANG_ITIT => get_string('it-it', constants::M_COMPONENT),
-            constants::LANG_PTBR => get_string('pt-br', constants::M_COMPONENT)
+                constants::LANG_ENUS => get_string('en-us', constants::M_COMPONENT),
+                constants::LANG_ENAU => get_string('en-au', constants::M_COMPONENT),
+                constants::LANG_ENUK => get_string('en-uk', constants::M_COMPONENT),
+                constants::LANG_ENIN => get_string('en-in', constants::M_COMPONENT),
+                constants::LANG_ESES => get_string('es-es', constants::M_COMPONENT),
+                constants::LANG_ESUS => get_string('es-us', constants::M_COMPONENT),
+                constants::LANG_FRCA => get_string('fr-ca', constants::M_COMPONENT),
+                constants::LANG_FRFR => get_string('fr-fr', constants::M_COMPONENT),
+                constants::LANG_ITIT => get_string('it-it', constants::M_COMPONENT),
+                constants::LANG_PTBR => get_string('pt-br', constants::M_COMPONENT),
+                constants::LANG_KOKR => get_string('ko-kr', constants::M_COMPONENT),
+                constants::LANG_DEDE => get_string('de-de', constants::M_COMPONENT),
+                constants::LANG_HIIN => get_string('hi-in', constants::M_COMPONENT)
         );
     }
 

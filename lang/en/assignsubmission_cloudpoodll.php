@@ -57,14 +57,19 @@ $string['frankfurt']='Frankfurt, Germany (no transcription)';
 $string['london']='London, U.K (slow)';
 $string['saopaulo']='Sao Paulo, Brazil (no transcription)';
 $string['forever']='Never expire';
-$string['en-us']='English(US)';
-$string['en-au']='English(AU)';
-$string['en-uk']='English(UK)';
-$string['es-us']='Spanish(US)';
-$string['fr-ca']='French(CA)';
-$string['fr-fr']='French(FR)';
-$string['pt-br']='Portuguese(BR)';
-$string['it-it']='Italian(IT)';
+$string['en-us'] = 'English (US)';
+$string['en-uk'] = 'English (UK)';
+$string['en-au'] = 'English (AU)';
+$string['en-in'] = 'English (IN)';
+$string['es-es'] = 'Spanish (ES)';
+$string['es-us'] = 'Spanish (US)';
+$string['fr-fr'] = 'French (FR.)';
+$string['fr-ca'] = 'French (CA)';
+$string['ko-kr'] = 'Korean(KR)';
+$string['pt-br'] = 'Portuguese(BR)';
+$string['it-it'] = 'Italian(IT)';
+$string['de-de'] = 'German(DE)';
+$string['hi-in'] = 'Hindi(IN)';
 $string['awsregion']='AWS Region';
 $string['region']='AWS Region';
 $string['expiredays']='Cloud Poodll Days to keep file';
@@ -151,4 +156,8 @@ $string['notokenincache']= "Refresh to see license information. Contact Poodll s
 
 $string['clicktohide']= "Hide current submission";
 $string['clicktoshow']= "Show current submission";
+
+$string['transcribernone']= "No transcription";
+$string['transcriberamazon']= "Normal transcription";
+$string['transcribergooglecloud']= "Fast transcription";
 

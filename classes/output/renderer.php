@@ -85,8 +85,20 @@ class renderer extends \plugin_renderer_base {
 
         //transcribe
         $can_transcribe = utils::can_transcribe($r_options);
-        $transcribe = $can_transcribe && $r_options->transcribe  ? "1" : "0";
-        $subtitle = $transcribe;
+        $transcribe = "0";
+        if($can_transcribe && $r_options->transcribe){
+            $transcribe =  $r_options->transcribe;
+        }
+
+        switch($transcribe){
+            case constants::TRANSCRIBER_AMAZONTRANSCRIBE:
+            case constants::TRANSCRIBER_GOOGLECLOUDSPEECH:
+                $subtitle="1";
+                break;
+            default:
+                $subtitle="0";
+                break;
+        }
 
         //transcode
         $transcode = $r_options->transcode  ? "1" : "0";

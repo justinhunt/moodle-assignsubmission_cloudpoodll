@@ -114,17 +114,18 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->disabledIf(constants::M_COMPONENT . '_enabletranscode', constants::M_COMPONENT . '_enabled', 'notchecked');
 
         //transcription settings
-        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_enabletranscription', get_string("enabletranscription", constants::M_COMPONENT));
+        //here add googlecloudspeech or amazontranscrobe options
+        $transcriber_options = utils::get_transcriber_options();
+        $mform->addElement('select', constants::M_COMPONENT . '_enabletranscription', get_string("enabletranscription", constants::M_COMPONENT), $transcriber_options);
         $mform->setDefault(constants::M_COMPONENT . '_enabletranscription', $enabletranscription);
         $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabled', 'notchecked');
-        $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
         //lang options
         $lang_options = utils::get_lang_options();
         $mform->addElement('select', constants::M_COMPONENT . '_language', get_string("language", constants::M_COMPONENT), $lang_options);
         $mform->setDefault(constants::M_COMPONENT . '_language', $language);
         $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabled', 'notchecked');
-        $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabletranscription', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabletranscription', 'eq',0);
         $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
 
@@ -133,7 +134,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->addElement('select', constants::M_COMPONENT . '_playertype', get_string("playertype", constants::M_COMPONENT), $playertype_options);
         $mform->setDefault(constants::M_COMPONENT . '_playertype', $playertype);
         $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabled', 'notchecked');
-        $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabletranscription', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabletranscription', 'eq',0);
         $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
 
@@ -142,7 +143,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->addElement('select', constants::M_COMPONENT . '_playertypestudent', get_string("playertypestudent", constants::M_COMPONENT), $playertype_options);
         $mform->setDefault(constants::M_COMPONENT . '_playertypestudent', $playertypestudent);
         $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabled', 'notchecked');
-        $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscription', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscription', 'eq',0);
         $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
 
@@ -317,6 +318,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     break;
             }
         }
+
 
 		//if this is a playback area, for teacher, show a string if no file
 		if ($checkfordata  && (empty($filename) || strlen($filename)<3)){
@@ -729,6 +731,50 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
         return $cloudpoodllloginfo;
     }
+
+    /**
+     * Return the plugin configs for external functions.
+     *
+     * @return array the list of settings
+     */
+    public function get_config_for_external() {
+        return (array) $this->get_config();
+    }
+
+    /**
+     * Copy the student's submission from a previous submission. Used when a student opts to base their resubmission
+     * on the last submission.
+     * @param stdClass $sourcesubmission
+     * @param stdClass $destsubmission
+     */
+    public function copy_submission(stdClass $sourcesubmission, stdClass $destsubmission) {
+        global $DB;
+        // Copy the assignsubmission plugin record.
+        $thesubmission = $this->get_cloudpoodll_submission($sourcesubmission->id);
+        if ($thesubmission) {
+            unset($thesubmission->id);
+            $thesubmission->submission = $destsubmission->id;
+            $DB->insert_record(constants::M_TABLE, $thesubmission);
+        }
+        return true;
+    }
+
+    /**
+     * Remove a submission.
+     *
+     * @param stdClass $submission The submission
+     * @return boolean
+     */
+    public function remove(stdClass $submission) {
+        global $DB;
+
+        $submissionid = $submission ? $submission->id : 0;
+        if ($submissionid) {
+            $DB->delete_records(constants::M_TABLE, array('submission' => $submissionid));
+        }
+        return true;
+    }
+
 
     /**
      * The assignment has been deleted - cleanup

@@ -71,6 +71,10 @@ const REGION_SAOPAULO = 'saopaulo';
 const REGION_FRANKFURT = 'frankfurt';
 const REGION_LONDON = 'london';
 
+const TRANSCRIBER_NONE = 0;
+const TRANSCRIBER_AMAZONTRANSCRIBE = 1;
+const TRANSCRIBER_GOOGLECLOUDSPEECH = 2;
+
 const LANG_ENUS = 'en-US';
 const LANG_ENUK = 'en-UK';
 const LANG_ENAU = 'en-AU';
@@ -79,5 +83,10 @@ const LANG_FRCA = 'fr-CA';
 const LANG_FRFR = 'fr-FR';
 const LANG_ITIT = 'it-IT';
 const LANG_PTBR = 'pt-BR';
+const LANG_KOKR = 'ko-KR';
+const LANG_DEDE = 'de-DE';
+const LANG_HIIN = 'hi-IN';
+const LANG_ENIN = 'en-IN';
+const LANG_ESES = 'es-ES';
 
 }

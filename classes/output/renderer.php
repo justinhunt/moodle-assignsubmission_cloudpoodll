@@ -97,7 +97,7 @@ class renderer extends \plugin_renderer_base {
         //any recorder hints ... go here..
         //Set encoder to stereoaudio if TRANSCRIBER_GOOGLECLOUDSPEECH:
         $hints = new \stdClass();
-        if($transcribe == constants::TRANSCRIBER_AMAZONTRANSCRIBE) {
+        if($transcribe == constants::TRANSCRIBER_GOOGLECLOUDSPEECH) {
             $hints->encoder = 'stereoaudio';
         }else{
             $hints->encoder = 'auto';

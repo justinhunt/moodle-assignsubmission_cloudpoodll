@@ -83,7 +83,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $playertype = $this->get_config('playertype') ? $this->get_config('playertype') : $adminconfig->defaultplayertype;
         $playertypestudent = $this->get_config('playertypestudent') ? $this->get_config('playertypestudent') : $adminconfig->defaultplayertypestudent;
         $enabletranscription = $this->get_config('enabletranscription') ? $this->get_config('enabletranscription') : $adminconfig->enabletranscription;
-        $enabletranscode = $this->get_config('enabletranscode') ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
+       //in this case false means unset
+        $enabletranscode = $this->get_config('enabletranscode')!==false ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
 
         $rec_options = utils::fetch_options_recorders();
 		$mform->addElement('select', constants::M_COMPONENT . '_recordertype', get_string("recordertype", constants::M_COMPONENT), $rec_options);
@@ -119,6 +120,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->addElement('select', constants::M_COMPONENT . '_enabletranscription', get_string("enabletranscription", constants::M_COMPONENT), $transcriber_options);
         $mform->setDefault(constants::M_COMPONENT . '_enabletranscription', $enabletranscription);
         $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabled', 'notchecked');
+        $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
+
 
         //lang options
         $lang_options = utils::get_lang_options();

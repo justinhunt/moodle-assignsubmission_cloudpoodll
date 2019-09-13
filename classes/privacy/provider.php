@@ -204,7 +204,7 @@ class provider implements metadataprovider,
      * - user ids
      * @param  assign_plugin_request_data $deletedata A class that contains the relevant information required for deletion.
      */
-    public static function _delete_submissions(assign_plugin_request_data  $deletedata) {
+    public static function delete_submissions(assign_plugin_request_data  $deletedata) {
         global $DB;
 
         \core_plagiarism\privacy\provider::delete_plagiarism_for_users($deletedata->get_userids(), $deletedata->get_context());

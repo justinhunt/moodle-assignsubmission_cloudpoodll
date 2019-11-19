@@ -35,6 +35,7 @@ const M_COMPONENT='assignsubmission_cloudpoodll';
 const M_TABLE='assignsubmission_cpoodll';
 const M_FILEAREA = 'submissions_cloudpoodll';
 const M_SUBPLUGIN='cloudpoodll';
+const M_PLUGINSETTINGS = '/admin/settings.php?section=assignsubmission_cloudpoodll';
 
 const APPID='assignsubmission_cloudpoodll';
 

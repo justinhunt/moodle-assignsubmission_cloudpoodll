@@ -262,11 +262,33 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         //fetch API token
         $api_user = get_config(constants::M_COMPONENT,'apiuser');
         $api_secret = get_config(constants::M_COMPONENT,'apisecret');
-        $token = utils::fetch_token($api_user,$api_secret);
 
-        //fetch recorder html
-        $recorderhtml = $renderer->fetch_recorder($r_options,$token);
-        $mform->addElement('static', 'description', '',$recorderhtml);
+        //check user has entered cred
+        if(empty($api_user) || empty($api_secret)){
+            $message = get_string('nocredentials',constants::M_COMPONENT,
+                    $CFG->wwwroot . constants::M_PLUGINSETTINGS);
+            $recorderhtml = $renderer->show_problembox($message);
+        }else {
+            $token = utils::fetch_token($api_user, $api_secret);
+
+            //check token authenticated and no errors in it
+            $errormessage = utils::fetch_token_error($token);
+            if(!empty($errormessage)){
+                $recorderhtml = $renderer->show_problembox($errormessage);
+
+            }else{
+                //All good. So lets fetch recorder html
+                $recorderhtml = $renderer->fetch_recorder($r_options, $token);
+            }
+        }
+
+        //get recorder onscreen title
+        $displayname = get_config(constants::M_COMPONENT, 'customname');
+        if(empty($displayname)){$displayname = get_string('recorderdisplayname',constants::M_COMPONENT);}
+
+        $mform->addElement('static', 'description',
+                $displayname,
+                $recorderhtml);
 
 		return true;
     }

@@ -1,9 +1,13 @@
 Change List
 =========
-Version XXX
+Version 1.0.14 (Build 2019112100)
 -added better reporting of poor Cloud Poodll config settings
 -made recorder title customizable
 -corrected strings referringto ReadAloud
+-fixed incorrect en-UK lang code (correct is en-GB)
+-added word count to transcript display
+-display shortened transcript and word count on view submissions page
+-display view page link on view submissions page
 
 Version 1.0.13 (Build 2019091300)
 -Fixed issue where incorrect privacy function declaration broke plugin privacy registry on load

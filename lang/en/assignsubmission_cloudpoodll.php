@@ -171,3 +171,5 @@ $string['recorderdisplayname']= "Recorder";
 $string['customname']= "Custom name";
 $string['customnamedetails']= "Set a custom name for the submission field(ie not 'Recorder') as displayed inside the plugin";
 
+$string['numwords'] = '({$a} words)';
+

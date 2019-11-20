@@ -305,6 +305,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
 		$responsestring = "";
         $cloudpoodllsubmission = $this->get_cloudpoodll_submission($submissionid);
+        $transcript='';
+        $wordcountmessage='';
+
         if($cloudpoodllsubmission){
             //The path to any media file we should play
             $filename= $cloudpoodllsubmission->filename;
@@ -323,6 +326,15 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             }
             //is this a list page
             $islist = optional_param('action','',PARAM_TEXT)=='grading';
+
+            //get transcript
+            $transcript = $cloudpoodllsubmission->transcript;
+
+            //wordcountmessage
+            if(!empty($transcript)) {
+                $wordcountmessage = get_string('numwords', constants::M_COMPONENT, count_words($transcript));
+            }
+
         } else {
             return '';
         }
@@ -333,6 +345,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
         //player type
         $playertype = constants::PLAYERTYPE_DEFAULT;
+        //show transcript teaser
+        $teaser=false;
         if($vttdata && !$islist) {
             switch($isgrader) {
                 case true:
@@ -342,6 +356,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     $playertype = $this->get_config('playertypestudent');
                     break;
             }
+        }else if($vttdata && $islist && $isgrader){
+            //show teaser
+            $teaser=true;
         }
 
 
@@ -386,7 +403,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                                 break;
                             case constants::PLAYERTYPE_INTERACTIVETRANSCRIPT:
 
-                                $responsestring .= $audioplayer . $container;
+                                $responsestring .= $audioplayer . $container . $wordcountmessage ;
 
                                  //prepare AMD javascript for displaying submission
                                 $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid,
@@ -397,7 +414,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
                             case constants::PLAYERTYPE_STANDARDTRANSCRIPT:
 
-                                $responsestring .= $audioplayer . $container;
+                                $responsestring .= $audioplayer . $container . $wordcountmessage ;
                                 //prepare AMD javascript for displaying submission
                                 $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid,
                                     'cssprefix'=>constants::M_COMPONENT .'_transcript', 'transcripturl'=>$rawmediapath . '.txt');
@@ -437,11 +454,26 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                                 $videoplayer =str_replace('@MEDIAURL@',$rawmediapath . '?cachekiller=' . $randomid,$videoplayer);
                                 $videoplayer =str_replace('@LANG@',$this->get_config('language'),$videoplayer);
                                 $videoplayer =str_replace('@VTTURL@',$rawmediapath . '.vtt',$videoplayer);
-                                $responsestring .= $videoplayer . $container;
+                                $responsestring .= $videoplayer . $container .  $wordcountmessage ;
 
                                 //prepare AMD javascript for displaying submission
                                 $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid, 'cssprefix'=>constants::M_COMPONENT .'_transcript');
                                 $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init', array($transcriptopts));
+                                $PAGE->requires->strings_for_js(array('transcripttitle'),constants::M_COMPONENT);
+                                break;
+
+                            case constants::PLAYERTYPE_STANDARDTRANSCRIPT:
+
+                                $videoplayer = "<video id='@PLAYERID@' class='nomediaplugin' crossorigin='anonymous' controls='true' width='$size->width' height='$size->height'>";
+                                $videoplayer .= "<source src='@MEDIAURL@'>";
+                                $videoplayer .= "<track src='@VTTURL@' kind='captions' srclang='@LANG@' label='@LANG@' default='true'>";
+                                $videoplayer .= "</video>";
+
+                                $responsestring .= $videoplayer . $container . $wordcountmessage ;
+                                //prepare AMD javascript for displaying submission
+                                $transcriptopts=array( 'component'=>constants::M_COMPONENT,'playerid'=>$playerid,'containerid'=>$containerid,
+                                        'cssprefix'=>constants::M_COMPONENT .'_transcript', 'transcripturl'=>$rawmediapath . '.txt');
+                                $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init', array($transcriptopts));
                                 $PAGE->requires->strings_for_js(array('transcripttitle'),constants::M_COMPONENT);
                                 break;
 
@@ -476,11 +508,28 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 					break;	
 				
 			}//end of switch
+            //if we need a teaser (of the transcript) lets add it here
+            if($teaser){
+			    $transcript = $cloudpoodllsubmission->transcript;
+			    if($transcript) {
+                    // The shortened version of the submission text.
+                    $shorttext = shorten_text($transcript, 120);
+                    $responsestring .= $shorttext . $wordcountmessage;
+                }
+
+            }
+
+
+
 		}//end of if (checkfordata ...)
 		
 		return $responsestring;
 		
 	}//end of fetchResponses
+
+    public function fetch_teaser($submission){
+
+    }
 
 
     public function	fetch_response_size($recordertype){
@@ -594,16 +643,20 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
 
     /**
-     * Display the list of files  in the submission status table
+     * Display the response in student's summary, view submissions, or grading page
      *
      * @param stdClass $submission
-     * @param bool $showviewlink Set this to true if the list of files is long
+     * @param bool $showviewlink Set this to true to show the submission on a new page
      * @return string
      */
     public function view_summary(stdClass $submission, & $showviewlink) {
-    	$showviewlink = false;
+        //if this is the view all submissions page, we may want to show a full player
+        //or entire transcript on click, so we add a view link
+        $islist = optional_param('action','',PARAM_TEXT)=='grading';
+        $showviewlink = $islist;//is this a list page
 
-		//our response, this will output a player/image, and optionally a portfolio export link
+
+		//our response, this will output a player, and optionally a portfolio export link
 		return $this->fetchResponses($submission->id,false) . $this->get_p_links($submission->id) ;
 		//rely on get_files from now on to generate portfolio links Justin 19/06/2014
 

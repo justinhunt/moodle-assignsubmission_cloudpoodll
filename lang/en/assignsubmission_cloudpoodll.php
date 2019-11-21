@@ -172,4 +172,6 @@ $string['customname']= "Custom name";
 $string['customnamedetails']= "Set a custom name for the submission field(ie not 'Recorder') as displayed inside the plugin";
 
 $string['numwords'] = '({$a} words)';
+$string['divider']= '---------------{$a}----------------';
+$string['customdivider']= '---------------{$a->customname} ("{$a->pluginname}")----------------';
 

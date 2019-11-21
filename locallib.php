@@ -60,7 +60,11 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
      * @return string
      */
     public function get_name() {
-        return get_string('cloudpoodll', constants::M_COMPONENT);
+        if(get_config(constants::M_COMPONENT,'customname')){
+            return get_config(constants::M_COMPONENT,'customname');
+        }else {
+            return get_string('cloudpoodll', constants::M_COMPONENT);
+        }
     }
 
 	    /**
@@ -75,6 +79,21 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         global $CFG, $COURSE;
 
         $adminconfig = get_config(constants::M_COMPONENT);
+
+        //show a divider to keep settings manageable
+        $pluginname = get_string('cloudpoodll',constants::M_COMPONENT);
+        $customname = get_config(constants::M_COMPONENT, 'customname');
+        if(!empty($customname)){
+            $args =new stdClass();
+            $args->pluginname = $pluginname;
+            $args->customname = $customname;
+            $divider = get_string('customdivider', constants::M_COMPONENT,$args);
+        }else{
+            $divider = get_string('divider',constants::M_COMPONENT,$pluginname);
+        }
+
+        $mform->addElement('static',constants::M_COMPONENT . '_divider', '',$divider);
+
         $recordertype = $this->get_config('recordertype') ? $this->get_config('recordertype') :  $adminconfig->defaultrecorder;
         $recorderskin = $this->get_config('recorderskin') ? $this->get_config('recorderskin') : constants::SKIN_BMR;
 		$timelimit = $this->get_config('timelimit') ? $this->get_config('timelimit') :  0;
@@ -149,6 +168,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscription', 'eq',0);
         $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
+        //close out with a divider
+        $mform->addElement('static',constants::M_COMPONENT . '_divider', '',
+                get_string('divider',constants::M_COMPONENT,''));
 
     }
     

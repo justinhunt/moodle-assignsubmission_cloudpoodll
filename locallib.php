@@ -514,7 +514,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 			    if($transcript) {
                     // The shortened version of the submission text.
                     $shorttext = shorten_text($transcript, 120);
-                    $responsestring .= $shorttext . $wordcountmessage;
+                    $responsestring .= html_writer::div($shorttext . ' ' .  $wordcountmessage,
+                            constants::M_COMPONENT . '_transcriptteaser');
                 }
 
             }

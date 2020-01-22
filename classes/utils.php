@@ -70,7 +70,9 @@ class utils
             constants::REGION_OTTAWA => get_string("ottawa",constants::M_COMPONENT),
             constants::REGION_FRANKFURT => get_string("frankfurt",constants::M_COMPONENT),
             constants::REGION_LONDON => get_string("london",constants::M_COMPONENT),
-            constants::REGION_SAOPAULO => get_string("saopaulo",constants::M_COMPONENT)
+            constants::REGION_SAOPAULO => get_string("saopaulo",constants::M_COMPONENT),
+            constants::REGION_SINGAPORE => get_string("singapore",constants::M_COMPONENT),
+            constants::REGION_MUMBAI => get_string("mumbai",constants::M_COMPONENT)
         );
     }
 
@@ -101,37 +103,47 @@ class utils
         return array(
                 constants::LANG_ENUS => get_string('en-us', constants::M_COMPONENT),
                 constants::LANG_ENAU => get_string('en-au', constants::M_COMPONENT),
-                constants::LANG_ENUK => get_string('en-uk', constants::M_COMPONENT),
+                constants::LANG_ENGB => get_string('en-gb', constants::M_COMPONENT),
+                constants::LANG_ENIE => get_string('en-ie', constants::M_COMPONENT),
+                constants::LANG_ENWL => get_string('en-wl', constants::M_COMPONENT),
+                constants::LANG_ENAB => get_string('en-ab', constants::M_COMPONENT),
                 constants::LANG_ENIN => get_string('en-in', constants::M_COMPONENT),
+                constants::LANG_ARAE => get_string('ar-ae', constants::M_COMPONENT),
+                constants::LANG_ARSA => get_string('ar-sa', constants::M_COMPONENT),
                 constants::LANG_ESES => get_string('es-es', constants::M_COMPONENT),
                 constants::LANG_ESUS => get_string('es-us', constants::M_COMPONENT),
                 constants::LANG_FRCA => get_string('fr-ca', constants::M_COMPONENT),
                 constants::LANG_FRFR => get_string('fr-fr', constants::M_COMPONENT),
                 constants::LANG_ITIT => get_string('it-it', constants::M_COMPONENT),
+                constants::LANG_PTPT => get_string('pt-pt', constants::M_COMPONENT),
                 constants::LANG_PTBR => get_string('pt-br', constants::M_COMPONENT),
+                constants::LANG_JAJP => get_string('ja-jp', constants::M_COMPONENT),
                 constants::LANG_KOKR => get_string('ko-kr', constants::M_COMPONENT),
+                constants::LANG_ZHCN => get_string('zh-cn', constants::M_COMPONENT),
                 constants::LANG_DEDE => get_string('de-de', constants::M_COMPONENT),
-                constants::LANG_HIIN => get_string('hi-in', constants::M_COMPONENT)
+                constants::LANG_DECH => get_string('de-ch', constants::M_COMPONENT),
+                constants::LANG_NLNL => get_string('nl-nl', constants::M_COMPONENT),
+                constants::LANG_HIIN => get_string('hi-in', constants::M_COMPONENT),
+                constants::LANG_TAIN => get_string('ta-in', constants::M_COMPONENT),
+                constants::LANG_TEIN => get_string('te-in', constants::M_COMPONENT),
+                constants::LANG_RURU => get_string('ru-ru', constants::M_COMPONENT),
+                constants::LANG_FAIR => get_string('fa-ir', constants::M_COMPONENT),
+                constants::LANG_HEIL => get_string('he-il', constants::M_COMPONENT),
+                constants::LANG_IDID => get_string('id-id', constants::M_COMPONENT),
+                constants::LANG_MSMY => get_string('ms-my', constants::M_COMPONENT),
+                constants::LANG_TRTR => get_string('tr-tr', constants::M_COMPONENT),
         );
     }
 
     //are we willing and able to transcribe submissions?
     public static function can_transcribe($instance)
     {
-        //we default to true
-        //but it only takes one no ....
-        $ret = true;
 
         //The regions that can transcribe
         switch($instance->awsregion){
-            case "useast1":
-            case "dublin":
-            case "sydney":
-            case "ottawa":
-            case "london":
-                break;
+
             default:
-                $ret = false;
+                $ret = true;
         }
         return $ret;
     }

@@ -37,7 +37,7 @@ class renderer extends \plugin_renderer_base {
      * The html part of the recorder
      */
     public function fetch_recorder($r_options,$token){
-        global $CFG;
+        global $CFG, $USER;
 
         switch($r_options->recordertype) {
             case constants::REC_AUDIO:
@@ -125,6 +125,7 @@ class renderer extends \plugin_renderer_base {
                 'data-localloader'=>'/mod/assign/submission/cloudpoodll/poodllloader.html',
                 'data-media'=>$r_options->recordertype,
                 'data-appid'=>constants::APPID,
+                'data-owner'=>hash('md5',$USER->username),
                 'data-type'=>$r_options->recorderskin,
                 'data-width'=>$width,
                 'data-height'=>$height,

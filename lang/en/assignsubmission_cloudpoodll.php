@@ -49,27 +49,52 @@ $string['enabletranscode_details']='Cloud Poodll can transcode the recording to 
 $string['language']='Cloud Poodll Speaker Language';
 
 $string['useast1']='US East';
-$string['tokyo']='Tokyo, Japan (no transcription)';
+$string['tokyo']='Tokyo, Japan';
 $string['sydney']='Sydney, Australia';
 $string['dublin']='Dublin, Ireland';
 $string['ottawa']='Ottawa, Canada (slow)';
-$string['frankfurt']='Frankfurt, Germany (no transcription)';
+$string['frankfurt']='Frankfurt, Germany';
 $string['london']='London, U.K (slow)';
-$string['saopaulo']='Sao Paulo, Brazil (no transcription)';
+$string['saopaulo']='Sao Paulo, Brazil';
+$string['singapore']='Singapore';
+$string['mumbai']='Mumbai, India';
+
 $string['forever']='Never expire';
 $string['en-us'] = 'English (US)';
-$string['en-uk'] = 'English (UK)';
+$string['en-gb'] = 'English (GB)';
 $string['en-au'] = 'English (AU)';
 $string['en-in'] = 'English (IN)';
 $string['es-es'] = 'Spanish (ES)';
 $string['es-us'] = 'Spanish (US)';
 $string['fr-fr'] = 'French (FR.)';
 $string['fr-ca'] = 'French (CA)';
-$string['ko-kr'] = 'Korean(KR)';
-$string['pt-br'] = 'Portuguese(BR)';
-$string['it-it'] = 'Italian(IT)';
-$string['de-de'] = 'German(DE)';
-$string['hi-in'] = 'Hindi(IN)';
+$string['ko-kr'] = 'Korean';
+$string['pt-br'] = 'Portuguese (BR)';
+$string['it-it'] = 'Italian (IT)';
+$string['de-de'] = 'German (DE)';
+$string['hi-in'] = 'Hindi';
+
+$string['ar-ae'] = 'Arabic (Gulf)';
+$string['ar-sa'] = 'Arabic (Modern Standard)';
+$string['zh-cn'] = 'Chinese (Mandarin-Mainland)';
+$string['nl-nl'] = 'Dutch';
+$string['en-ie'] = 'English (Ireland)';
+$string['en-wl'] = 'English (Wales)';
+$string['en-ab'] = 'English (Scotland)';
+$string['fa-ir'] = 'Farsi';
+$string['de-ch'] = 'German (Swiss)';
+$string['he-il'] = 'Hebrew';
+$string['id-id'] = 'Indonesian';
+$string['ja-jp'] = 'Japanese';
+$string['ms-my'] = 'Malay';
+$string['pt-pt'] = 'Portuguese (PT)';
+$string['ru-ru'] = 'Russian';
+$string['ta-in'] = 'Tamil';
+$string['te-in'] = 'Telegu';
+$string['tr-tr'] = 'Turkish';
+
+
+
 $string['awsregion']='AWS Region';
 $string['region']='AWS Region';
 $string['expiredays']='Cloud Poodll Days to keep file';

@@ -96,7 +96,6 @@ const LANG_ARAE ='ar-AE';
 const LANG_ARSA ='ar-SA';
 const LANG_ZHCN ='zh-CN';
 const LANG_NLNL ='nl-NL';
-
 const LANG_ENIE ='en-IE';
 const LANG_ENWL ='en-WL';
 const LANG_ENAB ='en-AB';

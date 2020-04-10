@@ -92,7 +92,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $divider = get_string('divider',constants::M_COMPONENT,$pluginname);
         }
 
-        $mform->addElement('static',constants::M_COMPONENT . '_divider', '',$divider);
+        //If  M3.4 or lower we show a divider to make it easier to figure where poodll ends and starts
+        if($CFG->version < 2017111300) {
+            $mform->addElement('static', constants::M_COMPONENT . '_divider', '', $divider);
+        }
 
         $recordertype = $this->get_config('recordertype') ? $this->get_config('recordertype') :  $adminconfig->defaultrecorder;
         $recorderskin = $this->get_config('recorderskin') ? $this->get_config('recorderskin') : constants::SKIN_BMR;
@@ -168,9 +171,24 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscription', 'eq',0);
         $mform->disabledIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
-        //close out with a divider
-        $mform->addElement('static',constants::M_COMPONENT . '_divider', '',
-                get_string('divider',constants::M_COMPONENT,''));
+        //If  lower then M3.4 we show a divider to make it easier to figure where poodll ends and starts
+        if($CFG->version < 2017111300) {
+            $mform->addElement('static', constants::M_COMPONENT . '_divider', '',
+                    get_string('divider', constants::M_COMPONENT, ''));
+        }
+
+        //If M3.4 or higher we can hide elements when we need to
+        if($CFG->version >= 2017111300) {
+            $mform->hideIf(constants::M_COMPONENT . '_recordertype', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_recorderskin', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_timelimit', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_expiredays', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_enabletranscode', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_playertypestudent', constants::M_COMPONENT . '_enabled', 'notchecked');
+        }
 
     }
     

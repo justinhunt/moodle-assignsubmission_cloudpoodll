@@ -90,7 +90,9 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 						   
 
 	$yesno_options = array( 0 => get_string("no", constants::M_COMPONENT),
-				1 => get_string("yes", constants::M_COMPONENT));
+        1 => get_string("yes", constants::M_COMPONENT));
+	$audio_size_options=utils::fetch_options_audiosize();
+    $video_size_options=utils::fetch_options_videosize();
 //show current submission on submission form
 /*
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/showcurrentsubmission',
@@ -112,11 +114,11 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 
     $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displayaudioplayer_single',
     new lang_string('displayaudioplayersingle', constants::M_COMPONENT),
-    '', '1', $yesno_options));
+    '', '1', $audio_size_options));
 
     $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displayaudioplayer_list',
     new lang_string('displayaudioplayerlist', constants::M_COMPONENT),
-    '', '1', $yesno_options));
+    '', '1', $audio_size_options));
 
     //Settings for video recordings
     $settings->add(new admin_setting_heading(constants::M_COMPONENT .'/video_heading',
@@ -131,9 +133,9 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 				
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_single',
 						new lang_string('displaysizesingle', constants::M_COMPONENT),
-						new lang_string('displaysizesingledetails', constants::M_COMPONENT), '320', $size_options));
+						new lang_string('displaysizesingledetails', constants::M_COMPONENT), '320', $video_size_options));
 
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_list',
 						new lang_string('displaysizelist', constants::M_COMPONENT),
-						new lang_string('displaysizelistdetails', constants::M_COMPONENT), '0', $size_options));
+						new lang_string('displaysizelistdetails', constants::M_COMPONENT), '0', $video_size_options));
 

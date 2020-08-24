@@ -59,3 +59,33 @@ function assignsubmission_cloudpoodll_pluginfile($course, $cm, context $context,
     $forcedownload = true;
     send_stored_file($file, 0, 0, $forcedownload); // download MUST be forced - security!
 }
+
+
+
+function assignsubmission_cloudpoodll_output_fragment_mform($args) {
+    global $CFG, $PAGE, $DB, $OUTPUT;
+
+    $args = (object) $args;
+    $o = '';
+
+
+    $transcriptopts=array( 'component'=>constants::M_COMPONENT,
+            'playerid'=> html_writer::random_id(constants::M_COMPONENT ) ,
+            'lang'=>$args->lang,
+            'size'=>['width'=>480,'height'=>320],
+            'containerid'=>html_writer::random_id(constants::M_COMPONENT ),
+            'cssprefix'=>constants::M_COMPONENT .'_transcript',
+            'mediaurl'=>$args->mediaurl,
+            'transcripturl'=>$args->transcripturl);
+
+
+
+
+    $videoplayer=$OUTPUT->render_from_template(constants::M_COMPONENT  . '/videoplayerinteractive', $transcriptopts);
+    $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init', array($transcriptopts));
+    $PAGE->requires->strings_for_js(array('transcripttitle'),constants::M_COMPONENT);
+    //$PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init', array($transcriptopts));
+    $o .= $videoplayer;
+
+    return $o;
+}

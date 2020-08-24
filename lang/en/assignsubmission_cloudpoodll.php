@@ -115,9 +115,7 @@ $string['displaysizesingle'] = 'Video player size(normal)';
 $string['displaysizesingledetails'] = '';
 $string['displaysizelist'] = 'Video player size(in lists)';
 $string['displaysizelistdetails'] = '';
-$string['shownovideo'] = 'Do not display video';
-$string['videoplaceholder'] = ' [video submitted] ';
-$string['audioplaceholder'] = ' [audio submitted] ';
+
 $string['shownoimage'] = 'Do not display image';
 
 $string['setting_audio_heading'] = 'Audio player settings';
@@ -200,3 +198,13 @@ $string['numwords'] = '({$a} words)';
 $string['divider']= '---------------{$a}----------------';
 $string['customdivider']= '---------------{$a->customname} ("{$a->pluginname}")----------------';
 
+
+$string['showaudiolightbox']="Show filename(lightbox)";
+$string['showvideolightbox']="Show filename (lightbox)";
+$string['audiosingledisplay']="Show audio player (single)";
+$string['audiolistdisplay']="Show audio player (in lists)";
+$string['videosingledisplay']="Video player size (single)";
+$string['videolistdisplay']="Video player size (in lists)";
+$string['shownovideo'] = 'Show filename';
+$string['videoplaceholder'] = ' [video submitted] ';
+$string['audioplaceholder'] = ' [audio submitted] ';

@@ -31,6 +31,29 @@ defined('MOODLE_INTERNAL') || die();
 class utils
 {
 
+    public static function fetch_options_videosize(){
+        //The size of the video player on the various screens
+        $size_options = array(
+                constants::SIZE_NONE => new \lang_string('shownovideo', constants::M_COMPONENT),
+                constants::SIZE_LIGHTBOX => new \lang_string('showvideolightbox', constants::M_COMPONENT),
+                '160' => '160x120',
+                '320' => '320x240',
+                '480' => '480x360',
+                '640' => '640x480',
+                '800'=>'800x600',
+                '1024'=>'1024x768');
+        return $size_options;
+    }
+
+    public static function fetch_options_audiosize(){
+        //The size of the audio player on the various screens
+        $size_options = array(
+             //   constants::SIZE_AUDIO_LIGHTBOX => get_string("showaudiolightbox", constants::M_COMPONENT),
+                constants::SIZE_AUDIO_NONE => get_string("no", constants::M_COMPONENT),
+                constants::SIZE_AUDIO_SHOW => get_string("yes", constants::M_COMPONENT));
+        return $size_options;
+    }
+
     public static function fetch_options_recorders(){
         $rec_options = array( constants::REC_AUDIO => get_string("recorderaudio", constants::M_COMPONENT),
             constants::REC_VIDEO  => get_string("recordervideo", constants::M_COMPONENT));

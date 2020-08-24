@@ -78,6 +78,16 @@ const TRANSCRIBER_NONE = 0;
 const TRANSCRIBER_AMAZONTRANSCRIBE = 1;
 const TRANSCRIBER_GOOGLECLOUDSPEECH = 2;
 
+const SIZE_AUDIO_NONE = 0;
+const SIZE_AUDIO_SHOW = 1;
+const SIZE_AUDIO_LIGHTBOX = 2;
+const SIZE_AUDIO_LINK = 3;
+
+const SIZE_NONE = 2;
+const SIZE_SHOW = 1;
+const SIZE_LIGHTBOX = 0;
+const SIZE_LINK = 3;
+
 const LANG_ENUS = 'en-US';
 const LANG_ENGB = 'en-GB';
 const LANG_ENAU = 'en-AU';

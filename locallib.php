@@ -487,6 +487,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                         $transcriptopts['notranscript']= 'true';
                     }else{
                         $transcriptopts['transcripturl']= $rawmediapath . '.vtt';
+                        //this just prevents the container border showing when we not show transcript
+                        if($playertype==constants::PLAYERTYPE_DEFAULT){
+                            $transcriptopts['notranscript']= 'true';
+                        }
                     }
                     switch ($size->key) {
 
@@ -562,6 +566,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                         $transcriptopts['notranscript']= 'true';
                     }else{
                         $transcriptopts['transcripturl']= $rawmediapath . '.vtt';
+                        //this just prevents the container border showing when we not show transcript
+                        if($playertype==constants::PLAYERTYPE_DEFAULT){
+                            $transcriptopts['notranscript']= 'true';
+                        }
                     }
 
                     switch ($size->key) {

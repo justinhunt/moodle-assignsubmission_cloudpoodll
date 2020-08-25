@@ -78,14 +78,24 @@ function assignsubmission_cloudpoodll_output_fragment_mform($args) {
             'mediaurl'=>$args->mediaurl,
             'transcripturl'=>$args->transcripturl);
 
+    if(empty($args->transcripturl)){
+        $transcriptopts['notranscript']=true;
+    }
 
 
 
-    $videoplayer=$OUTPUT->render_from_template(constants::M_COMPONENT  . '/videoplayerinteractive', $transcriptopts);
-    $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init', array($transcriptopts));
-    $PAGE->requires->strings_for_js(array('transcripttitle'),constants::M_COMPONENT);
+    if($args->mediatype=='video') {
+        $player = $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerstandard', $transcriptopts);
+
+    }else{
+        $player = $OUTPUT->render_from_template(constants::M_COMPONENT . '/audioplayerstandard', $transcriptopts);
+    }
+    if(!empty($args->transcripturl)) {
+        $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init', array($transcriptopts));
+    }
     //$PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init', array($transcriptopts));
-    $o .= $videoplayer;
+    $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
+    $o .= $player;
 
     return $o;
 }

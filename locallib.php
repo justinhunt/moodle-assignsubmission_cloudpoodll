@@ -107,11 +107,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $enabletranscription = $this->get_config('enabletranscription') ? $this->get_config('enabletranscription') : $adminconfig->enabletranscription;
         //in this case false means unset
         $enabletranscode = $this->get_config('enabletranscode')!==false ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
-
-        $audiolistdisplay = $this->get_config('audiolistdisplay') ? $this->get_config('audiolistdisplay') : $adminconfig->displayaudioplayer_list;
-        $audiosingledisplay = $this->get_config('audiosingledisplay') ? $this->get_config('audiosingledisplay') : $adminconfig->displayaudioplayer_single;
-        $videolistdisplay = $this->get_config('videolistdisplay') ? $this->get_config('videolistdisplay') : $adminconfig->displaysize_list;
-        $videosingledisplay = $this->get_config('videosingledisplay') ? $this->get_config('videosingledisplay') : $adminconfig->displaysize_single;
+        $audiolistdisplay = $this->get_config('audiolistdisplay')!==false ? $this->get_config('audiolistdisplay') : $adminconfig->displayaudioplayer_list;
+        $audiosingledisplay = $this->get_config('audiosingledisplay')!==false  ? $this->get_config('audiosingledisplay') : $adminconfig->displayaudioplayer_single;
+        $videolistdisplay = $this->get_config('videolistdisplay')!==false  ? $this->get_config('videolistdisplay') : $adminconfig->displaysize_list;
+        $videosingledisplay = $this->get_config('videosingledisplay')!==false  ? $this->get_config('videosingledisplay') : $adminconfig->displaysize_single;
 
 
         $rec_options = utils::fetch_options_recorders();
@@ -470,66 +469,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             switch ($this->get_config('recordertype')) {
 
                 case constants::REC_AUDIO:
-                    //get player
-                    $playerid = html_writer::random_id(constants::M_COMPONENT . '_');
-                    $containerid = html_writer::random_id(constants::M_COMPONENT . '_');
-                    $container = html_writer::div('', constants::M_COMPONENT . '_transcriptcontainer', array('id' => $containerid));
-
-                    //player template
-                    $randomid = html_writer::random_id('cloudpoodll_');
-                    $audioplayer = "<audio id='@PLAYERID@' crossorigin='anonymous' controls='true'>";
-                    $audioplayer .= "<source src='@MEDIAURL@'>";
-                    $audioplayer .= "<track src='@VTTURL@' kind='captions' srclang='@LANG@' label='@LANG@' default='true'>";
-                    $audioplayer .= "</audio>";
-                    //template -> player
-                    $audioplayer = str_replace('@PLAYERID@', $playerid, $audioplayer);
-                    $audioplayer = str_replace('@MEDIAURL@', $rawmediapath . '?cachekiller=' . $randomid, $audioplayer);
-                    $audioplayer = str_replace('@LANG@', $this->get_config('language'), $audioplayer);
-                    $audioplayer = str_replace('@VTTURL@', $rawmediapath . '.vtt', $audioplayer);
-
-                    if ($size->key != constants::SIZE_AUDIO_NONE) {
-                        switch ($playertype) {
-                            case constants::PLAYERTYPE_DEFAULT:
-                                //$responsestring .= format_text("<a href='$rawmediapath'>$filename</a>", FORMAT_HTML);
-                                //just use the raw audio tags response string
-                                $responsestring .= $audioplayer;
-                                break;
-                            case constants::PLAYERTYPE_INTERACTIVETRANSCRIPT:
-
-                                $responsestring .= $audioplayer . $container . $wordcountmessage;
-
-                                //prepare AMD javascript for displaying submission
-                                $transcriptopts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
-                                        'containerid' => $containerid,
-                                        'cssprefix' => constants::M_COMPONENT . '_transcript');
-                                $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init',
-                                        array($transcriptopts));
-                                $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
-                                break;
-
-                            case constants::PLAYERTYPE_STANDARDTRANSCRIPT:
-
-                                $responsestring .= $audioplayer . $container . $wordcountmessage;
-                                //prepare AMD javascript for displaying submission
-                                $transcriptopts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
-                                        'containerid' => $containerid,
-                                        'cssprefix' => constants::M_COMPONENT . '_transcript',
-                                        'transcripturl' => $rawmediapath . '.txt');
-                                $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init',
-                                        array($transcriptopts));
-                                $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
-                                break;
-                        }
-                    } else {
-                        $responsestring = get_string('audioplaceholder', constants::M_COMPONENT);
-                    }
-                    break;
-
-                case constants::REC_VIDEO:
 
                     $playerid = html_writer::random_id(constants::M_COMPONENT . '_');
                     $containerid = html_writer::random_id(constants::M_COMPONENT . '_');
-                    $container = html_writer::div('', constants::M_COMPONENT . '_transcriptcontainer', array('id' => $containerid));
 
                     //player template
                     $randomid = html_writer::random_id('cloudpoodll_');
@@ -540,43 +482,129 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                             'filename' => basename($rawmediapath),
                             'lang' => $this->get_config('language'), 'size' => $size,
                             'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',
-                            'mediaurl' => $rawmediapath . '?cachekiller=' . $randomid, 'transcripturl' => $rawmediapath . '.vtt');
+                            'mediaurl' => $rawmediapath . '?cachekiller=' . $randomid, 'transcripturl' => '');
+                    if(empty($transcript)){
+                        $transcriptopts['notranscript']= 'true';
+                    }else{
+                        $transcriptopts['transcripturl']= $rawmediapath . '.vtt';
+                    }
+                    switch ($size->key) {
+
+                        case constants::SIZE_AUDIO_SHOW:
+                            $audioplayer =
+                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/audioplayerstandard', $transcriptopts);
+                            //if there is no transcript just set and move on
+                            if(empty($transcript)){
+                                $responsestring .= $audioplayer;
+                                break;
+                            }
+
+                            //if we have a transcript, figure out how to display it.
+                            switch ($playertype) {
+                                case constants::PLAYERTYPE_DEFAULT:
+                                    //$responsestring .= format_text("<a href='$rawmediapath'>$filename</a>", FORMAT_HTML);
+                                    //just use the raw audio tags response string
+                                    $responsestring .= $audioplayer;
+                                    break;
+                                case constants::PLAYERTYPE_INTERACTIVETRANSCRIPT:
+
+                                    $responsestring .= $audioplayer . $wordcountmessage;
+
+                                    //prepare AMD javascript for displaying submission
+                                    $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init',
+                                            array($transcriptopts));
+                                    $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
+                                    break;
+
+                                case constants::PLAYERTYPE_STANDARDTRANSCRIPT:
+
+                                    $responsestring .= $audioplayer . $wordcountmessage;
+                                    //prepare AMD javascript for displaying submission
+                                    if(!empty($transcript)) {
+                                        $transcriptopts['transcripturl'] = $rawmediapath . '.txt';
+                                    }
+                                    $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init',
+                                            array($transcriptopts));
+                                    $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
+                                    break;
+                            }
+                            break;
+
+                        case constants::SIZE_AUDIO_LIGHTBOX:
+                            $responsestring .=
+                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/audioplayerlink', $transcriptopts);
+                            break;
+                        case constants::SIZE_AUDIO_LINK:
+                        default:
+                            $responsestring =
+                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/mediafilelink', $transcriptopts);
+                            break;
+
+                    }
+                    break;//end of case contants::REC_AUDIO
+
+                case constants::REC_VIDEO:
+
+                    $playerid = html_writer::random_id(constants::M_COMPONENT . '_');
+                    $containerid = html_writer::random_id(constants::M_COMPONENT . '_');
+
+                    //player template
+                    $randomid = html_writer::random_id('cloudpoodll_');
+
+                    //prepare props for amd and templates
+                    $transcriptopts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
+                            'contextid' => $this->assignment->get_context()->id,
+                            'filename' => basename($rawmediapath),
+                            'lang' => $this->get_config('language'), 'size' => $size,
+                            'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',
+                            'mediaurl' => $rawmediapath . '?cachekiller=' . $randomid, 'transcripturl' =>'');
+                    if(empty($transcript)){
+                        $transcriptopts['notranscript']= 'true';
+                    }else{
+                        $transcriptopts['transcripturl']= $rawmediapath . '.vtt';
+                    }
 
                     switch ($size->key) {
                         case constants::SIZE_LIGHTBOX:
-                        case constants::SIZE_LINK:
-                            $responsestring =
+                            $responsestring .=
                                     $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerlink', $transcriptopts);
                             break;
 
+                        case constants::SIZE_LINK:
                         case constants::SIZE_NONE:
-                            $responsestring = $transcriptopts['filename'];
-                            //$responsestring=get_string('videoplaceholder',constants::M_COMPONENT);
-                            //$responsestring .= format_text("<a href='$rawmediapath'>$filename</a>", FORMAT_HTML);
+                        $responsestring .=
+                                $OUTPUT->render_from_template(constants::M_COMPONENT . '/mediafilelink', $transcriptopts);
                             break;
 
                         default:
+                            $videoplayer = $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerstandard',
+                                    $transcriptopts);
+
+                            //if there is no transcript just set and move on
+                            if(empty($transcript)){
+                                $responsestring .= $videoplayer;
+                                break;
+                            }
+
                             if ($playertype == constants::PLAYERTYPE_INTERACTIVETRANSCRIPT) {
-                                $videoplayer = $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerinteractive',
-                                        $transcriptopts);
+
                                 $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init',
                                         array($transcriptopts));
                                 $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
-                                $responsestring .= $videoplayer . $container . $wordcountmessage;
+                                $responsestring .= $videoplayer . $wordcountmessage;
 
                             } else if ($playertype == constants::PLAYERTYPE_STANDARDTRANSCRIPT) {
-                                $transcriptopts['transcripturl'] = $rawmediapath . '.txt';
-                                $videoplayer = $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerstandard',
-                                        $transcriptopts);
+                                if(!empty($transcript)) {
+                                    $transcriptopts['transcripturl'] = $rawmediapath . '.txt';
+                                }
                                 $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init',
                                         array($transcriptopts));
                                 $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
-                                $responsestring .= $videoplayer . $container . $wordcountmessage;
+                                $responsestring .= $videoplayer . $wordcountmessage;
 
                             } else {
                                 //constants::PLAYERTYPE_DEFAULT:
-                                $responsestring = $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerstandard',
-                                        $transcriptopts);
+                                $responsestring .= $videoplayer;
                             }
 
                     }//end of switch -KEY
@@ -611,14 +639,16 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
 	        //is this a list view
             $islist = optional_param('action','',PARAM_TEXT)=='grading';
-
-
+           //we might need this if user has admin but not local settings for size
+           $adminconfig = get_config(constants::M_COMPONENT);
 
         //prepare our response string, which will parsed and replaced with the necessary player
         switch($recordertype){
             case constants::REC_VIDEO:
                 $listsize = $this->get_config('videolistdisplay');
+                if($listsize===false){$listsize=$adminconfig->displaysize_list;}
                 $singlesize = $this->get_config('videosingledisplay');
+                if($singlesize===false){$singlesize=$adminconfig->displayaudioplayer_single;}
 
                 //build our sizes array
                 $sizes=array();
@@ -638,7 +668,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                 break;
             case constants::REC_AUDIO:
                 $listsize = $this->get_config('audiolistdisplay');
+                if($listsize===false){$listsize=$adminconfig->displayaudioplayer_list;}
                 $singlesize = $this->get_config('audiosingledisplay');
+                if($singlesize===false){$singlesize=$adminconfig->displaysize_single;}
 
                 $size=new stdClass();
                 $size->key=$islist ? $listsize : $singlesize ;

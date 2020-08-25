@@ -48,8 +48,9 @@ class utils
     public static function fetch_options_audiosize(){
         //The size of the audio player on the various screens
         $size_options = array(
-             //   constants::SIZE_AUDIO_LIGHTBOX => get_string("showaudiolightbox", constants::M_COMPONENT),
-                constants::SIZE_AUDIO_NONE => get_string("no", constants::M_COMPONENT),
+
+                constants::SIZE_AUDIO_LINK => get_string("shownoaudio", constants::M_COMPONENT),
+                constants::SIZE_AUDIO_LIGHTBOX => get_string("showaudiolightbox", constants::M_COMPONENT),
                 constants::SIZE_AUDIO_SHOW => get_string("yes", constants::M_COMPONENT));
         return $size_options;
     }

@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.16 (Build 2020082400)
+- better display options for audio and video
+
 Version 1.0.16 (Build 202004100)
 - enabled hiding cloudpoodll settings on assign edit page if not enabled
 

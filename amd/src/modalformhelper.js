@@ -49,6 +49,7 @@ define(['jquery', 'core/log','core/str', 'core/modal_factory', 'core/modal_event
                 e.preventDefault();
                 dd.modaldata={'contextid':  $(this).data('contextid'),
                     'mediaurl': $(this).data('mediaurl'),
+                    'mediatype': $(this).data('mediatype'),
                     'transcripturl': $(this).data('transcripturl'),
                     'lang': $(this).data('lang')
                 };

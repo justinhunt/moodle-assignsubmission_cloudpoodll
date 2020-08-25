@@ -206,5 +206,6 @@ $string['audiolistdisplay']="Show audio player (in lists)";
 $string['videosingledisplay']="Video player size (single)";
 $string['videolistdisplay']="Video player size (in lists)";
 $string['shownovideo'] = 'Show filename';
+$string['shownoaudio'] = 'Show filename';
 $string['videoplaceholder'] = ' [video submitted] ';
 $string['audioplaceholder'] = ' [audio submitted] ';

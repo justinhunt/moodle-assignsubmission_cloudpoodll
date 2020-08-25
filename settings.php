@@ -89,8 +89,8 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 
 						   
 
-	$yesno_options = array( 0 => get_string("no", constants::M_COMPONENT),
-        1 => get_string("yes", constants::M_COMPONENT));
+	$yesno_options = array( constants::SIZE_AUDIO_LIGHTBOX => get_string("no", constants::M_COMPONENT),
+        constants::SIZE_AUDIO_SHOW => get_string("yes", constants::M_COMPONENT));
 	$audio_size_options=utils::fetch_options_audiosize();
     $video_size_options=utils::fetch_options_videosize();
 //show current submission on submission form
@@ -127,7 +127,7 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 
 
     //The size of the video player on the various screens
-	$size_options = array('0' => new lang_string('shownovideo', constants::M_COMPONENT),
+	$size_options = array(constants::SIZE_LIGHTBOX => new lang_string('shownovideo', constants::M_COMPONENT),
 					'160' => '160x120', '320' => '320x240','480' => '480x360',
 					'640' => '640x480','800'=>'800x600','1024'=>'1024x768');
 				
@@ -137,5 +137,5 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_list',
 						new lang_string('displaysizelist', constants::M_COMPONENT),
-						new lang_string('displaysizelistdetails', constants::M_COMPONENT), '0', $video_size_options));
+						new lang_string('displaysizelistdetails', constants::M_COMPONENT), constants::SIZE_LIGHTBOX , $video_size_options));
 

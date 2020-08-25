@@ -14,9 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
-
-<video id='{{playerid}}' class='nomediaplugin' crossorigin='anonymous' controls='true' width='{{size.width}}' height='{{size.height}}'>
-<source src='{{{mediaurl}}}'>
-<track src='{{{transcripturl}}}' kind='captions' srclang='{{lang}}' label='{{lang}}' default='true'>
-</video>
-<div class='assignsubmission_cloudpoodll_transcriptcontainer' id='{{containerid}}'></div>
+<a href="{{mediaurl}}" id="{{uniqid}}" class="assignsubmission_cloudpoodll_videolink nopoodll nomediaplugin" data-contextid="{{contextid}}" data-mediatype="audio" data-mediaurl="{{mediaurl}}"
+   data-lang="{{lang}}" data-transcripturl="{{transcripturl}}">{{filename}}</a>
+{{#js}}
+    require(['jquery','assignsubmission_cloudpoodll/modalformhelper'], function($,mfh) {
+    mfh.init('#{{uniqid}}');
+    });
+{{/js}}

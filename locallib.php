@@ -678,7 +678,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                 $listsize = $this->get_config('audiolistdisplay');
                 if($listsize===false){$listsize=$adminconfig->displayaudioplayer_list;}
                 $singlesize = $this->get_config('audiosingledisplay');
-                if($singlesize===false){$singlesize=$adminconfig->displaysize_single;}
+                if($singlesize===false){$singlesize=$adminconfig->displayaudioplayer_single;}
 
                 $size=new stdClass();
                 $size->key=$islist ? $listsize : $singlesize ;

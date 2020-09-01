@@ -182,17 +182,24 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $asize_options = utils::fetch_options_audiosize();
         $mform->addElement('select', constants::M_COMPONENT . '_audiosingledisplay', get_string("audiosingledisplay", constants::M_COMPONENT), $asize_options);
         $mform->setDefault(constants::M_COMPONENT . '_audiosingledisplay', $audiosingledisplay);
+        $mform->disabledIf(constants::M_COMPONENT . '_audiosingledisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
 
         $mform->addElement('select', constants::M_COMPONENT . '_audiolistdisplay', get_string("audiolistdisplay", constants::M_COMPONENT), $asize_options);
         $mform->setDefault(constants::M_COMPONENT . '_audiolistdisplay', $audiolistdisplay);
+        $mform->disabledIf(constants::M_COMPONENT . '_audiolistdisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
+
 
         //video size options
         $vsize_options = utils::fetch_options_videosize();
         $mform->addElement('select', constants::M_COMPONENT . '_videosingledisplay', get_string("videosingledisplay", constants::M_COMPONENT), $vsize_options);
         $mform->setDefault(constants::M_COMPONENT . '_videosingledisplay', $videosingledisplay);
+        $mform->disabledIf(constants::M_COMPONENT . '_videosingledisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
+
 
         $mform->addElement('select', constants::M_COMPONENT . '_videolistdisplay', get_string("videolistdisplay", constants::M_COMPONENT), $vsize_options);
         $mform->setDefault(constants::M_COMPONENT . '_videolistdisplay', $videolistdisplay);
+        $mform->disabledIf(constants::M_COMPONENT . '_videolistdisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
+
 
 
         //If  lower then M3.4 we show a divider to make it easier to figure where poodll ends and starts

@@ -12,6 +12,7 @@ define(['jquery','core/log','assignsubmission_cloudpoodll/cloudpoodllloader',"co
 
         init:  function(opts) {
             this.component = opts['component'];
+            this.safesave=opts['safesave'];
 
             this.register_controls();
             this.register_events();
@@ -25,11 +26,19 @@ define(['jquery','core/log','assignsubmission_cloudpoodll/cloudpoodllloader',"co
                     case 'recording':
                         if(evt.action==='started'){
                             that.controls.updatecontrol.val();
+                            //if opts safe save
+                            if(that.safesave==1) {
+                                that.controls.formsubmitbutton.attr('disabled', 'disabled');
+                            }
                         }
                         break;
                     case 'awaitingprocessing':
                         if(that.uploadstate!='posted') {
                             that.controls.updatecontrol.val(evt.mediaurl);
+                            //if opts safe save
+                            if(that.safesave==1) {
+                                that.controls.formsubmitbutton.removeAttr('disabled', 'disabled');
+                            }
                         }
                         that.uploadstate='posted';
                         break;
@@ -38,7 +47,6 @@ define(['jquery','core/log','assignsubmission_cloudpoodll/cloudpoodllloader',"co
                         break;
                 }
             };
-
             cloudpoodll.init(this.component + '_therecorder',recorder_callback);
         },
 
@@ -46,6 +54,7 @@ define(['jquery','core/log','assignsubmission_cloudpoodll/cloudpoodllloader',"co
         register_controls: function(){
           var that=this;
           this.controls={};
+          this.controls.formsubmitbutton = $('#id_submitbutton');
           this.controls.deletebutton = $('.' + this.component + '_deletesubmissionbutton');
           this.controls.updatecontrol =  $('#' + this.component + '_updatecontrol');
           this.controls.currentcontainer =  $('.' + this.component + '_currentsubmission');

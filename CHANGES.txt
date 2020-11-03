@@ -1,5 +1,9 @@
 Change List
 =========
+Version 1.0.18 (Build 2020110400)
+- fixed inability to turn off transcription
+- added "safe save" setting
+
 Version 1.0.17 (Build 2020090100)
 - hide size options on settings form if cloudpoodll disabled
 

@@ -209,3 +209,4 @@ $string['shownovideo'] = 'Show filename';
 $string['shownoaudio'] = 'Show filename';
 $string['videoplaceholder'] = ' [video submitted] ';
 $string['audioplaceholder'] = ' [audio submitted] ';
+$string['safesave'] = 'Enable Safe Save - disables assignment submit button until Cloud Poodll upload is complete. ';

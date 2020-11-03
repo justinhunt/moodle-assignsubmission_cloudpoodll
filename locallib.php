@@ -100,12 +100,14 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $recordertype = $this->get_config('recordertype') ? $this->get_config('recordertype') :  $adminconfig->defaultrecorder;
         $recorderskin = $this->get_config('recorderskin') ? $this->get_config('recorderskin') : constants::SKIN_BMR;
 		$timelimit = $this->get_config('timelimit') ? $this->get_config('timelimit') :  0;
+        $safesave = $this->get_config('safesave') ? $this->get_config('safesave') :  0;
         $expiredays = $this->get_config('expiredays') ? $this->get_config('expiredays') : $adminconfig->expiredays;
         $language = $this->get_config('language') ? $this->get_config('language') : $adminconfig->language;
         $playertype = $this->get_config('playertype') ? $this->get_config('playertype') : $adminconfig->defaultplayertype;
         $playertypestudent = $this->get_config('playertypestudent') ? $this->get_config('playertypestudent') : $adminconfig->defaultplayertypestudent;
-        $enabletranscription = $this->get_config('enabletranscription') ? $this->get_config('enabletranscription') : $adminconfig->enabletranscription;
+
         //in this case false means unset
+        $enabletranscription = $this->get_config('enabletranscription')!==false ? $this->get_config('enabletranscription') : $adminconfig->enabletranscription;
         $enabletranscode = $this->get_config('enabletranscode')!==false ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
         $audiolistdisplay = $this->get_config('audiolistdisplay')!==false ? $this->get_config('audiolistdisplay') : $adminconfig->displayaudioplayer_list;
         $audiosingledisplay = $this->get_config('audiosingledisplay')!==false  ? $this->get_config('audiosingledisplay') : $adminconfig->displayaudioplayer_single;
@@ -148,7 +150,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->setDefault(constants::M_COMPONENT . '_enabletranscription', $enabletranscription);
         $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabled', 'notchecked');
         $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
-
 
         //lang options
         $lang_options = utils::get_lang_options();
@@ -201,6 +202,11 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->disabledIf(constants::M_COMPONENT . '_videolistdisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
 
 
+        //safe save settings
+        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_safesave', get_string("safesave", constants::M_COMPONENT));
+        $mform->setDefault(constants::M_COMPONENT . '_safesave', $safesave);
+        $mform->disabledIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
+
 
         //If  lower then M3.4 we show a divider to make it easier to figure where poodll ends and starts
         if($CFG->version < 2017111300) {
@@ -223,6 +229,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $mform->hideIf(constants::M_COMPONENT . '_audiolistdisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_videosingledisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_videolistdisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
         }
 
     }
@@ -245,6 +252,13 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 		}else{
 			$this->set_config('timelimit', 0);
 		}
+
+        //safesave
+        if(isset($data->{constants::M_COMPONENT . '_safesave'})) {
+            $this->set_config('safesave', $data->{constants::M_COMPONENT . '_safesave'});
+        }else{
+            $this->set_config('safesave', 0);
+        }
 
         //if we dont have display options set them
         $adminconfig = get_config(constants::M_COMPONENT);
@@ -317,7 +331,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
 		 //prepare the AMD javascript for deletesubmission and showing the recorder
         $opts = array(
-            "component"=> constants::M_COMPONENT
+            "component"=> constants::M_COMPONENT,
+            "safesave"=>$this->get_config('safesave')
         );
         $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/submissionhelper", 'init', array($opts));
         $PAGE->requires->strings_for_js(array('reallydeletesubmission','clicktohide','clicktoshow'),constants::M_COMPONENT);

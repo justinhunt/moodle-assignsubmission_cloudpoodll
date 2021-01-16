@@ -234,8 +234,18 @@ class utils
             $sub->expiredate = date('d/m/Y',$sub->expiredate);
             $message .= get_string('displaysubs',constants::M_COMPONENT, $sub) . '<br>';
         }
+
+        //is site registered
+        $haveauthsite = false;
+        foreach ($tokenobject->sites as $site) {
+            if (self::check_registered_url($site)) {
+                $haveauthsite = true;
+                break;
+            }
+        }
+
         //Is app authorised
-        if(in_array(constants::M_COMPONENT,$tokenobject->apps)){
+        if($haveauthsite && in_array(constants::M_COMPONENT,$tokenobject->apps)){
             $message .= get_string('appauthorised',constants::M_COMPONENT) . '<br>';
         }else{
             $message .= get_string('appnotauthorised',constants::M_COMPONENT) . '<br>';
@@ -244,6 +254,56 @@ class utils
         return $refresh . $message;
 
     }
+
+    public static function check_registered_url($theurl, $wildcardok = true) {
+        global $CFG;
+
+        //get arrays of the wwwroot and registered url
+        //just in case, lowercase'ify them
+        $thewwwroot = strtolower($CFG->wwwroot);
+        $theregisteredurl = strtolower($theurl);
+        $theregisteredurl = trim($theregisteredurl);
+
+        //add http:// or https:// to URLs that do not have it
+        if (strpos($theregisteredurl, 'https://') !== 0 &&
+                strpos($theregisteredurl, 'http://') !== 0) {
+            $theregisteredurl = 'https://' . $theregisteredurl;
+        }
+
+        //if neither parsed successfully, that a no straight up
+        $wwwroot_bits = parse_url($thewwwroot);
+        $registered_bits = parse_url($theregisteredurl);
+        if (!$wwwroot_bits || !$registered_bits) {
+            return false;
+        }
+
+        //get the subdomain widlcard address, ie *.a.b.c.d.com
+        $wildcard_subdomain_wwwroot = '';
+        if (array_key_exists('host', $wwwroot_bits)) {
+            $wildcardparts = explode('.', $wwwroot_bits['host']);
+            $wildcardparts[0] = '*';
+            $wildcard_subdomain_wwwroot = implode('.', $wildcardparts);
+        } else {
+            return false;
+        }
+
+        //match either the exact domain or the wildcard domain or fail
+        if (array_key_exists('host', $registered_bits)) {
+            //this will cover exact matches and path matches
+            if ($registered_bits['host'] === $wwwroot_bits['host']) {
+                return true;
+                //this will cover subdomain matches but only for institution bigdog and enterprise license
+            } else if (($registered_bits['host'] === $wildcard_subdomain_wwwroot) && $wildcardok) {
+                //yay we are registered!!!!
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
 
     //check token and tokenobject(from cache)
     //return error message or blank if its all ok

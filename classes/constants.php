@@ -59,6 +59,8 @@ const PLAYERTYPE_STANDARDTRANSCRIPT='standardtranscript';
 
 const CLASS_REC_CONTAINER ='assignsubmission_cloudpoodll_rec_cont';
 const CLASS_REC_OUTER ='assignsubmission_cloudpoodll_rec_outer';
+const CLASS_AUDIOREC_IFRAME ='assignsubmission_cloudpoodll_audiorec_iframe';
+const CLASS_VIDEOREC_IFRAME ='assignsubmission_cloudpoodll_videorec_iframe';
 const ID_REC ='assignsubmission_cloudpoodll_therecorder';
 const ID_UPDATE_CONTROL ='assignsubmission_cloudpoodll_updatecontrol';
 const NAME_UPDATE_CONTROL ='filename';

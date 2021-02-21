@@ -39,108 +39,130 @@ class renderer extends \plugin_renderer_base {
     public function fetch_recorder($r_options,$token){
         global $CFG, $USER;
 
+        //set token
+        $r_options->token = $token;
+
+        //set width and height
         switch($r_options->recordertype) {
             case constants::REC_AUDIO:
                 //fresh
                 if($r_options->recorderskin==constants::SKIN_FRESH){
-                    $width = "400";
-                    $height = "300";
+                    $r_options->width = "400";
+                    $r_options->height = "300";
 
 
                 }elseif($r_options->recorderskin==constants::SKIN_PLAIN){
-                    $width = "360";
-                    $height = "190";
+                    $r_options->width = "360";
+                    $r_options->height = "190";
 
                 }elseif($r_options->recorderskin==constants::SKIN_UPLOAD){
-                    $width = "360";
-                    $height = "150";
+                    $r_options->width = "360";
+                    $r_options->height = "150";
 
                  //bmr 123 once standard
                 }else {
-                    $width = "360";
-                    $height = "240";
+                    $r_options->width = "360";
+                    $r_options->height = "240";
                 }
                 break;
             case constants::REC_VIDEO:
             default:
                 //bmr 123 once
                 if($r_options->recorderskin==constants::SKIN_BMR) {
-                    $width = "360";
-                    $height = "450";
+                    $r_options->width = "360";
+                    $r_options->height = "450";
                 }elseif($r_options->recorderskin==constants::SKIN_123){
-                    $width = "450";//"360";
-                    $height = "550";//"410";
+                    $r_options->width = "450";//"360";
+                    $r_options->height = "550";//"410";
                 }elseif($r_options->recorderskin==constants::SKIN_ONCE){
-                    $width = "350";
-                    $height = "290";
+                    $r_options->width = "350";
+                    $r_options->height = "290";
                 }elseif($r_options->recorderskin==constants::SKIN_UPLOAD){
-                    $width = "350";
-                    $height = "310";
+                    $r_options->width = "350";
+                    $r_options->height = "310";
                  //standard
                 }else {
-                    $width = "360";
-                    $height = "410";
+                    $r_options->width = "360";
+                    $r_options->height = "410";
                 }
         }
 
         //transcribe
         $can_transcribe = utils::can_transcribe($r_options);
-        $transcribe = "0";
+        $r_options->transcribe = "0";
         if($can_transcribe && $r_options->transcribe){
             if($r_options->recordertype==constants::REC_AUDIO) {
-                $transcribe = $r_options->transcribe;
+                $r_options->transcribe = $r_options->transcribe;
             }else{
-                $transcribe = constants::TRANSCRIBER_AMAZONTRANSCRIBE;
+                $r_options->transcribe = constants::TRANSCRIBER_AMAZONTRANSCRIBE;
             }
         }
 
         //any recorder hints ... go here..
         //Set encoder to stereoaudio if TRANSCRIBER_GOOGLECLOUDSPEECH:
         $hints = new \stdClass();
-        if($transcribe == constants::TRANSCRIBER_GOOGLECLOUDSPEECH) {
+        if($r_options->transcribe == constants::TRANSCRIBER_GOOGLECLOUDSPEECH) {
             $hints->encoder = 'stereoaudio';
         }else{
             $hints->encoder = 'auto';
         }
-        $string_hints = base64_encode(json_encode($hints));
+        $r_options->string_hints = base64_encode(json_encode($hints));
 
         //Set subtitles
-        switch($transcribe){
+        switch($r_options->transcribe){
             case constants::TRANSCRIBER_AMAZONTRANSCRIBE:
             case constants::TRANSCRIBER_GOOGLECLOUDSPEECH:
-                $subtitle="1";
+                $r_options->subtitle="1";
                 break;
             default:
-                $subtitle="0";
+                $r_options->subtitle="0";
                 break;
         }
 
         //transcode
-        $transcode = $r_options->transcode  ? "1" : "0";
+        $r_options->transcode  = $r_options->transcode  ? "1" : "0";
 
+        $r_options->localloader = '/mod/assign/submission/cloudpoodll/poodllloader.html';
+        $r_options->recid = constants::ID_REC;
+        $r_options->dataid = 'therecorder';
+        $r_options->appid = constants::APPID;
+        $r_options->parent = $CFG->wwwroot;
+        $r_options->owner = hash('md5',$USER->username);
+        $r_options->updatecontrol = constants::ID_UPDATE_CONTROL;
+
+
+        if($r_options->recordertype==constants::REC_AUDIO) {
+            $r_options->iframeclass=constants::CLASS_AUDIOREC_IFRAME;
+            $recorderhtml = $this->render_from_template(constants::M_COMPONENT . '/audiorecordercontainer', $r_options);
+        }else{
+            $r_options->iframeclass=constants::CLASS_VIDEOREC_IFRAME;
+            $recorderhtml = $this->render_from_template(constants::M_COMPONENT . '/videorecordercontainer', $r_options);
+        }
+        return $recorderhtml;
+/*
         $recorderdiv= \html_writer::div('', constants::M_COMPONENT  . '_notcenter',
-            array('id'=>constants::ID_REC,
-                'data-id'=>'therecorder',
-                'data-parent'=>$CFG->wwwroot,
-                'data-localloader'=>'/mod/assign/submission/cloudpoodll/poodllloader.html',
+            array('id'=>$r_options->recid,
+                'data-id'=>$r_options->dataid,
+                'data-parent'=>$r_options->parent,
+                'data-localloader'=>$r_options->localloader,
                 'data-media'=>$r_options->recordertype,
-                'data-appid'=>constants::APPID,
-                'data-owner'=>hash('md5',$USER->username),
+                'data-appid'=>$r_options->appid,
+                'data-owner'=>$r_options->owner,
                 'data-type'=>$r_options->recorderskin,
-                'data-width'=>$width,
-                'data-height'=>$height,
+                'data-width'=>$r_options->width,
+                'data-height'=>$r_options->height,
                 //'data-iframeclass'=>"letsberesponsive",
-                'data-updatecontrol'=>constants::ID_UPDATE_CONTROL,
+                'data-updatecontrol'=>$r_options->updatecontrol,
                 'data-timelimit'=> $r_options->timelimit,
-                'data-transcode'=>$transcode,
-                'data-transcribe'=>$transcribe,
-                'data-subtitle'=>$subtitle,
+                'data-transcode'=>$r_options->transcode,
+                'data-transcribe'=>$r_options->transcribe,
+                'data-subtitle'=>$r_options->subtitle,
                 'data-language'=>$r_options->language,
                 'data-expiredays'=>$r_options->expiredays,
                 'data-region'=>$r_options->awsregion,
                 'data-fallback'=>$r_options->fallback,
-                'data-hints'=>$string_hints,
-                'data-token'=>$token //localhost
+                'data-hints'=>$r_options->string_hints,
+                'data-token'=>$r_options->token //localhost
                 //'data-token'=>"643eba92a1447ac0c6a882c85051461a" //cloudpoodll
             )
         );
@@ -153,6 +175,7 @@ class renderer extends \plugin_renderer_base {
 
         //return html
         return $recorderhtml;
+*/
     }
 
     /**

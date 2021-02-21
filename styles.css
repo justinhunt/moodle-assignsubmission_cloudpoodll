@@ -101,3 +101,33 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 .assignsubmission_cloudpoodll_togglecontainer {
     margin-bottom: 8px;
 }
+
+.assignsubmission_cloudpoodll_videorec_cont {
+    overflow: hidden;
+    padding-top: min(150%,510px);
+    width: 100%;
+}
+.assignsubmission_cloudpoodll_audiorec_cont {
+    overflow: hidden;
+    padding-top: min(90%,300px);/*56.25%;*/
+    width: 100%;
+}
+
+.assignsubmission_cloudpoodll_audiorec_iframe {
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position: absolute;
+    max-width: 400px;
+    /* max-height: 225px; */
+}
+.assignsubmission_cloudpoodll_videorec_iframe {
+    left:0;
+    top:0;
+    height:100%;
+    width:100%;
+    position: absolute;
+    max-width: 450px;
+    /* max-height: 225px; */
+}

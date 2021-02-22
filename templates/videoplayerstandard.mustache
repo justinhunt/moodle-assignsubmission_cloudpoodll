@@ -16,7 +16,9 @@
 }}
 <video id='{{playerid}}' class='nomediaplugin' crossorigin='anonymous' controls='true' width='{{size.width}}' height='{{size.height}}'>
 <source src='{{{mediaurl}}}'>
+{{^notranscript}}
 <track src='{{{transcripturl}}}' kind='captions' srclang='{{lang}}' label='{{lang}}' default='true'>
+{{/notranscript}}
 </video>
 {{^notranscript}}
     <div class='assignsubmission_cloudpoodll_transcriptcontainer' id='{{containerid}}'></div>

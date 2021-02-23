@@ -89,10 +89,9 @@ class renderer extends \plugin_renderer_base {
 
         //transcribe
         $can_transcribe = utils::can_transcribe($r_options);
-        $r_options->transcribe = "0";
         if($can_transcribe && $r_options->transcribe){
             if($r_options->recordertype==constants::REC_AUDIO) {
-                $r_options->transcribe = $r_options->transcribe;
+                //do nothing ... accept defaults
             }else{
                 $r_options->transcribe = constants::TRANSCRIBER_AMAZONTRANSCRIBE;
             }

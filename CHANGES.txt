@@ -1,5 +1,9 @@
 Change List
 =========
+Version 1.0.21 (Build 2021022101)
+-Fixed issue introduced in last release where transcription was disabled (ignoring settings)
+
+
 Version 1.0.20 (Build 2021022100)
 -Made recorders display better on small screen devices
 

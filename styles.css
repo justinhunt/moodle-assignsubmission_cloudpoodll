@@ -109,7 +109,7 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 }
 .assignsubmission_cloudpoodll_audiorec_cont {
     overflow: hidden;
-    padding-top: min(90%,300px);/*56.25%;*/
+    padding-top: min(90%,300px);
     width: 100%;
 }
 
@@ -120,7 +120,6 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     width:100%;
     position: absolute;
     max-width: 400px;
-    /* max-height: 225px; */
 }
 .assignsubmission_cloudpoodll_videorec_iframe {
     left:0;
@@ -129,5 +128,17 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     width:100%;
     position: absolute;
     max-width: 450px;
-    /* max-height: 225px; */
+}
+
+.assignsubmission_cloudpoodll_video_cont {
+    position: relative;
+    height: 0;
+}
+
+.assignsubmission_cloudpoodll_video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

@@ -14,12 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
-<video id='{{playerid}}' class='nomediaplugin' crossorigin='anonymous' controls='true' width='{{size.width}}' height='{{size.height}}'>
+<div class="assignsubmission_cloudpoodll_video_cont" style="padding-bottom: min(75%,{{size.height}}px)">
+<video id='{{playerid}}' class='nomediaplugin assignsubmission_cloudpoodll_video' crossorigin='anonymous' controls='true'
+       preload='auto' playsInline="playsInline" style="max-width: {{size.width}}px; max-height: {{size.height}}px">
 <source src='{{{mediaurl}}}'>
 {{^notranscript}}
 <track src='{{{transcripturl}}}' kind='captions' srclang='{{lang}}' label='{{lang}}' default='true'>
 {{/notranscript}}
 </video>
+</div>
 {{^notranscript}}
     <div class='assignsubmission_cloudpoodll_transcriptcontainer' id='{{containerid}}'></div>
 {{/notranscript}}

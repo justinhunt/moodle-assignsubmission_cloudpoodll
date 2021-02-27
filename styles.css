@@ -131,6 +131,7 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     position: relative;
     height: 0;
     padding-bottom: 360px;
+    max-width: 480px;
 }
 
 .assignsubmission_cloudpoodll_audio {

@@ -102,17 +102,6 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     margin-bottom: 8px;
 }
 
-.assignsubmission_cloudpoodll_videorec_cont {
-    overflow: hidden;
-    padding-top: min(150%,510px);
-    width: 100%;
-}
-.assignsubmission_cloudpoodll_audiorec_cont {
-    overflow: hidden;
-    padding-top: min(90%,300px);
-    width: 100%;
-}
-
 .assignsubmission_cloudpoodll_audiorec_iframe {
     left:0;
     top:0;
@@ -130,15 +119,39 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     max-width: 450px;
 }
 
-.assignsubmission_cloudpoodll_video_cont {
-    position: relative;
-    height: 0;
-}
-
 .assignsubmission_cloudpoodll_video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+.assignsubmission_cloudpoodll_video_cont {
+    position: relative;
+    height: 0;
+    padding-bottom: 240px;
+}
+
+.assignsubmission_cloudpoodll_videorec_cont {
+    overflow: hidden;
+    padding-top: 510px;
+    width: 100%;
+}
+.assignsubmission_cloudpoodll_audiorec_cont {
+    overflow: hidden;
+    padding-top: 300px;
+    width: 100%;
+}
+ 
+@media screen and (max-width: 667px){
+  .assignsubmission_cloudpoodll_video_cont {
+    padding-bottom: 75%;
+  }
+  .assignsubmission_cloudpoodll_videorec_cont {
+    padding-top: 150%;
+  }
+  .assignsubmission_cloudpoodll_audiorec_cont {
+    padding-top: 90%;
+  }
 }

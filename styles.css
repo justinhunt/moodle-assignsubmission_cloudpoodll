@@ -130,7 +130,16 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 .assignsubmission_cloudpoodll_video_cont {
     position: relative;
     height: 0;
-    padding-bottom: 240px;
+    padding-bottom: 75%;
+}
+
+.assignsubmission_cloudpoodll_audio {
+    width: 100%;
+}
+
+.assignsubmission_cloudpoodll_audio_cont {
+    width: 100%;
+    max-width: 400px;
 }
 
 .assignsubmission_cloudpoodll_videorec_cont {
@@ -143,11 +152,9 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     padding-top: 300px;
     width: 100%;
 }
- 
-@media screen and (max-width: 667px){
-  .assignsubmission_cloudpoodll_video_cont {
-    padding-bottom: 75%;
-  }
+
+@media screen and (max-width: 667px) {
+
   .assignsubmission_cloudpoodll_videorec_cont {
     padding-top: 150%;
   }

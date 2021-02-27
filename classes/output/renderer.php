@@ -138,43 +138,7 @@ class renderer extends \plugin_renderer_base {
             $recorderhtml = $this->render_from_template(constants::M_COMPONENT . '/videorecordercontainer', $r_options);
         }
         return $recorderhtml;
-/*
-        $recorderdiv= \html_writer::div('', constants::M_COMPONENT  . '_notcenter',
-            array('id'=>$r_options->recid,
-                'data-id'=>$r_options->dataid,
-                'data-parent'=>$r_options->parent,
-                'data-localloader'=>$r_options->localloader,
-                'data-media'=>$r_options->recordertype,
-                'data-appid'=>$r_options->appid,
-                'data-owner'=>$r_options->owner,
-                'data-type'=>$r_options->recorderskin,
-                'data-width'=>$r_options->width,
-                'data-height'=>$r_options->height,
-                //'data-iframeclass'=>"letsberesponsive",
-                'data-updatecontrol'=>$r_options->updatecontrol,
-                'data-timelimit'=> $r_options->timelimit,
-                'data-transcode'=>$r_options->transcode,
-                'data-transcribe'=>$r_options->transcribe,
-                'data-subtitle'=>$r_options->subtitle,
-                'data-language'=>$r_options->language,
-                'data-expiredays'=>$r_options->expiredays,
-                'data-region'=>$r_options->awsregion,
-                'data-fallback'=>$r_options->fallback,
-                'data-hints'=>$r_options->string_hints,
-                'data-token'=>$r_options->token //localhost
-                //'data-token'=>"643eba92a1447ac0c6a882c85051461a" //cloudpoodll
-            )
-        );
 
-        $containerdiv= \html_writer::div($recorderdiv,constants::CLASS_REC_CONTAINER . " ",
-            array('id'=>constants::CLASS_REC_CONTAINER));
-
-        //this is the finalhtml
-        $recorderhtml = \html_writer::div($containerdiv ,constants::CLASS_REC_OUTER);
-
-        //return html
-        return $recorderhtml;
-*/
     }
 
     /**

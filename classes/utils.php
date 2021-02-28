@@ -36,12 +36,7 @@ class utils
         $size_options = array(
                 constants::SIZE_NONE => new \lang_string('shownovideo', constants::M_COMPONENT),
                 constants::SIZE_LIGHTBOX => new \lang_string('showvideolightbox', constants::M_COMPONENT),
-                '160' => '160x120',
-                '320' => '320x240',
-                '480' => '480x360',
-                '640' => '640x480',
-                '800'=>'800x600',
-                '1024'=>'1024x768');
+                '480' => '480x360');
         return $size_options;
     }
 

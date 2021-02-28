@@ -664,10 +664,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 		
 	}//end of fetchResponses
 
-    public function fetch_teaser($submission){
-
-    }
-
 
     public function	fetch_response_size($recordertype){
 
@@ -689,18 +685,14 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                 $sizes[constants::SIZE_NONE]=new stdClass();$sizes[constants::SIZE_NONE]->width=0;$sizes[constants::SIZE_NONE]->height=0;
                 $sizes[constants::SIZE_LIGHTBOX]=new stdClass();$sizes[constants::SIZE_LIGHTBOX]->width=0;$sizes[constants::SIZE_LIGHTBOX]->height=0;
                 $sizes[constants::SIZE_LINK]=new stdClass();$sizes[constants::SIZE_LINK]->width=0;$sizes[constants::SIZE_LINK]->height=0;
-                $sizes['160']=new stdClass();$sizes['160']->width=160;$sizes['160']->height=120;
-                $sizes['320']=new stdClass();$sizes['320']->width=320;$sizes['320']->height=240;
                 $sizes['480']=new stdClass();$sizes['480']->width=480;$sizes['480']->height=360;
-                $sizes['640']=new stdClass();$sizes['640']->width=640;$sizes['640']->height=480;
-                $sizes['800']=new stdClass();$sizes['800']->width=800;$sizes['800']->height=600;
-                $sizes['1024']=new stdClass();$sizes['1024']->width=1024;$sizes['1024']->height=768;
                 $key = $islist ? $listsize : $singlesize ;
                 $size= $sizes[$key];
                 $size->key= $key;
 
                 break;
             case constants::REC_AUDIO:
+            default:
                 $listsize = $this->get_config('audiolistdisplay');
                 if($listsize===false){$listsize=$adminconfig->displayaudioplayer_list;}
                 $singlesize = $this->get_config('audiosingledisplay');
@@ -708,9 +700,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
                 $size=new stdClass();
                 $size->key=$islist ? $listsize : $singlesize ;
-                break;
-            default:
-                break;
 
         }//end of switch
         return $size;

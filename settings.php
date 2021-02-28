@@ -128,12 +128,11 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 
     //The size of the video player on the various screens
 	$size_options = array(constants::SIZE_LIGHTBOX => new lang_string('shownovideo', constants::M_COMPONENT),
-					'160' => '160x120', '320' => '320x240','480' => '480x360',
-					'640' => '640x480','800'=>'800x600','1024'=>'1024x768');
+					'480' => '480x360');
 				
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_single',
 						new lang_string('displaysizesingle', constants::M_COMPONENT),
-						new lang_string('displaysizesingledetails', constants::M_COMPONENT), '320', $video_size_options));
+						new lang_string('displaysizesingledetails', constants::M_COMPONENT), '480', $video_size_options));
 
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_list',
 						new lang_string('displaysizelist', constants::M_COMPONENT),

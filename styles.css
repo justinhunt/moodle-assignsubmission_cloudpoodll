@@ -130,7 +130,6 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 .assignsubmission_cloudpoodll_video_cont {
     position: relative;
     height: 0;
-    padding-bottom: 360px;
     max-width: 480px;
 }
 
@@ -144,25 +143,48 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 }
 
 .assignsubmission_cloudpoodll_videorec_cont {
+    position: relative;
     overflow: hidden;
-    padding-top: 510px;
     width: 100%;
 }
 .assignsubmission_cloudpoodll_audiorec_cont {
+    position: relative;
     overflow: hidden;
-    padding-top: 300px;
     width: 100%;
 }
 
-@media screen and (max-width: 667px) {
+@supports (padding-top: min(510px,150%)) {
+    .assignsubmission_cloudpoodll_audiorec_cont {
+        padding-top: min(300px,90%);
+    }
 
-  .assignsubmission_cloudpoodll_video_cont {
-      padding-bottom: 75%;
-  }
-  .assignsubmission_cloudpoodll_videorec_cont {
+    .assignsubmission_cloudpoodll_videorec_cont {
+        padding-top: min(510px,150%);
+    }
+    .assignsubmission_cloudpoodll_video_cont {
+        padding-bottom: min(360px,75%);
+    }
+}
+@supports not (padding-top: min(510px,150%)) {
+    .assignsubmission_cloudpoodll_audiorec_cont {
+        padding-top: 300px;
+    }
+    .assignsubmission_cloudpoodll_videorec_cont {
+        padding-top: 510px;
+    }
+    .assignsubmission_cloudpoodll_video_cont {
+        padding-bottom: 360px;
+    }
+}
+
+@media screen and (max-width: 667px) {
+   .assignsubmission_cloudpoodll_videorec_cont {
     padding-top: 150%;
-  }
-  .assignsubmission_cloudpoodll_audiorec_cont {
+   }
+   .assignsubmission_cloudpoodll_audiorec_cont {
     padding-top: 90%;
-  }
+   }
+   .assignsubmission_cloudpoodll_video_cont {
+        padding-bottom: 75%;
+   }
 }

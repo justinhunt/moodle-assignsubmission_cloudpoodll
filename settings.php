@@ -136,5 +136,5 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_list',
 						new lang_string('displaysizelist', constants::M_COMPONENT),
-						new lang_string('displaysizelistdetails', constants::M_COMPONENT), constants::SIZE_LIGHTBOX , $video_size_options));
+						new lang_string('displaysizelistdetails', constants::M_COMPONENT), '480' , $video_size_options));
 

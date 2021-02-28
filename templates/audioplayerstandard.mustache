@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 
-<div class="assignsubmission_cloudpoodll_audio_cont">
+<div class="assignsubmission_cloudpoodll_audio_cont" {{#islist}}style="width: 320px"{{/islist}}>
 <audio id='{{playerid}}' class='assignsubmission_cloudpoodll_audio nomediaplugin' crossorigin='anonymous' controls='true' preload='auto' playsInline="playsInline">
 <source src='{{{mediaurl}}}'>
 <track src='{{{transcripturl}}}' kind='captions' srclang='{{lang}}' label='{{lang}}' default='true'>

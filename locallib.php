@@ -426,6 +426,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $cloudpoodllsubmission = $this->get_cloudpoodll_submission($submissionid);
         $transcript='';
         $wordcountmessage='';
+        //is this a list page
+        $islist = $this->is_list();
 
         if($cloudpoodllsubmission){
             //The path to any media file we should play
@@ -443,8 +445,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             if(has_capability('mod/assign:grade',$this->assignment->get_context())){
                 $isgrader=true;
             }
-            //is this a list page
-            $islist = optional_param('action','',PARAM_TEXT)=='grading';
 
             //get transcript
             $transcript = $cloudpoodllsubmission->transcript;
@@ -503,26 +503,29 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     $randomid = html_writer::random_id('cloudpoodll_');
 
                     //prepare props for amd and templates
-                    $transcriptopts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
+                    $playeropts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
                             'contextid' => $this->assignment->get_context()->id,
                             'filename' => basename($rawmediapath),
                             'lang' => $this->get_config('language'), 'size' => $size,
                             'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',
                             'mediaurl' => $rawmediapath . '?cachekiller=' . $randomid, 'transcripturl' => '');
                     if(empty($transcript)){
-                        $transcriptopts['notranscript']= 'true';
+                        $playeropts['notranscript']= 'true';
                     }else{
-                        $transcriptopts['transcripturl']= $rawmediapath . '.vtt';
+                        $playeropts['transcripturl']= $rawmediapath . '.vtt';
                         //this just prevents the container border showing when we not show transcript
                         if($playertype==constants::PLAYERTYPE_DEFAULT){
-                            $transcriptopts['notranscript']= 'true';
+                            $playeropts['notranscript']= 'true';
                         }
+                    }
+                    if($islist){
+                        $playeropts['islist']=true;
                     }
                     switch ($size->key) {
 
                         case constants::SIZE_AUDIO_SHOW:
                             $audioplayer =
-                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/audioplayerstandard', $transcriptopts);
+                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/audioplayerstandard', $playeropts);
                             //if there is no transcript just set and move on
                             if(empty($transcript)){
                                 $responsestring .= $audioplayer;
@@ -542,7 +545,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
                                     //prepare AMD javascript for displaying submission
                                     $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init',
-                                            array($transcriptopts));
+                                            array($playeropts));
                                     $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
                                     break;
 
@@ -551,10 +554,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                                     $responsestring .= $audioplayer . $wordcountmessage;
                                     //prepare AMD javascript for displaying submission
                                     if(!empty($transcript)) {
-                                        $transcriptopts['transcripturl'] = $rawmediapath . '.txt';
+                                        $playeropts['transcripturl'] = $rawmediapath . '.txt';
                                     }
                                     $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init',
-                                            array($transcriptopts));
+                                            array($playeropts));
                                     $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
                                     break;
                             }
@@ -562,12 +565,12 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
                         case constants::SIZE_AUDIO_LIGHTBOX:
                             $responsestring .=
-                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/audioplayerlink', $transcriptopts);
+                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/audioplayerlink', $playeropts);
                             break;
                         case constants::SIZE_AUDIO_LINK:
                         default:
                             $responsestring =
-                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/mediafilelink', $transcriptopts);
+                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/mediafilelink', $playeropts);
                             break;
 
                     }
@@ -582,37 +585,39 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     $randomid = html_writer::random_id('cloudpoodll_');
 
                     //prepare props for amd and templates
-                    $transcriptopts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
+                    $playeropts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
                             'contextid' => $this->assignment->get_context()->id,
                             'filename' => basename($rawmediapath),
                             'lang' => $this->get_config('language'), 'size' => $size,
                             'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',
                             'mediaurl' => $rawmediapath . '?cachekiller=' . $randomid, 'transcripturl' =>'');
                     if(empty($transcript)){
-                        $transcriptopts['notranscript']= 'true';
+                        $playeropts['notranscript']= 'true';
                     }else{
-                        $transcriptopts['transcripturl']= $rawmediapath . '.vtt';
+                        $playeropts['transcripturl']= $rawmediapath . '.vtt';
                         //this just prevents the container border showing when we not show transcript
                         if($playertype==constants::PLAYERTYPE_DEFAULT){
-                            $transcriptopts['notranscript']= 'true';
+                            $playeropts['notranscript']= 'true';
                         }
                     }
-
+                    if($islist){
+                        $playeropts['islist']=true;
+                    }
                     switch ($size->key) {
                         case constants::SIZE_LIGHTBOX:
                             $responsestring .=
-                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerlink', $transcriptopts);
+                                    $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerlink', $playeropts);
                             break;
 
                         case constants::SIZE_LINK:
                         case constants::SIZE_NONE:
                         $responsestring .=
-                                $OUTPUT->render_from_template(constants::M_COMPONENT . '/mediafilelink', $transcriptopts);
+                                $OUTPUT->render_from_template(constants::M_COMPONENT . '/mediafilelink', $playeropts);
                             break;
 
                         default:
                             $videoplayer = $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerstandard',
-                                    $transcriptopts);
+                                    $playeropts);
 
                             //if there is no transcript just set and move on
                             if(empty($transcript)){
@@ -623,16 +628,16 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                             if ($playertype == constants::PLAYERTYPE_INTERACTIVETRANSCRIPT) {
 
                                 $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init',
-                                        array($transcriptopts));
+                                        array($playeropts));
                                 $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
                                 $responsestring .= $videoplayer . $wordcountmessage;
 
                             } else if ($playertype == constants::PLAYERTYPE_STANDARDTRANSCRIPT) {
                                 if(!empty($transcript)) {
-                                    $transcriptopts['transcripturl'] = $rawmediapath . '.txt';
+                                    $playeropts['transcripturl'] = $rawmediapath . '.txt';
                                 }
                                 $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init',
-                                        array($transcriptopts));
+                                        array($playeropts));
                                 $PAGE->requires->strings_for_js(array('transcripttitle'), constants::M_COMPONENT);
                                 $responsestring .= $videoplayer . $wordcountmessage;
 
@@ -667,8 +672,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
     public function	fetch_response_size($recordertype){
 
-	        //is this a list view
-            $islist = optional_param('action','',PARAM_TEXT)=='grading';
+        //is this a list view
+        $islist = $this->is_list();
+
            //we might need this if user has admin but not local settings for size
            $adminconfig = get_config(constants::M_COMPONENT);
 
@@ -706,6 +712,11 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         }//end of switch
         return $size;
 
+    }
+
+    public function	is_list() {
+        //is this a list view
+        return optional_param('action','',PARAM_TEXT)=='grading';
     }
 	
      /**

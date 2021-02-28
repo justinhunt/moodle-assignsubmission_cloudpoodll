@@ -687,8 +687,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                 $sizes[constants::SIZE_LINK]=new stdClass();$sizes[constants::SIZE_LINK]->width=0;$sizes[constants::SIZE_LINK]->height=0;
                 $sizes['480']=new stdClass();$sizes['480']->width=480;$sizes['480']->height=360;
                 $key = $islist ? $listsize : $singlesize ;
-                $size= $sizes[$key];
-                $size->key= $key;
+                if(!array_key_exists($key,$sizes)) {$key='480';}
+                $size = $sizes[$key];
+                $size->key = $key;
+
 
                 break;
             case constants::REC_AUDIO:

@@ -406,8 +406,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         if(empty($displayname)){$displayname = get_string('recorderdisplayname',constants::M_COMPONENT);}
 
         $mform->addElement('static', 'description',
-                $displayname,
-                $recorderhtml);
+                $displayname . 'ggggg',
+                $recorderhtml,array('class'=>'w-100'),array('class'=>'w-100'));
 
 		return true;
     }

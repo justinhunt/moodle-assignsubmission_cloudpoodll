@@ -153,24 +153,24 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     width: 100%;
 }
 
-@supports (padding-top: min(510px,150%)) {
+@supports (padding-top: min(540px,150%)) {
     .assignsubmission_cloudpoodll_audiorec_cont {
         padding-top: min(300px,90%);
     }
 
     .assignsubmission_cloudpoodll_videorec_cont {
-        padding-top: min(510px,150%);
+        padding-top: min(540px,150%);
     }
     .assignsubmission_cloudpoodll_video_cont {
         padding-bottom: min(360px,75%);
     }
 }
-@supports not (padding-top: min(510px,150%)) {
+@supports not (padding-top: min(540px,150%)) {
     .assignsubmission_cloudpoodll_audiorec_cont {
         padding-top: 300px;
     }
     .assignsubmission_cloudpoodll_videorec_cont {
-        padding-top: 510px;
+        padding-top: 540px;
     }
     .assignsubmission_cloudpoodll_video_cont {
         padding-bottom: 360px;
@@ -187,4 +187,9 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
    .assignsubmission_cloudpoodll_video_cont {
         padding-bottom: 75%;
    }
+}
+
+/* this is not set on some themes and can collapse our responsive stuff */
+.form-control-static {
+    width: 100%;
 }

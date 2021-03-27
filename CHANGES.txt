@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.24 (Build 2021032600)
+-Unneeded "gggg" appended to name of the audio recorder field on the student view.
+
 Version 1.0.23 (Build 2021022701)
 - Tweak for responsiveness on some themes without width 100% set on form-control-static
 

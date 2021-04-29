@@ -1,5 +1,9 @@
 Change List
 =========
+Version 1.0.25 (Build 2021042800)
+- Made transcription:none, the default
+- Hard coded transcoding, and removed the option to opt out of it. We always need it.
+
 Version 1.0.24 (Build 2021032600)
 -Unneeded "gggg" appended to name of the audio recorder field on the student view.
 

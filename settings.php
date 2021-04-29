@@ -49,8 +49,11 @@ $expiredays = utils::get_expiredays_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/expiredays', get_string('expiredays', constants::M_COMPONENT), '', '365', $expiredays));
 
 //transcode settings
+//hard coded transcoding behaviour: Justin 20210428
+/*
 $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enabletranscode',
     get_string('enabletranscode', constants::M_COMPONENT), get_string('enabletranscode_details',constants::M_COMPONENT), 1));
+*/
 
 //player type
 $playertype_options = utils::fetch_options_interactivetranscript();
@@ -68,7 +71,7 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/defaultp
 
 //transcription settings
 $transcriber_options = utils::get_transcriber_options();
-$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/enabletranscription', get_string('enabletranscription_details', constants::M_COMPONENT), '', constants::TRANSCRIBER_AMAZONTRANSCRIBE, $transcriber_options));
+$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/enabletranscription', get_string('enabletranscription_details', constants::M_COMPONENT), '', constants::TRANSCRIBER_NONE , $transcriber_options));
 
 $langoptions = utils::get_lang_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language', get_string('language', constants::M_COMPONENT), '', 'en-US', $langoptions));

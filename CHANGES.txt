@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.26 (Build 2021052000)
+-Added Bahrain and Capetown as regions
+
 Version 1.0.25 (Build 2021042800)
 - Made transcription:none, the default
 - Hard coded transcoding, and removed the option to opt out of it. We always need it.

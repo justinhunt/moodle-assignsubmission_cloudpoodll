@@ -838,26 +838,41 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
      * @return array - return an array of files indexed by filename
      */
     public function get_files(stdClass $submission, stdClass $user=null) {
+        global $CFG;
         $result = array();
-        /*
-        $fs = get_file_storage();
 
-        $files = $fs->get_area_files($this->assignment->get_context()->id, constants::M_COMPONENT, ASSIGNSUBMISSION_CLOUDPOODLL_FILEAREA, $submission->id, "timemodified", false);
-
-        foreach ($files as $file) {
-		
-			//let NOT return splash images for videos
-			if($this->get_config('recordertype')== OP_REPLYVIDEO){
-				$fname = $file->get_filename();
-				$fext = pathinfo($fname, PATHINFO_EXTENSION);				
-				if($fext == 'jpg' || $fext == 'png'){
-					continue;
-				}
-			}
-		
-            $result[$file->get_filename()] = $file;
+        $cloudpoodllsubmission = $this->get_cloudpoodll_submission($submission->id);
+        if($cloudpoodllsubmission && isset($cloudpoodllsubmission->filename)){
+            $filebits = explode('/',$cloudpoodllsubmission->filename);
+            $shortfilename = end($filebits);
+            //create the file record for our new file
+            $file_record = new stdClass();
+            $file_record->userid = $submission->userid;
+            $file_record->contextid =$this->assignment->get_context()->id;
+            $file_record->component = constants::M_COMPONENT;
+            $file_record->filearea = constants::M_FILEAREA;
+            $file_record->itemid = $submission->id;
+            $file_record->filepath =  '/';
+            $file_record->filename = $shortfilename;
+            $file_record->license = $CFG->sitedefaultlicense;
+            $file_record->author = 'Moodle User';
+            $file_record->source = '';
+            $file_record->timecreated = time();
+            $file_record->timemodified = time();
+            $fs = get_file_storage();
+            try {
+                if($fs->file_exists($file_record->contextid,$file_record->component,$file_record->filearea,$file_record->itemid,$file_record->filepath,$file_record->filename)){
+                    $file = $fs->get_file($file_record->contextid,$file_record->component,$file_record->filearea,$file_record->itemid,$file_record->filepath,$file_record->filename);
+                }else{
+                    $file = $fs->create_file_from_url($file_record, $cloudpoodllsubmission->filename, null, true);
+                }
+                if ($file) {
+                    $result[$shortfilename] = $file;
+                }
+            }catch(Exception $e){
+                //the file was probably too old, or had never made it
+            }
         }
-        */
         return $result;
     }
 

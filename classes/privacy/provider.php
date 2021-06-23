@@ -130,13 +130,17 @@ class provider implements metadataprovider,
             return null;
         }
         // Retrieve text for this submission.
+        $user = new \stdClass(); //this is not used
         $pluginobject = $exportdata->get_pluginobject();
+        $assign = $exportdata->get_assign();
         $submission = utils::fetch_submission_data($pluginobject->id);
+        $plugin = $assign->get_plugin_by_type('assignsubmission','cloudpoodll');
 
         if($submission && isset($submission->filename)) {
 
             $filename = $submission->filename;
             $context = $exportdata->get_context();
+            $files=$plugin->get_files($pluginobject,$user);
 
             $submissiondata = new \stdClass();
             $submissiondata->filename = $filename;
@@ -145,9 +149,16 @@ class provider implements metadataprovider,
             $submissiondata->vttdata =  $submission->vttdata;
             $currentpath = $exportdata->get_subcontext();
             $currentpath[] = get_string('privacy:path', constants::M_COMPONENT);
+            //write the text data
             writer::with_context($context)
                 // Add the text to the exporter.
                 ->export_data($currentpath, $submissiondata);
+            //write the file data
+            if($files && count($files)>0){
+                foreach($files as $file){
+                    writer::with_context($context)->export_file($exportdata->get_subcontext(),$file);
+                }
+            }
 
             // Handle plagiarism data.
             $coursecontext = $context->get_course_context();
@@ -172,8 +183,19 @@ class provider implements metadataprovider,
 
         \core_plagiarism\privacy\provider::delete_plagiarism_for_context($requestdata->get_context());
 
+        $instance = $requestdata->get_assign()->get_instance();
+
+        //get all submissions
+        $submissions = $DB->get_records(constants::M_TABLE, ['assignment' => $instance->id]);
+        //remove remote files
+        if($submissions) {
+            foreach ($submissions as $submission) {
+                utils::remove_user_submission($submission->filename);
+            }
+        }
+
         // Delete records from assignsubmission_file table.
-        $DB->delete_records(constants::M_TABLE, ['assignment' => $requestdata->get_assign()->get_instance()->id]);
+        $DB->delete_records(constants::M_TABLE, ['assignment' => $instance->id]);
     }
 
 
@@ -190,9 +212,14 @@ class provider implements metadataprovider,
 
         $submissionid = $deletedata->get_pluginobject()->id;
 
+        //remove remote files
+        $instance = $deletedata->get_assign()->get_instance();
+        $submission = $DB->get_record(constants::M_TABLE, ['assignment' => $instance->id, 'submission' => $submissionid]);
+        if($submission) {
+          utils::remove_user_submission($submission->filename);
+        }
 
-        $DB->delete_records(constants::M_TABLE, ['assignment' => $deletedata->get_assign()->get_instance()->id,
-            'submission' => $submissionid]);
+        $DB->delete_records(constants::M_TABLE, ['assignment' => $instance->id, 'submission' => $submissionid]);
     }
 
     /**
@@ -213,8 +240,19 @@ class provider implements metadataprovider,
         }
 
         list($sql, $params) = $DB->get_in_or_equal($deletedata->get_submissionids(), SQL_PARAMS_NAMED);
-
         $params['assignid'] = $deletedata->get_assignid();
+
+        //get all submissions
+        $submissions = $DB->get_records_select(constants::M_TABLE, "assignment = :assignid AND submission $sql", $params);
+        //remove remote files
+        $instance = $deletedata->get_assign()->get_instance();
+        if($submissions) {
+            foreach ($submissions as $submission) {
+                utils::remove_user_submission($submission->filename);
+            }
+        }
+
+        //delete records
         $DB->delete_records_select(constants::M_TABLE, "assignment = :assignid AND submission $sql", $params);
     }
 

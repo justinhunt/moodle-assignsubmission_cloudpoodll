@@ -31,6 +31,9 @@ defined('MOODLE_INTERNAL') || die();
 class utils
 {
 
+    //const CLOUDPOODLL = 'http://localhost/moodle';
+    const CLOUDPOODLL = 'https://cloud.poodll.com';
+
     public static function fetch_options_videosize(){
         //The size of the video player on the various screens
         $size_options = array(
@@ -370,7 +373,7 @@ class utils
         }
 
         // Send the request & save response to $resp
-        $token_url ="https://cloud.poodll.com/local/cpapi/poodlltoken.php";
+        $token_url =self::CLOUDPOODLL . "/local/cpapi/poodlltoken.php";
         $postdata = array(
             'username' => $apiuser,
             'password' => $apisecret,
@@ -429,5 +432,47 @@ class utils
             return false;
         }
         return $transcript;
+    }
+
+    public static function remove_user_submission($mediaurl){
+        $config = get_config(constants::M_COMPONENT);
+        $token = utils::fetch_token($config->apiuser,$config->apisecret);
+
+        //The REST API we are calling
+        $functionname = 'local_cpapi_remove_user_submission';
+
+        //log.debug(params);
+        $params = array();
+        $params['wstoken'] = $token;
+        $params['wsfunction'] = $functionname;
+        $params['moodlewsrestformat'] = 'json';
+        $params['appid'] = constants::M_COMPONENT;;
+        $params['mediaurl'] = $mediaurl;
+        $serverurl = self::CLOUDPOODLL . '/webservice/rest/server.php';
+        $response = self::curl_fetch($serverurl, $params);
+        if (!self::is_json($response)) {
+            return false;
+        }
+        $payloadobject = json_decode($response);
+
+        //returnCode > 0  indicates an error
+        if (!isset($payloadobject->returnCode) || $payloadobject->returnCode > 0) {
+            return false;
+            //if all good, then lets do the embed
+        } else {
+            return true;
+        }
+    }
+
+    //see if this is truly json or some error
+    public static function is_json($string) {
+        if (!$string) {
+            return false;
+        }
+        if (empty($string)) {
+            return false;
+        }
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
     }
 }

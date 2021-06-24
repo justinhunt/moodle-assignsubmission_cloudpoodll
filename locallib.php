@@ -220,7 +220,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->disabledIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
 
 
-        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_secureplayback', get_string("secureplayback", constants::M_COMPONENT));
+        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_secureplayback',
+                get_string("enablesecureplayback", constants::M_COMPONENT) . ' - '  .get_string("enablesecureplayback_details", constants::M_COMPONENT));
         $mform->setDefault(constants::M_COMPONENT . '_secureplayback', $secureplayback);
         $mform->disabledIf(constants::M_COMPONENT . '_secureplayback', constants::M_COMPONENT . '_enabled', 'notchecked');
 

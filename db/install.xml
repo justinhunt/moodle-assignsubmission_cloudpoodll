@@ -15,6 +15,7 @@
         <FIELD NAME="fulltranscript" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="full transcript data of file" />
         <FIELD NAME="vttdata" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="vtt data associated with file" />
         <FIELD NAME="fileexpiry" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="file expiry date" />
+        <FIELD NAME="secureplayback" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="secure playback" />
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this cloudpoodll submission." NEXT="assignment"/>

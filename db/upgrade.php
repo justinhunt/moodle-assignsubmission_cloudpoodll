@@ -43,6 +43,21 @@ function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2017052201, 'assignsubmission', constants::M_SUBPLUGIN);
     }
 
+    //add filename field.
+    if ($oldversion < 2021062400) {
+        $table = new xmldb_table(constants::M_TABLE);
+        $field = new xmldb_field('secureplayback', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, 0);
+
+
+        // Conditionally launch add field filename.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // online PoodLL savepoint reached
+        upgrade_plugin_savepoint(true, 2021062400, 'assignsubmission', constants::M_SUBPLUGIN);
+
+    }
 
     return true;
 }

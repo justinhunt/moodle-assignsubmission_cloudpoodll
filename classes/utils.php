@@ -446,7 +446,7 @@ class utils
         $params['wstoken'] = $token;
         $params['wsfunction'] = $functionname;
         $params['moodlewsrestformat'] = 'json';
-        $params['appid'] = constants::M_COMPONENT;;
+        $params['appid'] = constants::M_COMPONENT;
         $params['mediaurl'] = $mediaurl;
         $serverurl = self::CLOUDPOODLL . '/webservice/rest/server.php';
         $response = self::curl_fetch($serverurl, $params);
@@ -474,5 +474,60 @@ class utils
         }
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
+    }
+
+    public static function fetch_secure_url($theurl){
+        $config = get_config(constants::M_COMPONENT);
+        $token = utils::fetch_token($config->apiuser,$config->apisecret);
+
+        //The REST API we are calling
+        $functionname = 'local_cpapi_fetch_presigneddownload_url';
+
+        //log.debug(params);
+        $params = array();
+        $params['wstoken'] = $token;
+        $params['wsfunction'] = $functionname;
+        $params['moodlewsrestformat'] = 'json';
+        $params['minutes'] = 60;
+        $params['mediaurl'] = $theurl;
+        $serverurl = self::CLOUDPOODLL . '/webservice/rest/server.php';
+        $response = self::curl_fetch($serverurl, $params);
+        if (!self::is_json($response)) {
+            return false;
+        }
+        $payloadobject = json_decode($response);
+
+        //returnCode > 0  indicates an error
+        if (!isset($payloadobject->returnCode) || $payloadobject->returnCode > 0) {
+            return '';//failure
+        } else {
+            return $payloadobject->returnMessage;
+        }
+    }
+
+    /**
+     * Remove locally stored submission data
+     * This would only get in after an export of data
+     *
+     * @return boolean
+     */
+    public static function cleanup_files() {
+        global $DB;
+
+        $assignids = $DB->get_fieldset_select(constants::M_TABLE,'assignment','assignment>0');
+        if(!$assignids){return true;}
+        $assignids = array_unique($assignids);
+
+        foreach($assignids as $assignid) {
+            $cm = get_coursemodule_from_instance('assign', $assignid, 0, false, MUST_EXIST);
+            $context = \context_module::instance($cm->id);
+            //delete recorded files
+            $fs = get_file_storage();
+            $fs->delete_area_files($context->id,
+                    constants::M_COMPONENT,
+                    constants::M_FILEAREA);
+        }
+
+        return true;
     }
 }

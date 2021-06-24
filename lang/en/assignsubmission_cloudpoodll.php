@@ -212,3 +212,6 @@ $string['shownoaudio'] = 'Show filename';
 $string['videoplaceholder'] = ' [video submitted] ';
 $string['audioplaceholder'] = ' [audio submitted] ';
 $string['safesave'] = 'Enable Safe Save - disables assignment submit button until Cloud Poodll upload is complete. ';
+$string['cloudpoodll_cleanup_task']="CloudPoodll Assign Submission cleanup";
+$string['enablesecureplayback']='Restricted playback';
+$string['enablesecureplayback_details']='If enabled, playback URLs for submissions are time limited and will expire after 60 minutes.';

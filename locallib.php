@@ -112,6 +112,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $audiosingledisplay = $this->get_config('audiosingledisplay')!==false  ? $this->get_config('audiosingledisplay') : $adminconfig->displayaudioplayer_single;
         $videolistdisplay = $this->get_config('videolistdisplay')!==false  ? $this->get_config('videolistdisplay') : $adminconfig->displaysize_list;
         $videosingledisplay = $this->get_config('videosingledisplay')!==false  ? $this->get_config('videosingledisplay') : $adminconfig->displaysize_single;
+        $secureplayback = $this->get_config('secureplayback')!==false  ? $this->get_config('secureplayback') : $adminconfig->secureplayback;
         //We made transcoding compulsory: Justin 20210428
         //$enabletranscode = $this->get_config('enabletranscode')!==false ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
 
@@ -219,6 +220,11 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->disabledIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
 
 
+        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_secureplayback', get_string("secureplayback", constants::M_COMPONENT));
+        $mform->setDefault(constants::M_COMPONENT . '_secureplayback', $secureplayback);
+        $mform->disabledIf(constants::M_COMPONENT . '_secureplayback', constants::M_COMPONENT . '_enabled', 'notchecked');
+
+
         //If  lower then M3.4 we show a divider to make it easier to figure where poodll ends and starts
         if($CFG->version < 2017111300) {
             $mform->addElement('static', constants::M_COMPONENT . '_divider', '',
@@ -242,6 +248,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $mform->hideIf(constants::M_COMPONENT . '_videosingledisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_videolistdisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_secureplayback', constants::M_COMPONENT . '_enabled', 'notchecked');
         }
 
     }
@@ -270,6 +277,13 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $this->set_config('safesave', $data->{constants::M_COMPONENT . '_safesave'});
         }else{
             $this->set_config('safesave', 0);
+        }
+
+        //secureplayback
+        if(isset($data->{constants::M_COMPONENT . '_secureplayback'})) {
+            $this->set_config('secureplayback', $data->{constants::M_COMPONENT . '_secureplayback'});
+        }else{
+            $this->set_config('secureplayback', 0);
         }
 
         //if we dont have display options set them
@@ -521,7 +535,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                             'filename' => basename($rawmediapath),
                             'lang' => $this->get_config('language'), 'size' => $size,
                             'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',
-                            'mediaurl' => $rawmediapath . '?cachekiller=' . $randomid, 'transcripturl' => '');
+                            'mediaurl' => $rawmediapath, 'transcripturl' => '');
                     if(empty($transcript)){
                         $playeropts['notranscript']= 'true';
                     }else{
@@ -534,6 +548,19 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     if($islist){
                         $playeropts['islist']=true;
                     }
+
+
+                    //if we are using secure URLs then we need to secure the mediaurl and transcripturl
+                    if($this->get_config('secureplayback')){
+                        $playeropts['mediaurl'] = utils::fetch_secure_url( $playeropts['mediaurl']);
+                        if(!empty($playeropts['transcripturl'])){
+                            $playeropts['transcripturl'] = utils::fetch_secure_url( $playeropts['transcripturl']);
+                        }
+                    }
+
+
+
+
                     switch ($size->key) {
 
                         case constants::SIZE_AUDIO_SHOW:
@@ -603,7 +630,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                             'filename' => basename($rawmediapath),
                             'lang' => $this->get_config('language'), 'size' => $size,
                             'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',
-                            'mediaurl' => $rawmediapath . '?cachekiller=' . $randomid, 'transcripturl' =>'');
+                            'mediaurl' => $rawmediapath, 'transcripturl' =>'');
                     if(empty($transcript)){
                         $playeropts['notranscript']= 'true';
                     }else{
@@ -616,6 +643,16 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     if($islist){
                         $playeropts['islist']=true;
                     }
+
+                    //if we are using secure URLs then we need to secure the mediaurl and transcripturl
+                    if($this->get_config('secureplayback')){
+                        $playeropts['mediaurl'] = utils::fetch_secure_url( $playeropts['mediaurl']);
+                        if(!empty($playeropts['transcripturl'])){
+                            $playeropts['transcripturl'] = utils::fetch_secure_url( $playeropts['transcripturl']);
+                        }
+                    }
+
+
                     switch ($size->key) {
                         case constants::SIZE_LIGHTBOX:
                             $responsestring .=
@@ -823,7 +860,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         //or entire transcript on click, so we add a view link
         $islist = optional_param('action','',PARAM_TEXT)=='grading';
         $showviewlink = $islist;//is this a list page
-
 
 		//our response, this will output a player, and optionally a portfolio export link
 		return $this->fetchResponses($submission->id,false) . $this->get_p_links($submission->id) ;

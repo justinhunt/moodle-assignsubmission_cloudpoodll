@@ -141,3 +141,7 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 						new lang_string('displaysizelist', constants::M_COMPONENT),
 						new lang_string('displaysizelistdetails', constants::M_COMPONENT), '480' , $video_size_options));
 
+    //use non public media urls
+    $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/secureplayback',
+            get_string('enablesecureplayback', constants::M_COMPONENT), get_string('enablesecureplayback_details',constants::M_COMPONENT), 0));
+

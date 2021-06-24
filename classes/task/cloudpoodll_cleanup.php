@@ -15,17 +15,35 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the version information for the cloudpoodll submission plugin
+ * The assignsubmission_cloudpoodll scheduled task
  *
  * @package    assignsubmission_cloudpoodll
- * @copyright 2018 Justin Hunt {@link http://www.poodll.com}
+ * @copyright  Justin Hunt (https://poodll.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace assignsubmission_cloudpoodll\task;
+use \assignsubmission_cloudpoodll\constants;
+use \assignsubmission_cloudpoodll\utils;
+
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   =  2021062400;
-$plugin->requires  = 2015051100; // Requires Moodle version 2.9 or greater
-$plugin->component =  'assignsubmission_cloudpoodll';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0.27 (Build 2021062400)';
+class cloudpoodll_cleanup extends \core\task\scheduled_task {
+		
+	public function get_name() {
+        // Shown in admin screens
+        return get_string('cloudpoodll_cleanup_task', constants::M_COMPONENT);
+    }
+	
+	 /**
+     *  Run the task
+      */
+	 public function execute(){
+		$trace = new \text_progress_trace();
+		$trace->output('running cloudpoodll_cleanup_task task now');
+        utils::cleanup_files();
+	}
+
+}
+

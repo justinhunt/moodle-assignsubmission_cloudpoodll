@@ -4,6 +4,7 @@ Version 1.0.27 (Build 2021062400)
 -added export file feature
 -added delete remote files feature (currently disabled)
 -added secure playback urls (needs more work)
+-added screen recorder
 
 Version 1.0.26 (Build 2021052000)
 -Added Bahrain and Capetown as regions

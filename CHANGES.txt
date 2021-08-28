@@ -1,5 +1,9 @@
 Change List
 =========
+Version 1.0.28 (Build 2021082700)
+- fixed layout issue if video recorder and another submission type were both active
+
+
 Version 1.0.27 (Build 2021062400)
 -added export file feature
 -added delete remote files feature (currently disabled)

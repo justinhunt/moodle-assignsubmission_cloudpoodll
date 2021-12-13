@@ -118,7 +118,19 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
 
 
-        $rec_options = utils::fetch_options_recorders();
+        //to enable/disable recorders from the admin
+        $rec_options = [];
+        if($adminconfig->enableaudio){
+            $rec_options[constants::REC_AUDIO] = get_string("recorderaudio", constants::M_COMPONENT);
+        };
+        if($adminconfig->enablevideo){
+            $rec_options[constants::REC_VIDEO] = get_string("recordervideo", constants::M_COMPONENT);
+        };
+        //in the case that neither enableaudio nor enablevideo are true, then the user messed up, or more likely the install/update step missed the setting
+        //so we enable both. We might remove this after the Dec 2021 update where the setting was introduced has been around for a while
+        if(count($rec_options)==0) {
+            $rec_options = utils::fetch_options_recorders();
+        }
 		$mform->addElement('select', constants::M_COMPONENT . '_recordertype', get_string("recordertype", constants::M_COMPONENT), $rec_options);
         $mform->setDefault(constants::M_COMPONENT . '_recordertype',$recordertype);
 		$mform->disabledIf(constants::M_COMPONENT . '_recordertype', constants::M_COMPONENT . '_enabled', 'notchecked');

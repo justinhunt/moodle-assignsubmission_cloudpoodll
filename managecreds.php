@@ -47,7 +47,6 @@ $PAGE->set_heading(get_string("managecredsheading", constants::M_COMPONENT));
 $PAGE->set_pagelayout('course');
 
 // Render template and display page.
-$renderer = $PAGE->get_renderer(constants::M_COMPONENT);
 echo $OUTPUT->header();
 echo "hello";
 //If we already have credentials we just refresh the token and return
@@ -70,17 +69,27 @@ if(!empty($action)){
             $pushcount = 0;
             $candidatecount = 0;
             foreach($components as $component){
-               $current_apiuser = get_config($component,'apiuser');
+                switch($component) {
+                    case "filter_poodll":
+                        $apiusersetting = "cpapiuser";
+                        $apisecretsetting = "cpapisecret";
+                        break;
+                    default:
+                        $apiusersetting = "apiuser";
+                        $apisecretsetting = "apisecret";
+                }
+
+               $current_apiuser = get_config($component,$apiusersetting);
                //if the plugin is not installed or config not exist for the plugin, it will be false
                 //and we should move on ..
                if($current_apiuser !== false) {
                    $candidatecount++;
-                   $current_apisecret = get_config($component, 'apisecret');
+                   $current_apisecret = get_config($component, $apisecretsetting);
                    if($current_apisecret !== false) {
                        //if the config exists but its empty, set it
                        if (empty($current_apiuser) && empty($current_apisecret)) {
-                           set_config('apiuser', $apiuser, $component);
-                           set_config('apisecret', $apiuser, $component);
+                           set_config($apiusersetting, $apiuser, $component);
+                           set_config($apisecretsetting, $apisecret, $component);
                            $pushcount++;
                        }
                    }
@@ -93,6 +102,8 @@ if(!empty($action)){
             redirect($CFG->wwwroot . '/admin/settings.php?section=assignsubmission_cloudpoodll');
 
         case "freetrial":
+
+            //
 
         case "fetchcreds":
 
@@ -126,14 +137,20 @@ $fetchcreds = new \single_button(
 $items[] = ['title'=>get_string('fetchcreds', constants::M_COMPONENT),
     'description'=>get_string('fetchcreds_desc', constants::M_COMPONENT),
     'content'=>$OUTPUT->render($fetchcreds)];
-
+/*
 $freetrial = new \single_button(
     new \moodle_url(constants::M_URL . '/managecreds.php',
         array('action' => 'freetrial')),
     get_string('freetrial', constants::M_COMPONENT), 'get');
+*/
+//$freetrial = '<script src = "https://js.chargebee.com/v2/chargebee.js"  data-cb-site = "poodllcom" > </script>';
+$freetrial = '<a class="btn btn-secondary poodll_pop_cb" href="javascript:void(0)"  data-planpriceid="Poodll-Free-Trial-USD-Daily">'
+    . get_string('freetrial', constants::M_COMPONENT)
+    . '</a>';
+
 $items[] = ['title'=>get_string('freetrial', constants::M_COMPONENT),
     'description'=>get_string('freetrial_desc', constants::M_COMPONENT),
-    'content'=>$OUTPUT->render($freetrial)];
+    'content'=>$freetrial];
 
 $memberdashboard = new \single_button(
     new \moodle_url(constants::M_URL . '/managecreds.php',
@@ -144,7 +161,8 @@ $items[] = ['title'=>get_string('memberdashboard', constants::M_COMPONENT),
     'content'=>$OUTPUT->render($memberdashboard)];
 
 //Generate and return options menu
-echo $OUTPUT->render_from_template( constants::M_COMPONENT . '/managecreds', ['items'=>$items]);
+echo $OUTPUT->render_from_template( constants::M_COMPONENT . '/managecreds',
+    ['items'=>$items, 'poodllcbsite'=>'poodllcom', 'component'=>constants::M_COMPONENT,'wwwroot'=>$CFG->wwwroot]);
 
 
 echo $OUTPUT->footer();

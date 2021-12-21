@@ -36,10 +36,31 @@ $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/defaul
 $settings->add(new admin_setting_configtext(constants::M_COMPONENT .'/apiuser',
     get_string('apiuser', constants::M_COMPONENT), get_string('apiuser_details', constants::M_COMPONENT), '', PARAM_TEXT));
 
-$tokeninfo =   utils::fetch_token_for_display(get_config(constants::M_COMPONENT,'apiuser'),get_config(constants::M_COMPONENT,'apisecret'));
+$cloudpoodll_apiuser=get_config(constants::M_COMPONENT,'apiuser');
+$cloudpoodll_apisecret=get_config(constants::M_COMPONENT,'apisecret');
+$show_below_apisecret='';
+if(!empty($cloudpoodll_apiuser) && !empty($cloudpoodll_apisecret)) {
+    $tokeninfo = utils::fetch_token_for_display(get_config(constants::M_COMPONENT, 'apiuser'), get_config(constants::M_COMPONENT, 'apisecret'));
+    $show_below_apisecret=$tokeninfo;
+}else{
+    $amddata=['poodllcbsite'=>'poodllcom','wwwroot'=>$CFG->wwwroot];
+    $cp_components=['qtype_cloudpoodll','mod_readaloud','mod_wordcards','mod_solo','atto_cloudpoodll','tinymce_cloudpoodll'];
+    foreach($cp_components as $cp_component){
+        $cloudpoodll_apiuser=get_config($cp_component,'apiuser');
+        if(!empty($cloudpoodll_apiuser)){
+            $cloudpoodll_apisecret=get_config($cp_component,'apisecret');
+            if(!empty($cloudpoodll_apisecret)){
+                $amddata['apiuser']=$cloudpoodll_apiuser;
+                $amddata['apisecret']=$cloudpoodll_apisecret;
+                break;
+            }
+        }
+    }
+    $show_below_apisecret=$OUTPUT->render_from_template( constants::M_COMPONENT . '/managecreds',$amddata);
+}
 //get_string('apisecret_details', constants::M_COMPONENT)
 $settings->add(new admin_setting_configtext(constants::M_COMPONENT .'/apisecret',
-    get_string('apisecret', constants::M_COMPONENT), $tokeninfo, '', PARAM_TEXT));
+    get_string('apisecret', constants::M_COMPONENT), $show_below_apisecret, '', PARAM_TEXT));
 
 $regions = utils::get_region_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/awsregion', get_string('awsregion', constants::M_COMPONENT),

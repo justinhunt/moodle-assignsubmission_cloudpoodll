@@ -222,12 +222,9 @@ $string['enablevideo'] = "Enable video recording";
 $string['managecredsheading'] = "Manage Poodll API Credentials";
 
 $string['refreshtoken_desc'] = "Manage Poodll API Credentials";
-$string['pushcreds'] = "Push Credentials";
-$string['pushcreds_desc'] = "";
-$string['freetrial'] = "Free Trial";
+
+$string['freetrial'] = "Get API Credentials and a Free Trial";
 $string['freetrial_desc'] = "";
-$string['fetchcreds'] = "Fetch Credentials";
-$string['fetchcreds_desc'] = "";
 $string['memberdashboard'] = "Member Dashboard";
 $string['memberdashboard_desc'] = "";
-$string['pushedcreds'] = '{$a->pushcount} of ${a->candidatecount} API credentials pushed';
+$string['fillcredentials']="Use existing API credentials";

@@ -7,7 +7,7 @@
         require(['jquery'],function($) {
             //set up checkout links
 
-            $(".cloudpoodll_pop_cb").on("click", function() {
+            $(".assign_submission_cloudpoodll_credsmanager .cloudpoodll_pop_cb").on("click", function() {
                 event.preventDefault();
                 var that = this;
                 $.getScript('https://js.chargebee.com/v2/chargebee.js', function(){
@@ -27,7 +27,7 @@
             });
 
             //set up fetch from elsewhere
-            $(".cloudpoodll_poke_creds").on("click", function() {
+            $(".assign_submission_cloudpoodll_credsmanager .cloudpoodll_poke_creds").on("click", function() {
                 event.preventDefault();
                 var apiuser = document.getElementById('id_s_assignsubmission_cloudpoodll_apiuser');
                 var apisecret = document.getElementById('id_s_assignsubmission_cloudpoodll_apisecret');

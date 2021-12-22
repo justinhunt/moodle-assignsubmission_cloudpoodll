@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,17 +16,31 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the version information for the cloudpoodll submission plugin
+ * A Free Trial Jumper
+ *
  *
  * @package    assignsubmission_cloudpoodll
- * @copyright 2018 Justin Hunt {@link http://www.poodll.com}
+ * @copyright  Justin Hunt (justin@poodll.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   =  2021121000;
-$plugin->requires  = 2015051100; // Requires Moodle version 2.9 or greater
-$plugin->component =  'assignsubmission_cloudpoodll';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0.29 (Build 2021122200)';
+require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php');
+
+use \assignsubmission_cloudpoodll\constants;
+
+require_login(0, false);
+$systemcontext = context_system::instance();
+$PAGE->set_context($systemcontext);
+$PAGE->set_url('/' . CONSTANTS::M_URL . '/fetchcbpage.php');
+
+if(has_capability('moodle/site:config',$systemcontext)){
+
+    $amddata=['poodllcbsite'=>'poodllcom','wwwroot'=>$CFG->wwwroot,
+        'first_name'=>$USER->firstname,'last_name'=>$USER->lastname,'email'=>$USER->email,'country'=>$USER->country];
+    echo $OUTPUT->header();
+    echo $OUTPUT->render_from_template( constants::M_COMPONENT . '/fetchcbpage',$amddata);
+    echo $OUTPUT->footer();
+}else{
+    echo "no permission to do that action";
+}

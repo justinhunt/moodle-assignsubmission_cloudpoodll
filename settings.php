@@ -39,12 +39,13 @@ $settings->add(new admin_setting_configtext(constants::M_COMPONENT .'/apiuser',
 $cloudpoodll_apiuser=get_config(constants::M_COMPONENT,'apiuser');
 $cloudpoodll_apisecret=get_config(constants::M_COMPONENT,'apisecret');
 $show_below_apisecret='';
+//if we have an API user and secret we fetch token
 if(!empty($cloudpoodll_apiuser) && !empty($cloudpoodll_apisecret)) {
     $tokeninfo = utils::fetch_token_for_display(get_config(constants::M_COMPONENT, 'apiuser'), get_config(constants::M_COMPONENT, 'apisecret'));
     $show_below_apisecret=$tokeninfo;
+//if we have no API user and secret we show a "fetch from elsewhere on site" or "take a free trial" link
 }else{
-    $amddata=['poodllcbsite'=>'poodllcom','wwwroot'=>$CFG->wwwroot,
-        'first_name'=>$USER->firstname,'last_name'=>$USER->lastname,'email'=>$USER->email,'country'=>$USER->country];
+    $amddata=['apppath'=>$CFG->wwwroot . '/' .constants::M_URL];
     $cp_components=['qtype_cloudpoodll','mod_readaloud','mod_wordcards','mod_solo','atto_cloudpoodll','tinymce_cloudpoodll'];
     foreach($cp_components as $cp_component){
         $cloudpoodll_apiuser=get_config($cp_component,'apiuser');

@@ -43,7 +43,8 @@ if(!empty($cloudpoodll_apiuser) && !empty($cloudpoodll_apisecret)) {
     $tokeninfo = utils::fetch_token_for_display(get_config(constants::M_COMPONENT, 'apiuser'), get_config(constants::M_COMPONENT, 'apisecret'));
     $show_below_apisecret=$tokeninfo;
 }else{
-    $amddata=['poodllcbsite'=>'poodllcom','wwwroot'=>$CFG->wwwroot];
+    $amddata=['poodllcbsite'=>'poodllcom','wwwroot'=>$CFG->wwwroot,
+        'first_name'=>$USER->firstname,'last_name'=>$USER->lastname,'email'=>$USER->email,'country'=>$USER->country];
     $cp_components=['qtype_cloudpoodll','mod_readaloud','mod_wordcards','mod_solo','atto_cloudpoodll','tinymce_cloudpoodll'];
     foreach($cp_components as $cp_component){
         $cloudpoodll_apiuser=get_config($cp_component,'apiuser');

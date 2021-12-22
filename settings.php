@@ -41,16 +41,30 @@ $cloudpoodll_apisecret=get_config(constants::M_COMPONENT,'apisecret');
 $show_below_apisecret='';
 //if we have an API user and secret we fetch token
 if(!empty($cloudpoodll_apiuser) && !empty($cloudpoodll_apisecret)) {
-    $tokeninfo = utils::fetch_token_for_display(get_config(constants::M_COMPONENT, 'apiuser'), get_config(constants::M_COMPONENT, 'apisecret'));
+    $tokeninfo = utils::fetch_token_for_display($cloudpoodll_apiuser,$cloudpoodll_apisecret);
     $show_below_apisecret=$tokeninfo;
 //if we have no API user and secret we show a "fetch from elsewhere on site" or "take a free trial" link
 }else{
     $amddata=['apppath'=>$CFG->wwwroot . '/' .constants::M_URL];
-    $cp_components=['qtype_cloudpoodll','mod_readaloud','mod_wordcards','mod_solo','atto_cloudpoodll','tinymce_cloudpoodll'];
+    $cp_components=['filter_poodll','qtype_cloudpoodll','mod_readaloud','mod_wordcards','mod_solo','mod_minilesson','mod_englishcentral','mod_pchat',
+        'atto_cloudpoodll','tinymce_cloudpoodll', 'assignfeedback_cloudpoodll'];
     foreach($cp_components as $cp_component){
-        $cloudpoodll_apiuser=get_config($cp_component,'apiuser');
+        switch($cp_component){
+            case 'filter_poodll':
+                $apiusersetting='cpapiuser';
+                $apisecretsetting='cpapisecret';
+                break;
+            case 'mod_englishcentral':
+                $apiusersetting='poodllapiuser';
+                $apisecretsetting='poodllapisecret';
+                break;
+            default:
+                $apiusersetting='apiuser';
+                $apisecretsetting='apisecret';
+        }
+        $cloudpoodll_apiuser=get_config($cp_component,$apiusersetting);
         if(!empty($cloudpoodll_apiuser)){
-            $cloudpoodll_apisecret=get_config($cp_component,'apisecret');
+            $cloudpoodll_apisecret=get_config($cp_component,$apisecretsetting);
             if(!empty($cloudpoodll_apisecret)){
                 $amddata['apiuser']=$cloudpoodll_apiuser;
                 $amddata['apisecret']=$cloudpoodll_apisecret;
@@ -60,6 +74,7 @@ if(!empty($cloudpoodll_apiuser) && !empty($cloudpoodll_apisecret)) {
     }
     $show_below_apisecret=$OUTPUT->render_from_template( constants::M_COMPONENT . '/managecreds',$amddata);
 }
+
 //get_string('apisecret_details', constants::M_COMPONENT)
 $settings->add(new admin_setting_configtext(constants::M_COMPONENT .'/apisecret',
     get_string('apisecret', constants::M_COMPONENT), $show_below_apisecret, '', PARAM_TEXT));

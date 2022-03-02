@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.30 (Build 2022030200)
+- added version bump so that iOS will pull latest video recorder code
+
 Version 1.0.29 (Build 2021122200)
 - added an enable recorder type setting to the activity
 - added fetch API creds links to settings page

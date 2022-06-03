@@ -52,7 +52,7 @@ Version 1.0.16 (Build 202004100)
 - enabled hiding cloudpoodll settings on assign edit page if not enabled
 
 Version 1.0.15 (Build 2020012200)
--added languages(arabic, chinese, portuguese, japanese, tamil, telegu, dutch, farsi, wales english, ireland english, scotland english, russian, turkish, malay, indonesian,hebrew, swiss german)
+-added languages(arabic, chinese, portuguese, japanese, tamil, Telugu, dutch, farsi, wales english, ireland english, scotland english, russian, turkish, malay, indonesian,hebrew, swiss german)
 -added user tagging
 
 Version 1.0.14 (Build 2019112100)

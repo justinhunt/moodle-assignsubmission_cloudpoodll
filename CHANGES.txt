@@ -1,5 +1,9 @@
 Change List
 =========
+Version 1.0.31 (Build 2022060500)
+- Changed AMD build steps
+- Change free trial jump link
+
 Version 1.0.30 (Build 2022030200)
 - added version bump so that iOS will pull latest video recorder code
 

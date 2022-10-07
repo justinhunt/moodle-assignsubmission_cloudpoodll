@@ -29,8 +29,8 @@ $string['enabled'] = 'Cloud Poodll';
 $string['enabled_help'] = 'If enabled, students are able to record audio or video (as per the settings) for this assignment.';
 $string['nosubmission'] = 'Nothing has been submitted for this assignment';
 $string['cloudpoodll'] = 'Cloud Poodll';
-$string['cloudpoodllfilename'] = 'cloudpoodll.html'; //what this for ?
-$string['cloudpoodllsubmission'] = 'Allow Cloud Poodll submission';
+//$string['cloudpoodllfilename'] = 'cloudpoodll.html'; //what this for ?
+//$string['cloudpoodllsubmission'] = 'Allow Cloud Poodll submission';
 $string['pluginname'] = 'Cloud Poodll Submissions';
 $string['recorder'] = 'Recorder Type';
 $string['recorderaudio'] = 'Audio Recorder';
@@ -98,7 +98,7 @@ $string['tr-tr'] = 'Turkish';
 
 
 $string['awsregion']='AWS Region';
-$string['region']='AWS Region';
+//$string['region']='AWS Region';
 $string['expiredays']='Cloud Poodll Days to keep file';
 
 
@@ -107,8 +107,8 @@ $string['currentsubmission'] = 'Current Submission:';
 $string['yes'] = 'yes';
 $string['no'] = 'no';
 
-$string['showcurrentsubmission'] = 'Show Current Submission';
-$string['showcurrentsubmissiondetails'] = 'Show previously recorded submission on submission form.';
+//$string['showcurrentsubmission'] = 'Show Current Submission';
+//$string['showcurrentsubmissiondetails'] = 'Show previously recorded submission on submission form.';
 
 $string['displayaudioplayersingle'] = 'Show audio player(normal)';
 $string['displayaudioplayerlist'] = 'Show audio player(lists)';
@@ -118,16 +118,16 @@ $string['displaysizesingledetails'] = '';
 $string['displaysizelist'] = 'Video player size(in lists)';
 $string['displaysizelistdetails'] = '';
 
-$string['shownoimage'] = 'Do not display image';
+//$string['shownoimage'] = 'Do not display image';
 
 $string['setting_audio_heading'] = 'Audio player settings';
 $string['setting_audio_heading_details'] = 'Settings controlling player appearance in submission review and list pages';
 $string['setting_video_heading'] = 'Video player settings';
 $string['setting_video_heading_details'] = 'Settings controlling player appearance in submission review and list pages';
-$string['setting_snapshot_heading'] = 'Snapshot image settings';
-$string['setting_snapshot_heading_details'] = 'Settings controlling image appearance in submission review and list pages';
-$string['setting_whiteboard_heading'] = 'Whiteboard image settings';
-$string['setting_whiteboard_heading_details'] = 'Settings controlling image appearance in submission review and list pages';
+//$string['setting_snapshot_heading'] = 'Snapshot image settings';
+//$string['setting_snapshot_heading_details'] = 'Settings controlling image appearance in submission review and list pages';
+//$string['setting_whiteboard_heading'] = 'Whiteboard image settings';
+//$string['setting_whiteboard_heading_details'] = 'Settings controlling image appearance in submission review and list pages';
 $string['deletesubmission'] = 'Delete this submission.';
 $string['reallydeletesubmission'] = 'Really delete this submission?';
 
@@ -210,21 +210,20 @@ $string['videosingledisplay']="Video player size (single)";
 $string['videolistdisplay']="Video player size (in lists)";
 $string['shownovideo'] = 'Show filename';
 $string['shownoaudio'] = 'Show filename';
-$string['videoplaceholder'] = ' [video submitted] ';
-$string['audioplaceholder'] = ' [audio submitted] ';
+//$string['videoplaceholder'] = ' [video submitted] ';
+//$string['audioplaceholder'] = ' [audio submitted] ';
 $string['safesave'] = 'Enable Safe Save - disables assignment submit button until Cloud Poodll upload is complete. ';
 $string['cloudpoodll_cleanup_task']="CloudPoodll Assign Submission cleanup";
-$string['secureplayback']='Restricted playback';
+//$string['secureplayback']='Restricted playback';
 $string['enablesecureplayback']='Restricted playback';
 $string['enablesecureplayback_details']='If enabled, playback URLs for submissions are time limited and will expire after 60 minutes.';
 $string['enableaudio'] = "Enable audio recording";
 $string['enablevideo'] = "Enable video recording";
-$string['managecredsheading'] = "Manage Poodll API Credentials";
-
-$string['refreshtoken_desc'] = "Manage Poodll API Credentials";
+//$string['managecredsheading'] = "Manage Poodll API Credentials";
+//$string['refreshtoken_desc'] = "Manage Poodll API Credentials";
 
 $string['freetrial'] = "Get Cloud Poodll API Credentials and a Free Trial";
 $string['freetrial_desc'] = "A dialog should appear that allows you to register for a free trial with Poodll. After registering you should login to the members dashboard to get your API user and secret. And to register your site URL.";
-$string['memberdashboard'] = "Member Dashboard";
-$string['memberdashboard_desc'] = "";
+//$string['memberdashboard'] = "Member Dashboard";
+//$string['memberdashboard_desc'] = "";
 $string['fillcredentials']="Set API user and secret with existing credentials";

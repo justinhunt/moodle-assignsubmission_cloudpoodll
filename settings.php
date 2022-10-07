@@ -30,8 +30,8 @@ defined('MOODLE_INTERNAL') || die();
 
 //enable by default
 $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/default',
-               new lang_string('default', constants::M_COMPONENT),
-               new lang_string('default_help', constants::M_COMPONENT), 0));
+               get_string('default', constants::M_COMPONENT),
+               get_string('default_help', constants::M_COMPONENT), 0));
 
 $settings->add(new admin_setting_configtext(constants::M_COMPONENT .'/apiuser',
     get_string('apiuser', constants::M_COMPONENT), get_string('apiuser_details', constants::M_COMPONENT), '', PARAM_TEXT));
@@ -96,14 +96,14 @@ $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enable
 //player type
 $playertype_options = utils::fetch_options_interactivetranscript();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/defaultplayertype',
-    new lang_string('defaultplayertype', constants::M_COMPONENT),
-    new lang_string('defaultplayertypedetails', constants::M_COMPONENT), constants::PLAYERTYPE_INTERACTIVETRANSCRIPT, $playertype_options));
+    get_string('defaultplayertype', constants::M_COMPONENT),
+    get_string('defaultplayertypedetails', constants::M_COMPONENT), constants::PLAYERTYPE_INTERACTIVETRANSCRIPT, $playertype_options));
 
 //student player type
 $playertype_options = utils::fetch_options_interactivetranscript();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/defaultplayertypestudent',
-    new lang_string('defaultplayertypestudent', constants::M_COMPONENT),
-    new lang_string('defaultplayertypedetails', constants::M_COMPONENT), constants::PLAYERTYPE_INTERACTIVETRANSCRIPT, $playertype_options));
+    get_string('defaultplayertypestudent', constants::M_COMPONENT),
+    get_string('defaultplayertypedetails', constants::M_COMPONENT), constants::PLAYERTYPE_INTERACTIVETRANSCRIPT, $playertype_options));
 
 
 
@@ -119,14 +119,14 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 //Default recorders
    $rec_options = utils::fetch_options_recorders();
     $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/defaultrecorder',
-        new lang_string('defaultrecorder', constants::M_COMPONENT),
-        new lang_string('defaultrecorderdetails', constants::M_COMPONENT), constants::REC_AUDIO, $rec_options));
+        get_string('defaultrecorder', constants::M_COMPONENT),
+        get_string('defaultrecorderdetails', constants::M_COMPONENT), constants::REC_AUDIO, $rec_options));
 
 //Default html5 fallback
     $fallback_options = utils::fetch_options_fallback();
     $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/fallback',
-        new lang_string('fallback', constants::M_COMPONENT),
-        new lang_string('fallbackdetails', constants::M_COMPONENT), constants::FALLBACK_IOSUPLOAD, $fallback_options));
+        get_string('fallback', constants::M_COMPONENT),
+        get_string('fallbackdetails', constants::M_COMPONENT), constants::FALLBACK_IOSUPLOAD, $fallback_options));
 
 						   
 
@@ -137,14 +137,14 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 //show current submission on submission form
 /*
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/showcurrentsubmission',
-					new lang_string('showcurrentsubmission', constants::M_COMPONENT),
-					new lang_string('showcurrentsubmissiondetails', constants::M_COMPONENT), 1, $yesno_options));
+					get_string('showcurrentsubmission', constants::M_COMPONENT),
+					get_string('showcurrentsubmissiondetails', constants::M_COMPONENT), 1, $yesno_options));
 */
 
     //allow user to set a custom name for the plugin as displayed to users
     $settings->add(new admin_setting_configtext(constants::M_COMPONENT . '/customname',
-            new lang_string('customname', constants::M_COMPONENT),
-            new lang_string('customnamedetails', constants::M_COMPONENT),
+            get_string('customname', constants::M_COMPONENT),
+            get_string('customnamedetails', constants::M_COMPONENT),
             '', PARAM_TEXT));
 
 
@@ -154,11 +154,11 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
     get_string('setting_audio_heading_details', constants::M_COMPONENT)));
 
     $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displayaudioplayer_single',
-    new lang_string('displayaudioplayersingle', constants::M_COMPONENT),
+    get_string('displayaudioplayersingle', constants::M_COMPONENT),
     '', '1', $audio_size_options));
 
     $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displayaudioplayer_list',
-    new lang_string('displayaudioplayerlist', constants::M_COMPONENT),
+    get_string('displayaudioplayerlist', constants::M_COMPONENT),
     '', '1', $audio_size_options));
 
     //Settings for video recordings
@@ -168,16 +168,16 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
 
 
     //The size of the video player on the various screens
-	$size_options = array(constants::SIZE_LIGHTBOX => new lang_string('shownovideo', constants::M_COMPONENT),
+	$size_options = array(constants::SIZE_LIGHTBOX => get_string('shownovideo', constants::M_COMPONENT),
 					'480' => '480x360');
 				
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_single',
-						new lang_string('displaysizesingle', constants::M_COMPONENT),
-						new lang_string('displaysizesingledetails', constants::M_COMPONENT), '480', $video_size_options));
+						get_string('displaysizesingle', constants::M_COMPONENT),
+						get_string('displaysizesingledetails', constants::M_COMPONENT), '480', $video_size_options));
 
 	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/displaysize_list',
-						new lang_string('displaysizelist', constants::M_COMPONENT),
-						new lang_string('displaysizelistdetails', constants::M_COMPONENT), '480' , $video_size_options));
+						get_string('displaysizelist', constants::M_COMPONENT),
+						get_string('displaysizelistdetails', constants::M_COMPONENT), '480' , $video_size_options));
 
     //use non public media urls
     $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/secureplayback',

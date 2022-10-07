@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.32 (Build 2022100700)
+- removed unneeded lang strings
+
 Version 1.0.31 (Build 2022060500)
 - Changed AMD build steps
 - Change free trial jump link

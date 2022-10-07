@@ -37,8 +37,8 @@ class utils
     public static function fetch_options_videosize(){
         //The size of the video player on the various screens
         $size_options = array(
-                constants::SIZE_NONE => new \lang_string('shownovideo', constants::M_COMPONENT),
-                constants::SIZE_LIGHTBOX => new \lang_string('showvideolightbox', constants::M_COMPONENT),
+                constants::SIZE_NONE => get_string('shownovideo', constants::M_COMPONENT),
+                constants::SIZE_LIGHTBOX => get_string('showvideolightbox', constants::M_COMPONENT),
                 '480' => '480x360');
         return $size_options;
     }

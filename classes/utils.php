@@ -175,7 +175,7 @@ class utils
 
     //we use curl to fetch transcripts from AWS and Tokens from cloudpoodll
     //this is our helper
-    public static function curl_fetch($url,$postdata=false)
+    public static function curl_fetch($url,$postdata=false,$debug=false)
     {
         global $CFG;
 
@@ -183,6 +183,13 @@ class utils
         $curl = new \curl();
 
         $result = $curl->get($url, $postdata);
+        if($debug){
+            $str =  "Err No: " .$curl->errno . '<br>';
+            $str .= "Err: " .$curl->error . '<br>';
+            $str .= "Info: " . json_encode($curl->info,JSON_PRETTY_PRINT) . '<br>';
+            debugging($str, DEBUG_DEVELOPER);
+        }
+
         return $result;
     }
 
@@ -389,7 +396,7 @@ class utils
             'password' => $apisecret,
             'service'=>'cloud_poodll'
         );
-        $token_response = self::curl_fetch($token_url,$postdata);
+        $token_response = self::curl_fetch($token_url,$postdata,$debug);
         if ($token_response) {
             if($debug){$dbg['token_response']=$token_response;}
 

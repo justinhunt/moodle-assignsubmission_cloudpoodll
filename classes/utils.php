@@ -356,9 +356,9 @@ class utils
     }
 
     //We need a Poodll token to make this happen
-    public static function fetch_token($apiuser, $apisecret, $force=false)
+    public static function fetch_token($apiuser, $apisecret, $force=false,$debug=false)
     {
-
+        $dbg=[];
         $cache = \cache::make_from_params(\cache_store::MODE_APPLICATION, constants::M_COMPONENT, 'token');
         $tokenobject = $cache->get('recentpoodlltoken');
         $tokenuser = $cache->get('recentpoodlluser');
@@ -369,7 +369,16 @@ class utils
         // use the cached one
         if($tokenobject && $tokenuser && $tokenuser==$apiuser && !$force){
             if($tokenobject->validuntil == 0 || $tokenobject->validuntil > time()){
-                return $tokenobject->token;
+
+                if($debug){
+                    $dbg['tokenobject']=$tokenobject;
+                    $dbg['tokenuser']=$tokenuser;
+                    $dbg['time']=time();
+                    $dbg['token']=$tokenobject->token;
+                    return $dbg;
+                }else {
+                    return $tokenobject->token;
+                }
             }
         }
 
@@ -382,7 +391,11 @@ class utils
         );
         $token_response = self::curl_fetch($token_url,$postdata);
         if ($token_response) {
+            if($debug){$dbg['token_response']=$token_response;}
+
             $resp_object = json_decode($token_response);
+            if($debug){if($resp_object){$dbg['resp_object']=$resp_object;}}
+
             if($resp_object && property_exists($resp_object,'token')) {
                 $token = $resp_object->token;
                 //store the expiry timestamp and adjust it for diffs between our server times
@@ -412,17 +425,23 @@ class utils
                 }
                 $cache->set('recentpoodlltoken', $tokenobject);
                 $cache->set('recentpoodlluser', $apiuser);
+                if($debug){$dbg['tokenobject']=$tokenobject;}
 
             }else{
                 $token = '';
                 if($resp_object && property_exists($resp_object,'error')) {
-                    //ERROR = $resp_object->error
+                    if($debug){$dbg['error']=$resp_object->error;}
                 }
             }
         }else{
             $token='';
         }
-        return $token;
+        if($debug){
+            $dbg['token']=$token;
+            return $dbg;
+        }else {
+            return $token;
+        }
     }
 
     //transcripts become ready in their own time, fetch them here

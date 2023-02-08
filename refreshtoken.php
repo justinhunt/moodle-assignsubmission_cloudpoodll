@@ -30,6 +30,8 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php'
 use \assignsubmission_cloudpoodll\utils;
 use \assignsubmission_cloudpoodll\constants;
 
+$debug = optional_param('debug', 0, PARAM_INT);
+
 require_login(0, false);
 $systemcontext = context_system::instance();
 
@@ -38,7 +40,17 @@ if(has_capability('moodle/site:config',$systemcontext)){
     $apisecret=get_config(constants::M_COMPONENT,'apisecret');
     $force=true;
     if($apiuser && $apisecret) {
-        utils::fetch_token($apiuser, $apisecret, $force);
+      $ret =  utils::fetch_token($apiuser, $apisecret, $force,$debug);
+      if($debug){
+          echo "<html lang='en-US'><body><pre>";
+          if(!$ret){
+              echo "no debug details";
+          }else{
+              echo json_encode($ret,JSON_PRETTY_PRINT);
+          }
+          echo "</pre></body></html>";
+          die;
+      }
     }
 }
 redirect($CFG->wwwroot . '/admin/settings.php?section=assignsubmission_cloudpoodll');

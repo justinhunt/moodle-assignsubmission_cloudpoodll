@@ -545,6 +545,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     //prepare props for amd and templates
                     $playeropts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
                             'contextid' => $this->assignment->get_context()->id,
+                            'assignmentid' => $this->assignment->get_course_module()->instance,
                             'filename' => basename($rawmediapath),
                             'lang' => $this->get_config('language'), 'size' => $size,
                             'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',

@@ -31,8 +31,8 @@ define(['jquery','core/log','core/str','core/ajax','core/notification'],
             var header = '<header class="' + config.prefix + '-header">' +config.title+'</header>';
             config.container.load(config.transcripturl,function(){
                 config.container.prepend(header);
-                //uncomment this to show the fetch corrections button
-               // that.prepare_corrections_button(config);
+                //This is a prototype fetch corrections button
+               that.prepare_corrections_button(config);
             });
         },
 
@@ -44,7 +44,6 @@ define(['jquery','core/log','core/str','core/ajax','core/notification'],
         },
 
         fetch_corrections: function(config){
-
             //do the check
             var text = config.container.text();
             //but quit if its empty

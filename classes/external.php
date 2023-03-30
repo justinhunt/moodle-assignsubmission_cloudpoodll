@@ -47,6 +47,10 @@ class external extends external_api {
         $language = $cp_sub->get_config('language');
         $corrections = utils::fetch_grammar_correction($token,$region,$language,$text);
         $ret = new \stdClass();
+        if ($corrections) {
+            $differer = new FineDiff($text, $corrections, FineDiff::$wordGranularity);
+            $ret->diffhtml = $differer->renderDiffToHTML();
+        }
         if($corrections==$text || empty($corrections)){
             $ret->corrections="no corrections";
         }else{

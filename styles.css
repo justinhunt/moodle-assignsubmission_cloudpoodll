@@ -193,3 +193,41 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 .form-control-static {
     width: 100%;
 }
+
+.assignsubmission_cloudpoodll_transcript-difftext {
+    display: block;
+    padding: .5em 1em;
+    color: #716f6f;
+    background-color: #e6e6e6;
+    margin-bottom: 0;
+    font-family: monospace;
+}
+
+.assignsubmission_cloudpoodll_transcript-difftext:empty {
+    display: none;
+}
+
+.assignsubmission_cloudpoodll_transcript-difftext ins {
+	color: green;
+	background: #dfd;
+	text-decoration: none;
+}
+.assignsubmission_cloudpoodll_transcript-difftext del {
+	color: red;
+	background: #fdd;
+	text-decoration: none;
+}
+.assignsubmission_cloudpoodll_transcript-difftext code {
+	font-size: smaller;
+}
+.assignsubmission_cloudpoodll_transcript-text,
+.assignsubmission_cloudpoodll_transcript-difftext {
+    position: relative;
+}
+.assignsubmission_cloudpoodll_transcriptcontainer [data-action="copy"] {
+    position: absolute;
+    right: -30px;
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+}

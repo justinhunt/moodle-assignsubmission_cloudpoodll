@@ -1,4 +1,4 @@
-define(['jquery','core/log','core/str','core/ajax','core/notification'],
+define(['jquery','core/log','core/str','core/ajax','core/notification', './copy_to_clipboard'],
     function($,log,str,Ajax,notification) {
     "use strict"; // jshint ;_;
 
@@ -16,7 +16,7 @@ define(['jquery','core/log','core/str','core/ajax','core/notification'],
             config.settings ={};
             if(playerid && $('#' + playerid).length) {
                 config.component = component;
-                config.container =$('#' + containerid)
+                config.container =$('#' + containerid);
                 config.prefix = cssprefix;
                 config.player = $('#' + playerid)[0];
                 config.transcripturl = opts['transcripturl'];
@@ -26,11 +26,19 @@ define(['jquery','core/log','core/str','core/ajax','core/notification'],
             }
         },
 
+        copybutton: function(target) {
+            return '<a href="javascript:void()" class="fa fa-copy" data-action="copy" data-clipboard-target="#' + target + '"></a>';
+        },
+
         fetch_transcript: function(config){
             var that = this;
             var header = '<header class="' + config.prefix + '-header">' +config.title+'</header>';
-            config.container.load(config.transcripturl,function(){
+            var textcontainer = $('<p id="' + config.prefix + '-text" class="' + config.prefix + '-text"></p>');
+
+            textcontainer.load(config.transcripturl,function(){
+                config.transcripttext = textcontainer.text();
                 config.container.prepend(header);
+                config.container.append(textcontainer.append(that.copybutton(config.prefix + '-text')));
                 //This is a prototype fetch corrections button
                that.prepare_corrections_button(config);
             });
@@ -38,18 +46,29 @@ define(['jquery','core/log','core/str','core/ajax','core/notification'],
 
         prepare_corrections_button: function(config){
             var that = this;
-            var button = '<a class="btn btn-standard" href="#">fetch corrections</a>';
+            var button = '<a class="btn btn-standard" href="#" data-action="getcorrection">fetch corrections</a>';
+            var onetimeloaded = false;
             config.button =  config.container.append(button);
-            $(config.button).on('click',function(){that.fetch_corrections(config)});
+            config.textcontainer = $('<code class="' + config.prefix + '-difftext"></code>').appendTo(config.container);
+            $(config.container).on('click', '[data-action="getcorrection"]', function(e){
+                e.preventDefault();
+                if (!onetimeloaded) {
+                    that.fetch_corrections(config);
+                    onetimeloaded = true;
+                }
+            });
         },
 
         fetch_corrections: function(config){
+            var that = this;
             //do the check
-            var text = config.container.text();
+            var text = config.transcripttext;
             //but quit if its empty
             if(!text || text==='' || text.trim()===''){
                 return;
             }
+
+            config.textcontainer.html('');
 
             Ajax.call([{
                 methodname: 'assignsubmission_cloudpoodll_check_grammar',
@@ -59,13 +78,15 @@ define(['jquery','core/log','core/str','core/ajax','core/notification'],
 
                 },
                 done: function (ajaxresult) {
-
                     var payloadobject = JSON.parse(ajaxresult);
                     if (payloadobject) {
-                        config.container.append(payloadobject.corrections);
+                        config.textcontainer.html(payloadobject.diffhtml);
+                        config.textcontainer.append('<textarea style="display: none" id ="' + config.prefix + '-difftext">' +
+                            payloadobject.corrections + '</textarea>');
+                        config.textcontainer.append(that.copybutton(config.prefix + '-difftext'));
                     }else{
                         //something went wrong
-                        config.container.append('could not fetch corrections');
+                        config.textcontainer.html('could not fetch corrections');
                         log.debug('result not fetched');
                     }
 

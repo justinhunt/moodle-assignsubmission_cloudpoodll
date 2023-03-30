@@ -227,3 +227,5 @@ $string['freetrial_desc'] = "A dialog should appear that allows you to register 
 //$string['memberdashboard'] = "Member Dashboard";
 //$string['memberdashboard_desc'] = "";
 $string['fillcredentials']="Set API user and secret with existing credentials";
+$string['textcopiedtoclipboard'] = 'Text copied to clipboard';
+$string['unabletocopytoclipboard'] = 'Unable to copy text to the clipboard';

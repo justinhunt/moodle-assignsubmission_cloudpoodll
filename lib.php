@@ -68,10 +68,22 @@ function assignsubmission_cloudpoodll_output_fragment_mform($args) {
     $args = (object) $args;
     $o = '';
 
+    //For right to left languages we want to add the RTL direction and right justify.
+    switch($args->lang){
+        case constants::LANG_ARAE:
+        case constants::LANG_ARSA:
+        case constants::LANG_FAIR:
+        case constants::LANG_HEIL:
+            $rtl = constants::M_COMPONENT. '_rtl';
+            break;
+        default:
+            $rtl = '';
+    }
 
     $transcriptopts=array( 'component'=>constants::M_COMPONENT,
             'playerid'=> html_writer::random_id(constants::M_COMPONENT ) ,
             'lang'=>$args->lang,
+            'rtl'=>$rtl,
             'size'=>['width'=>480,'height'=>320],
             'containerid'=>html_writer::random_id(constants::M_COMPONENT ),
             'cssprefix'=>constants::M_COMPONENT .'_transcript',

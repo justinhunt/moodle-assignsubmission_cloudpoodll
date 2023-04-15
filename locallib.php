@@ -498,6 +498,18 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             return '';
         }
 
+        //For right to left languages we want to add the RTL direction and right justify.
+        switch($this->get_config('language')){
+            case constants::LANG_ARAE:
+            case constants::LANG_ARSA:
+            case constants::LANG_FAIR:
+            case constants::LANG_HEIL:
+                $rtl = constants::M_COMPONENT. '_rtl';
+                break;
+            default:
+                $rtl = '';
+        }
+
         //size params for our response players/images
         //audio is a simple 1 or 0 for display or not
         $size = $this->fetch_response_size($this->get_config('recordertype'));
@@ -543,13 +555,18 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     $randomid = html_writer::random_id('cloudpoodll_');
 
                     //prepare props for amd and templates
-                    $playeropts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
+                    $playeropts = array('component' => constants::M_COMPONENT,
+                            'playerid' => $playerid,
                             'contextid' => $this->assignment->get_context()->id,
                             'assignmentid' => $this->assignment->get_course_module()->instance,
                             'filename' => basename($rawmediapath),
-                            'lang' => $this->get_config('language'), 'size' => $size,
-                            'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',
-                            'mediaurl' => $rawmediapath, 'transcripturl' => '');
+                            'rtl'=>$rtl,
+                            'lang' => $this->get_config('language'),
+                            'size' => $size,
+                            'containerid' => $containerid,
+                            'cssprefix' => constants::M_COMPONENT . '_transcript',
+                            'mediaurl' => $rawmediapath,
+                            'transcripturl' => '');
                     if(empty($transcript)){
                         $playeropts['notranscript']= 'true';
                     }else{
@@ -571,9 +588,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                             $playeropts['transcripturl'] = utils::fetch_secure_url( $playeropts['transcripturl']);
                         }
                     }
-
-
-
 
                     switch ($size->key) {
 
@@ -639,12 +653,17 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                     $randomid = html_writer::random_id('cloudpoodll_');
 
                     //prepare props for amd and templates
-                    $playeropts = array('component' => constants::M_COMPONENT, 'playerid' => $playerid,
+                    $playeropts = array('component' => constants::M_COMPONENT,
+                            'playerid' => $playerid,
                             'contextid' => $this->assignment->get_context()->id,
                             'filename' => basename($rawmediapath),
-                            'lang' => $this->get_config('language'), 'size' => $size,
-                            'containerid' => $containerid, 'cssprefix' => constants::M_COMPONENT . '_transcript',
-                            'mediaurl' => $rawmediapath, 'transcripturl' =>'');
+                            'lang' => $this->get_config('language'),
+                            'rtl'=>$rtl,
+                            'size' => $size,
+                            'containerid' => $containerid,
+                            'cssprefix' => constants::M_COMPONENT . '_transcript',
+                            'mediaurl' => $rawmediapath,
+                            'transcripturl' =>'');
                     if(empty($transcript)){
                         $playeropts['notranscript']= 'true';
                     }else{

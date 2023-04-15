@@ -11,6 +11,7 @@ define(['jquery','core/log'], function($,log) {
             var playerid= opts['playerid'];
             var containerid= opts['containerid'];
             var cssprefix= opts['cssprefix'];
+            var lang = opts['cssprefix'];
             var config={};
             config.settings ={};
             if(playerid && $('#' + playerid).length) {

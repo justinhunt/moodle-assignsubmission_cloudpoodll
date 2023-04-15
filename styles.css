@@ -231,3 +231,7 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     text-decoration: none;
     color: black;
 }
+.assignsubmission_cloudpoodll_rtl {
+    direction: rtl;
+    text-align: right;
+}

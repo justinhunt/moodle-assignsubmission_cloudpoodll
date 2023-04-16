@@ -26,9 +26,7 @@ define(['jquery','core/log','core/str','core/ajax','core/notification', './copy_
             }
         },
 
-        copybutton: function(target) {
-            return '<a href="javascript:void()" class="fa fa-copy" data-action="copy" data-clipboard-target="#' + target + '"></a>';
-        },
+
 
         fetch_transcript: function(config){
             var that = this;
@@ -38,18 +36,26 @@ define(['jquery','core/log','core/str','core/ajax','core/notification', './copy_
             textcontainer.load(config.transcripturl,function(){
                 config.transcripttext = textcontainer.text();
                 config.container.prepend(header);
-                config.container.append(textcontainer.append(that.copybutton(config.prefix + '-text')));
-                //This is a prototype fetch corrections button
-               that.prepare_corrections_button(config);
+                config.container.append(textcontainer);
+
+                var copybutton = that.prepare_copy_button(config.prefix + '-text');
+                var correctionsbutton = that.prepare_corrections_button(config);
+                config.container.append('<div class="assignsubmission_cloudpoodll_actionbar">' + copybutton + correctionsbutton + '</div>');
+
+
             });
+        },
+
+        prepare_copy_button: function(target) {
+            return '<a href="javascript:void()" data-action="copy" data-clipboard-target="#' + target + '"><i class="fa fa-copy"></i></a>';
         },
 
         prepare_corrections_button: function(config){
             var that = this;
-            var button = '<a class="btn btn-standard" href="#" data-action="getcorrection">fetch corrections</a>';
+
             var onetimeloaded = false;
-            config.button =  config.container.append(button);
-            config.textcontainer = $('<code class="' + config.prefix + '-difftext"></code>').appendTo(config.container);
+           // config.button =  config.container.append(button);
+
             $(config.container).on('click', '[data-action="getcorrection"]', function(e){
                 e.preventDefault();
                 if (!onetimeloaded) {
@@ -57,6 +63,8 @@ define(['jquery','core/log','core/str','core/ajax','core/notification', './copy_
                     onetimeloaded = true;
                 }
             });
+            var button = '<a href="javascript:void()" data-action="getcorrection"><i class="fa fa-check"></a>';
+            return button;
         },
 
         fetch_corrections: function(config){
@@ -67,8 +75,7 @@ define(['jquery','core/log','core/str','core/ajax','core/notification', './copy_
             if(!text || text==='' || text.trim()===''){
                 return;
             }
-
-            config.textcontainer.html('');
+            config.correctionscontainer = $('<code class="' + config.prefix + '-difftext"></code>').appendTo(config.container);
 
             Ajax.call([{
                 methodname: 'assignsubmission_cloudpoodll_check_grammar',
@@ -80,10 +87,12 @@ define(['jquery','core/log','core/str','core/ajax','core/notification', './copy_
                 done: function (ajaxresult) {
                     var payloadobject = JSON.parse(ajaxresult);
                     if (payloadobject) {
-                        config.textcontainer.html(payloadobject.diffhtml);
-                        config.textcontainer.append('<textarea style="display: none" id ="' + config.prefix + '-difftext">' +
+                        config.correctionscontainer.html(payloadobject.diffhtml);
+                        config.correctionscontainer.append('<textarea style="display: none" id ="' + config.prefix + '-difftext">' +
                             payloadobject.corrections + '</textarea>');
-                        config.textcontainer.append(that.copybutton(config.prefix + '-difftext'));
+                        var copybutton =that.prepare_copy_button(config.prefix + '-difftext')
+
+                        config.correctionscontainer.append('<div class="assignsubmission_cloudpoodll_actionbar">' + copybutton +  '</div>');
                     }else{
                         //something went wrong
                         config.textcontainer.html('could not fetch corrections');

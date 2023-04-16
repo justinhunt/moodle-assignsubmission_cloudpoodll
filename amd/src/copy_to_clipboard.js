@@ -164,7 +164,7 @@ const displayFailureToast = () => getFailureText()
  * @returns {Promise}
  * @private
  */
-const getFailureText = () => getString('unabletocopytoclipboard', 'core');
+const getFailureText = () => getString('unabletocopytoclipboard', component);
 
 /**
  * Fetches the success message to show to the user.
@@ -179,7 +179,7 @@ const getSuccessText = copyButton => {
         return Promise.resolve(copyButton.dataset.clipboardSuccessMessage);
     }
 
-    return getString('textcopiedtoclipboard', 'core');
+    return getString('textcopiedtoclipboard', component);
 };
 
 /**

@@ -224,14 +224,24 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 .assignsubmission_cloudpoodll_transcript-difftext {
     position: relative;
 }
-.assignsubmission_cloudpoodll_transcriptcontainer [data-action="copy"] {
-    position: absolute;
-    right: -30px;
+.assignsubmission_cloudpoodll_actionbar a{
+  /*  position: absolute;
+    right: -30px; */
     font-size: 18px;
     text-decoration: none;
     color: black;
+    margin-right: 8px;
+}
+.assignsubmission_cloudpoodll_actionbar {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid darkgrey;
 }
 .assignsubmission_cloudpoodll_rtl {
     direction: rtl;
     text-align: right;
+}
+.assignsubmission_cloudpoodll_rtl .assignsubmission_cloudpoodll_transcript-text {
+    margin-left: 0px;
+    margin-right: 50px;
 }

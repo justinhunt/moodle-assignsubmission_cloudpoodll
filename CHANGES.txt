@@ -1,6 +1,6 @@
 Change List
 =========
-Version 1.0.33 (Build 20230415XX)
+Version 1.0.34 (Build 2023041500)
 - added RTL support for Arabic/Hebrew/Farsi
 - added corrections feature to standard transcript
 

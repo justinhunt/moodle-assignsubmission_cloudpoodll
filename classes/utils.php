@@ -105,7 +105,7 @@ class utils
         return array(
                 constants::TRANSCRIBER_NONE => get_string("transcribernone",constants::M_COMPONENT),
                 constants::TRANSCRIBER_AMAZONTRANSCRIBE => get_string("transcriberamazon",constants::M_COMPONENT),
-                constants::TRANSCRIBER_GOOGLECLOUDSPEECH => get_string("transcribergooglecloud",constants::M_COMPONENT)
+               // constants::TRANSCRIBER_GOOGLECLOUDSPEECH => get_string("transcribergooglecloud",constants::M_COMPONENT)
         );
     }
 

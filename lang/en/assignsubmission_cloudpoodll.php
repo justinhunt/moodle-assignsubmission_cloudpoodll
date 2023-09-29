@@ -94,6 +94,16 @@ $string['ru-ru'] = 'Russian';
 $string['ta-in'] = 'Tamil';
 $string['te-in'] = 'Telugu';
 $string['tr-tr'] = 'Turkish';
+$string['uk-ua'] = 'Ukranian';
+$string['eu-es'] = 'Basque';
+$string['fi-fi'] = 'Finnish';
+$string['hu-hu'] = 'Hungarian';
+$string['sv-se'] = 'Swedish';
+$string['no-no'] = 'Norwegian';
+$string['nb-no'] = 'Norwegian'; //unused
+$string['pl-pl'] = 'Polish';
+$string['ro-ro'] = 'Romanian';
+$string['mi-nz'] = 'Maori';
 
 
 

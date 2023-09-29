@@ -126,5 +126,15 @@ const LANG_TAIN ='ta-IN';
 const LANG_TEIN ='te-IN';
 const LANG_TRTR ='tr-TR';
 
+const LANG_NONO ='no-NO';
+const LANG_PLPL ='pl-PL';
+const LANG_RORO ='ro-RO';
+const LANG_SVSE ='sv-SE';
+const LANG_UKUA ='uk-UA';
+const LANG_EUES ='eu-ES';
+const LANG_FIFI ='fi-FI';
+const LANG_HUHU ='hu-HU';
+const LANG_MINZ ='mi-NZ';
+
 
 }

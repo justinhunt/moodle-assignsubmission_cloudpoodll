@@ -1047,21 +1047,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         return false;
     }
 
-    /**
-     * Formatting for log info
-     *
-     * @param stdClass $submission The new submission
-     * @return string
-     */
-    public function format_for_log(stdClass $submission) {
-        // format the info for each submission plugin add_to_log
-      //  $cloudpoodllsubmission = $this->get_cloudpoodll_submission($submission->id);
-        $cloudpoodllloginfo = '';
-
-        $cloudpoodllloginfo .= "submission id:" . $submission->id . " added.";
-
-        return $cloudpoodllloginfo;
-    }
 
     /**
      * Return the plugin configs for external functions.

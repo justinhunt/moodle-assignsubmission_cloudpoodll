@@ -9,9 +9,11 @@
 
 namespace assignsubmission_cloudpoodll;
 
+global $CFG;
+require_once($CFG->libdir . '/externallib.php');
+
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/submission/cloudpoodll/locallib.php');
-
 use external_api;
 use external_function_parameters;
 use external_value;

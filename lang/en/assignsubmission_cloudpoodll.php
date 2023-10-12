@@ -94,6 +94,16 @@ $string['ru-ru'] = 'Russian';
 $string['ta-in'] = 'Tamil';
 $string['te-in'] = 'Telugu';
 $string['tr-tr'] = 'Turkish';
+$string['uk-ua'] = 'Ukranian';
+$string['eu-es'] = 'Basque';
+$string['fi-fi'] = 'Finnish';
+$string['hu-hu'] = 'Hungarian';
+$string['sv-se'] = 'Swedish';
+$string['no-no'] = 'Norwegian';
+$string['nb-no'] = 'Norwegian'; //unused
+$string['pl-pl'] = 'Polish';
+$string['ro-ro'] = 'Romanian';
+$string['mi-nz'] = 'Maori';
 
 
 
@@ -229,3 +239,7 @@ $string['freetrial_desc'] = "A dialog should appear that allows you to register 
 $string['fillcredentials']="Set API user and secret with existing credentials";
 $string['textcopiedtoclipboard'] = 'Text copied to clipboard';
 $string['unabletocopytoclipboard'] = 'Unable to copy text to the clipboard';
+$string['noaudiofilters'] = 'Disable audio noise filters';
+$string['noaudiofilters_details'] = ' Turning off echo cancellation and noise suppression can be useful when shadowing or recording music.';
+$string['noaudiofilters'] = 'Disable audio noise filters';
+$string['noaudiofilters_desc'] = 'Disable audio noise filters - can be useful when shadowing or recording music.';

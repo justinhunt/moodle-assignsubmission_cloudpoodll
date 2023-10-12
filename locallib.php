@@ -113,6 +113,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $videolistdisplay = $this->get_config('videolistdisplay')!==false  ? $this->get_config('videolistdisplay') : $adminconfig->displaysize_list;
         $videosingledisplay = $this->get_config('videosingledisplay')!==false  ? $this->get_config('videosingledisplay') : $adminconfig->displaysize_single;
         $secureplayback = $this->get_config('secureplayback')!==false  ? $this->get_config('secureplayback') : $adminconfig->secureplayback;
+        $noaudiofilters = $this->get_config('noaudiofilters')!==false  ? $this->get_config('noaudiofilters') : $adminconfig->noaudiofilters;
         //We made transcoding compulsory: Justin 20210428
         //$enabletranscode = $this->get_config('enabletranscode')!==false ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
 
@@ -237,6 +238,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->setDefault(constants::M_COMPONENT . '_secureplayback', $secureplayback);
         $mform->disabledIf(constants::M_COMPONENT . '_secureplayback', constants::M_COMPONENT . '_enabled', 'notchecked');
 
+        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_noaudiofilters', get_string("noaudiofilters_desc", constants::M_COMPONENT));
+        $mform->setDefault(constants::M_COMPONENT . '_noaudiofilters',$noaudiofilters);
+        $mform->disabledIf(constants::M_COMPONENT . '_noaudiofilters', constants::M_COMPONENT . '_enabled', 'notchecked');
+
 
         //If  lower then M3.4 we show a divider to make it easier to figure where poodll ends and starts
         if($CFG->version < 2017111300) {
@@ -262,6 +267,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $mform->hideIf(constants::M_COMPONENT . '_videolistdisplay', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_secureplayback', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_noaudiofilters', constants::M_COMPONENT . '_enabled', 'notchecked');
         }
 
     }
@@ -297,6 +303,13 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $this->set_config('secureplayback', $data->{constants::M_COMPONENT . '_secureplayback'});
         }else{
             $this->set_config('secureplayback', 0);
+        }
+
+        //no audio filters
+        if(isset($data->{constants::M_COMPONENT . '_noaudiofilters'})) {
+            $this->set_config('noaudiofilters', $data->{constants::M_COMPONENT . '_noaudiofilters'});
+        }else{
+            $this->set_config('noaudiofilters', 0);
         }
 
         //if we dont have display options set them
@@ -336,6 +349,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $this->set_config('enabletranscription', $data->{constants::M_COMPONENT . '_enabletranscription'});
         //transcode
         $this->set_config('enabletranscode', $data->{constants::M_COMPONENT . '_enabletranscode'});
+        //No audio filters
+        $this->set_config('noaudiofilters', $data->{constants::M_COMPONENT . '_noaudiofilters'});
         //playertype
         $this->set_config('playertype', $data->{constants::M_COMPONENT . '_playertype'});
 
@@ -417,6 +432,11 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $r_options->language=$this->get_config('language');
         $r_options->awsregion= get_config(constants::M_COMPONENT, 'awsregion');
         $r_options->fallback= get_config(constants::M_COMPONENT, 'fallback');
+        //No audio filters
+        //if we are shadowing or a music class, or something we can disable noise supression and echo cancellation
+        $r_options->shadowing = $this->get_config('noaudiofilters') ? 1 : 0;
+
+
 
         //fetch API token
         $api_user = get_config(constants::M_COMPONENT,'apiuser');

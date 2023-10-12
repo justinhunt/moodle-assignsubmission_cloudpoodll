@@ -1,5 +1,13 @@
 Change List
 =========
+- added some languages including Maori
+
+Version 1.0.36 (Build 2023062600)
+- Added no audio noise filters setting, to prevent audio distortion when playing back audio at the same time as recording.
+
+Version 1.0.35 (Build 2023051900)
+- M42 support
+
 Version 1.0.34 (Build 2023041500)
 - added RTL support for Arabic/Hebrew/Farsi
 - added corrections feature to standard transcript

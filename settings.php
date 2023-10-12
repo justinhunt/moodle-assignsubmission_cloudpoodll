@@ -189,3 +189,6 @@ $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/language
     $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT . '/enablevideo',
         get_string('enablevideo', constants::M_COMPONENT), '', 1));
 
+    //use non public media urls
+    $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/noaudiofilters',
+        get_string('noaudiofilters', constants::M_COMPONENT), get_string('noaudiofilters_details',constants::M_COMPONENT), 0));

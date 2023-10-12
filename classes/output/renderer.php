@@ -106,6 +106,9 @@ class renderer extends \plugin_renderer_base {
         }else{
             $hints->encoder = 'auto';
         }
+        if($r_options->shadowing){
+            $hints->shadowing = 1;
+        }
         $r_options->string_hints = base64_encode(json_encode($hints));
 
         //Set subtitles

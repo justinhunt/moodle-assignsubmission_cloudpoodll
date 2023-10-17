@@ -1,8 +1,9 @@
 Change List
 =========
+- added some languages including Maori
+
 Version 1.0.37 (Build 2023101300)
 - removed a deprec. Moodle function
-- added some languages including Maori
 
 Version 1.0.36 (Build 2023062600)
 - Added no audio noise filters setting, to prevent audio distortion when playing back audio at the same time as recording.

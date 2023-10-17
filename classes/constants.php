@@ -135,6 +135,17 @@ const LANG_EUES ='eu-ES';
 const LANG_FIFI ='fi-FI';
 const LANG_HUHU ='hu-HU';
 const LANG_MINZ ='mi-NZ';
+const LANG_BGBG = 'bg-BG';
+const LANG_CSCZ = 'cs-CZ';
+const LANG_ELGR = 'el-GR';
+const LANG_HRHR = 'hr-HR';
+const LANG_LTLT = 'lt-LT';
+const LANG_LVLV = 'lv-LV';
+const LANG_SKSK = 'sk-SK';
+const LANG_SLSI = 'sl-SI';
+const LANG_ISIS = 'is-IS';
+const LANG_MKMK = 'mk-MK';
+const LANG_SRRS = 'sr-RS';
 
 
 }

@@ -166,6 +166,17 @@ class utils
             constants::LANG_TEIN => get_string('te-in', constants::M_COMPONENT),
             constants::LANG_TRTR => get_string('tr-tr', constants::M_COMPONENT),
             constants::LANG_UKUA => get_string('uk-ua', constants::M_COMPONENT),
+            constants::LANG_BGBG => get_string('bg-bg', constants::M_COMPONENT),
+            constants::LANG_CSCZ => get_string('cs-cz', constants::M_COMPONENT),
+            constants::LANG_ELGR => get_string('el-gr', constants::M_COMPONENT),
+            constants::LANG_HRHR => get_string('hr-hr', constants::M_COMPONENT),
+            constants::LANG_LTLT => get_string('lt-lt', constants::M_COMPONENT),
+            constants::LANG_LVLV => get_string('lv-lv', constants::M_COMPONENT),
+            constants::LANG_SKSK => get_string('sk-sk', constants::M_COMPONENT),
+            constants::LANG_SLSI => get_string('sl-si', constants::M_COMPONENT),
+            constants::LANG_ISIS => get_string('is-is', constants::M_COMPONENT),
+            constants::LANG_MKMK => get_string('mk-mk', constants::M_COMPONENT),
+            constants::LANG_SRRS => get_string('sr-rs', constants::M_COMPONENT)
         );
     }
 

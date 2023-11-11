@@ -36,8 +36,8 @@ class mobile {
      * @return array       HTML, javascript and otherdata
      */
     public static function mobile_get_cloudpoodll($args) {
-        global $CFG;
-
+        global $CFG, $OUTPUT;
+        $data=[];
         return [
             'templates' => [
                 [

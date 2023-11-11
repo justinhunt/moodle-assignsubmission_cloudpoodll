@@ -17,9 +17,8 @@
 /**
  * This file contains CloudPoodll Assignment Submission mobile config
  *
- * @package    mod
- * @subpackage assign/cloudpoodll
- * @author     Justin Hunt (justin@poodll.com)
+ * @package assignsubmission_cloudpoodll
+ * @author  Justin Hunt - Poodll.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,8 +30,7 @@ $addons = [
             'courseassignsubmission_cloudpoodll' => [
                 'displaydata' => [
                     'title' => 'cloudpoodll submission',
-                    'icon' => $CFG->wwwroot . '/mod/assign/submission/cloudpoodll/pix/icon.png',
-                    'class' => '',
+                    'icon' => $CFG->wwwroot . '/mod/assign/submission/cloudpoodll/pix/icon.png'
                 ],
  
                 'delegate' => 'AddonModAssignSubmissionDelegate', 
@@ -44,9 +42,7 @@ $addons = [
             ],
         ],
         'lang' => [
-            ['pluginname', 'assignsubmission_cloudpoodll'],
-            ['mobilesub', 'assignsubmission_cloudpoodll'],
-            ['mobilelink', 'assignsubmission_cloudpoodll']
+            ['pluginname', 'assignsubmission_cloudpoodll']
         ]
     ],
 ];

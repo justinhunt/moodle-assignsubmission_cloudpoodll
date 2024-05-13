@@ -558,23 +558,29 @@ class utils
      *
      * @return boolean
      */
-    public static function cleanup_files() {
+    public static function cleanup_files($trace=false) {
         global $DB;
 
         $assignids = $DB->get_fieldset_select(constants::M_TABLE,'assignment','assignment>0');
-        if(!$assignids){return true;}
+
+        if(!$assignids){
+            if($trace){$trace->output('No assignments to clean up, exiting');}
+            return true;
+        }
         $assignids = array_unique($assignids);
 
         foreach($assignids as $assignid) {
-            $cm = get_coursemodule_from_instance('assign', $assignid, 0, false, MUST_EXIST);
-            $context = \context_module::instance($cm->id);
-            //delete recorded files
-            $fs = get_file_storage();
-            $fs->delete_area_files($context->id,
+            if($trace){$trace->output("Cleaning up assignment $assignid");}
+            $cm = get_coursemodule_from_instance('assign', $assignid, 0, false,IGNORE_MISSING);
+            if($cm) {
+                $context = \context_module::instance($cm->id);
+                //delete recorded files
+                $fs = get_file_storage();
+                $fs->delete_area_files($context->id,
                     constants::M_COMPONENT,
                     constants::M_FILEAREA);
+            }
         }
-
         return true;
     }
 

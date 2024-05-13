@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.39 (Build 20240424XX)
+- Added a check in cleanup task code to ensure the assignment ID points to a valid assignment
+
 Version 1.0.38 (Build 2023101700)
 - added some languages including Maori
 

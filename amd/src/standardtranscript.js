@@ -40,7 +40,8 @@ define(['jquery','core/log','core/str','core/ajax','core/notification', './copy_
 
                 var copybutton = that.prepare_copy_button(config.prefix + '-text');
                 var correctionsbutton = that.prepare_corrections_button(config);
-                config.container.append('<div class="assignsubmission_cloudpoodll_actionbar">' + copybutton + correctionsbutton + '</div>');
+                //we dont need this anymore, its in the cloudpoodllfeedback
+               // config.container.append('<div class="assignsubmission_cloudpoodll_actionbar">' + copybutton + correctionsbutton + '</div>');
 
 
             });

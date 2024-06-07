@@ -227,8 +227,8 @@ class utils
 
 
         $message = '';
-        $apiuser = trim($apiuser);
-        $apisecret = trim($apisecret);
+        $apiuser = self::super_trim($apiuser);
+        $apisecret = self::super_trim($apisecret);
         if(empty($apiuser)){
             $message .= get_string('noapiuser',constants::M_COMPONENT) . '<br>';
         }
@@ -291,7 +291,7 @@ class utils
         //just in case, lowercase'ify them
         $thewwwroot = strtolower($CFG->wwwroot);
         $theregisteredurl = strtolower($theurl);
-        $theregisteredurl = trim($theregisteredurl);
+        $theregisteredurl = self::super_trim($theregisteredurl);
 
         //add http:// or https:// to URLs that do not have it
         if (strpos($theregisteredurl, 'https://') !== 0 &&
@@ -390,8 +390,8 @@ class utils
         $cache = \cache::make_from_params(\cache_store::MODE_APPLICATION, constants::M_COMPONENT, 'token');
         $tokenobject = $cache->get('recentpoodlltoken');
         $tokenuser = $cache->get('recentpoodlluser');
-        $apiuser = trim($apiuser);
-        $apisecret = trim($apisecret);
+        $apiuser = self::super_trim($apiuser);
+        $apisecret = self::super_trim($apisecret);
 
         //if we got a token and its less than expiry time
         // use the cached one
@@ -631,6 +631,16 @@ class utils
             return $correction;
         } else {
             return false;
+        }
+    }
+
+    // A trim function that does not error or warn if null is passed to it
+    public static function super_trim($str){
+        if($str==null){
+            return '';
+        }else{
+            $str = trim($str);
+            return $str;
         }
     }
 }

@@ -148,5 +148,7 @@ const LANG_MKMK = 'mk-MK';
 const LANG_SRRS = 'sr-RS';
 const LANG_VIVN ='vi-VN';
 
+const LANG_DADK = 'da-DK';
+
 
 }

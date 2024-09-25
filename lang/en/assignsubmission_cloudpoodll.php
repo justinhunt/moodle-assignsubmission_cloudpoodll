@@ -80,6 +80,7 @@ $string['ar-ae'] = 'Arabic (Gulf)';
 $string['ar-sa'] = 'Arabic (Modern Standard)';
 $string['zh-cn'] = 'Chinese (Mandarin-Mainland)';
 $string['nl-nl'] = 'Dutch';
+$string['da-dk'] = 'Danish';
 $string['en-ie'] = 'English (Ireland)';
 $string['en-wl'] = 'English (Wales)';
 $string['en-ab'] = 'English (Scotland)';

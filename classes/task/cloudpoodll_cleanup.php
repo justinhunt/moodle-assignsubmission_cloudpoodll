@@ -42,7 +42,7 @@ class cloudpoodll_cleanup extends \core\task\scheduled_task {
 	 public function execute(){
 		$trace = new \text_progress_trace();
 		$trace->output('running cloudpoodll_cleanup_task task now');
-        utils::cleanup_files();
+        utils::cleanup_files($trace);
 	}
 
 }

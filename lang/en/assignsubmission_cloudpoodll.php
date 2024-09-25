@@ -117,6 +117,7 @@ $string['is-is'] = 'Icelandic'; // Icelandic
 $string['mk-mk'] = 'Macedonian'; // Macedonian
 $string['no-no'] = 'Norwegian'; // Norwegian
 $string['sr-rs'] = 'Serbian'; // Serbian
+$string['vi-vn'] = 'Vietnamese'; // Vietnamese
 
 
 

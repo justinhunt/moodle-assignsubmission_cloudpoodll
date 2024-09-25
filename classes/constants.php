@@ -146,6 +146,7 @@ const LANG_SLSI = 'sl-SI';
 const LANG_ISIS = 'is-IS';
 const LANG_MKMK = 'mk-MK';
 const LANG_SRRS = 'sr-RS';
+const LANG_VIVN ='vi-VN';
 
 
 }

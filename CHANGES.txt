@@ -1,7 +1,6 @@
 Change List
 =========
-
-Version 1.0.39 (Build 20240925xx)
+Version 1.0.39 (Build 2024092500)
 - Removed cleanup scheduled task
 - Added Vietnamese
 

@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   =  2024092500;
+$plugin->version   =  2025042100;
 $plugin->requires  = 2015051100; // Requires Moodle version 2.9 or greater
 $plugin->component =  'assignsubmission_cloudpoodll';
 $plugin->maturity  = MATURITY_STABLE;

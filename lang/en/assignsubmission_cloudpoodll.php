@@ -60,7 +60,7 @@ $string['singapore']='Singapore';
 $string['mumbai']='Mumbai, India';
 $string['capetown'] = 'Capetown, South Africa';
 $string['bahrain'] = 'Bahrain';
-$string['ningxia'] = 'Ningxia, China';
+$string['ningxia'] = 'Ningxia, China (req. Poodll China account)';
 
 $string['forever']='Never expire';
 $string['en-us'] = 'English (US)';

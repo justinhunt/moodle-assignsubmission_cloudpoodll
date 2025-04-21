@@ -1,5 +1,10 @@
 Change List
 =========
+Version 1.0.40 (Build 2025042100)
+- Support Moodle 5 and PHP 8.4
+- Support for custom Cloud Poodll server
+- Added Ningxia region (requires Poodll China subscription)
+
 Version 1.0.39 (Build 2024092500)
 - Removed cleanup scheduled task
 - Added Vietnamese

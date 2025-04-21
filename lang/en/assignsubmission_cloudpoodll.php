@@ -60,6 +60,7 @@ $string['singapore']='Singapore';
 $string['mumbai']='Mumbai, India';
 $string['capetown'] = 'Capetown, South Africa';
 $string['bahrain'] = 'Bahrain';
+$string['ningxia'] = 'Ningxia, China';
 
 $string['forever']='Never expire';
 $string['en-us'] = 'English (US)';
@@ -258,3 +259,5 @@ $string['noaudiofilters'] = 'Disable audio noise filters';
 $string['noaudiofilters_details'] = ' Turning off echo cancellation and noise suppression can be useful when shadowing or recording music.';
 $string['noaudiofilters'] = 'Disable audio noise filters';
 $string['noaudiofilters_desc'] = 'Disable audio noise filters - can be useful when shadowing or recording music.';
+$string['cloudpoodllserver'] = 'Cloud Poodll Server';
+$string['cloudpoodllserver_details'] = 'The server to use for Cloud Poodll. Only change this if Poodll has provided a different one.';

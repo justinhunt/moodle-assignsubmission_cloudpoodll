@@ -32,6 +32,7 @@ class constants
 
 
 const M_COMPONENT='assignsubmission_cloudpoodll';
+const M_DEFAULT_CLOUDPOODLL = "cloud.poodll.com";
 const M_TABLE='assignsubmission_cpoodll';
 const M_URL = '/mod/assign/submission/cloudpoodll';
 const M_FILEAREA = 'submissions_cloudpoodll';
@@ -79,6 +80,7 @@ const REGION_SINGAPORE = 'singapore';
 const REGION_MUMBAI = 'mumbai';
 const REGION_CAPETOWN = 'capetown';
 const REGION_BAHRAIN = 'bahrain';
+const REGION_NINGXIA = 'ningxia';
 
 const TRANSCRIBER_NONE = 0;
 const TRANSCRIBER_AMAZONTRANSCRIBE = 1;

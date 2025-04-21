@@ -125,7 +125,8 @@ class renderer extends \plugin_renderer_base {
         //transcode
         $r_options->transcode  = $r_options->transcode  ? "1" : "0";
 
-        $r_options->localloader = '/mod/assign/submission/cloudpoodll/poodllloader.html';
+        $r_options->localloader = '/mod/assign/submission/cloudpoodll/poodlllocalloader.php';
+        $r_options->cloudpoodllurl = utils::get_cloud_poodll_server();
         $r_options->recid = constants::ID_REC;
         $r_options->dataid = 'therecorder';
         $r_options->appid = constants::APPID;

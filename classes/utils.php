@@ -31,8 +31,14 @@ defined('MOODLE_INTERNAL') || die();
 class utils
 {
 
-    //const CLOUDPOODLL = 'http://localhost/moodle';
-    const CLOUDPOODLL = 'https://cloud.poodll.com';
+    public static function get_cloud_poodll_server() {
+        $conf = get_config(constants::M_COMPONENT);
+        if (isset($conf->cloudpoodllserver) && !empty($conf->cloudpoodllserver)) {
+            return 'https://' . $conf->cloudpoodllserver;
+        } else {
+            return 'https://' . constants::M_DEFAULT_CLOUDPOODLL;
+        }
+    }
 
     public static function fetch_options_videosize(){
         //The size of the video player on the various screens
@@ -97,7 +103,8 @@ class utils
             constants::REGION_SINGAPORE => get_string("singapore",constants::M_COMPONENT),
             constants::REGION_MUMBAI => get_string("mumbai",constants::M_COMPONENT),
             constants::REGION_CAPETOWN => get_string("capetown",constants::M_COMPONENT),
-            constants::REGION_BAHRAIN => get_string("bahrain",constants::M_COMPONENT)
+            constants::REGION_BAHRAIN => get_string("bahrain",constants::M_COMPONENT),
+            constants::REGION_NINGXIA => get_string("ningxia",constants::M_COMPONENT),
         );
     }
 
@@ -412,7 +419,7 @@ class utils
         }
 
         // Send the request & save response to $resp
-        $token_url =self::CLOUDPOODLL . "/local/cpapi/poodlltoken.php";
+        $token_url =self::get_cloud_poodll_server() . "/local/cpapi/poodlltoken.php";
         $postdata = array(
             'username' => $apiuser,
             'password' => $apisecret,
@@ -497,7 +504,7 @@ class utils
         $params['moodlewsrestformat'] = 'json';
         $params['appid'] = constants::M_COMPONENT;
         $params['mediaurl'] = $mediaurl;
-        $serverurl = self::CLOUDPOODLL . '/webservice/rest/server.php';
+        $serverurl = self::get_cloud_poodll_server() . '/webservice/rest/server.php';
         $response = self::curl_fetch($serverurl, $params);
         if (!self::is_json($response)) {
             return false;
@@ -539,7 +546,7 @@ class utils
         $params['moodlewsrestformat'] = 'json';
         $params['minutes'] = 60;
         $params['mediaurl'] = $theurl;
-        $serverurl = self::CLOUDPOODLL . '/webservice/rest/server.php';
+        $serverurl = self::get_cloud_poodll_server() . '/webservice/rest/server.php';
         $response = self::curl_fetch($serverurl, $params);
         if (!self::is_json($response)) {
             return false;
@@ -607,7 +614,7 @@ class utils
 
         //log.debug(params);
 
-        $serverurl = self::CLOUDPOODLL . '/webservice/rest/server.php';
+        $serverurl = self::get_cloud_poodll_server() . '/webservice/rest/server.php';
         $response = self::curl_fetch($serverurl, $params);
         if (!self::is_json($response)) {
             return false;

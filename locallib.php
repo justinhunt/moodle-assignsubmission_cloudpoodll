@@ -927,7 +927,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
      * @param stdClass $submission The submission
      * @return array - return an array of files indexed by filename
      */
-    public function get_files(stdClass $submission, stdClass $user=null) {
+    public function get_files(stdClass $submission, ?stdClass $user = null) {
         global $CFG;
         $result = array();
 

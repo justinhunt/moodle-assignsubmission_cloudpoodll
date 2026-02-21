@@ -1,31 +1,30 @@
-define(['jquery','core/log'], function($,log) {
+define(['jquery', 'core/log'], function ($, log) {
     "use strict"; // jshint ;_;
 
     log.debug('Interactive Transcript: initialising');
 
     return {
 
-        init: function(opts){
+        init: function (opts) {
 
-            var component= opts['component'];
-            var playerid= opts['playerid'];
-            var containerid= opts['containerid'];
-            var cssprefix= opts['cssprefix'];
-            var lang = opts['cssprefix'];
-            var config={};
-            config.settings ={};
-            if(playerid && $('#' + playerid).length) {
+            var component = opts['component'];
+            var playerid = opts['playerid'];
+            var containerid = opts['containerid'];
+            var cssprefix = opts['cssprefix'];
+            var config = {};
+            config.settings = {};
+            if (playerid && $('#' + playerid).length) {
                 config.component = component;
                 config.prefix = cssprefix;
                 config.player = $('#' + playerid)[0];
-                config.title = M.util.get_string('transcripttitle',component);
+                config.title = M.util.get_string('transcripttitle', component);
                 var transcript = this.transcript(config);
                 $('#' + containerid).append(transcript.el());
             }
         },
 
 
-// Defaults
+        // Defaults
         defaults: {
             autoscroll: true,
             clickArea: 'line', //the clickable part of line text,line,timestamp, none
@@ -59,7 +58,7 @@ define(['jquery','core/log'], function($,log) {
                 el.className = className;
                 return el;
             },
-            extend: function(obj) {
+            extend: function (obj) {
                 var type = typeof obj;
                 if (!(type === 'function' || type === 'object' && !!obj)) {
                     return obj;
@@ -77,15 +76,15 @@ define(['jquery','core/log'], function($,log) {
 
         eventEmitter: {
             handlers_: [],
-            on: function on (object, eventtype, callback) {
+            on: function on(object, eventtype, callback) {
                 if (typeof callback === 'function') {
                     this.handlers_.push([object, eventtype, callback]);
                 } else {
                     throw new TypeError('Callback is not a function.');
                 }
             },
-            trigger: function trigger (object, eventtype) {
-                this.handlers_.forEach( function(h) {
+            trigger: function trigger(object, eventtype) {
+                this.handlers_.forEach(function (h) {
                     if (h[0] === object &&
                         h[1] === eventtype) {
                         h[2].apply();
@@ -94,7 +93,7 @@ define(['jquery','core/log'], function($,log) {
             }
         },
 
-        scrollerProto: function(config) {
+        scrollerProto: function (config) {
 
             var initHandlers = function (el) {
                 var self = this;
@@ -177,7 +176,6 @@ define(['jquery','core/log'], function($,log) {
             var scrollToElement = function (element) {
                 if (this.canScroll()) {
                     var parent = element.parentElement;
-                    var parentOffsetBottom = parent.offsetTop + parent.clientHeight;
                     var elementOffsetBottom = element.offsetTop + element.clientHeight;
                     var relTop = element.offsetTop;
                     var relBottom = (element.offsetTop + element.clientHeight);
@@ -193,13 +191,13 @@ define(['jquery','core/log'], function($,log) {
                                         console.log(parent);
                     */
                     //scroll to center if we must
-                    if (config.settings.scrollToCenter){
-                        centerPosCorrection = Math.round(parent.clientHeight/2 - element.clientHeight/2);
+                    if (config.settings.scrollToCenter) {
+                        centerPosCorrection = Math.round(parent.clientHeight / 2 - element.clientHeight / 2);
                     }
                     // If the top of the line is above the top of the parent view, were scrolling up,
                     // so we want to move the top of the element downwards to match the top of the parent.
                     if (relTop < parent.scrollTop + centerPosCorrection) {
-                        newPos = element.offsetTop  -centerPosCorrection;
+                        newPos = element.offsetTop - centerPosCorrection;
 
                         // If the bottom of the line is below the parent view, we're scrolling down, so we want the
                         // bottom edge of the line to move up to meet the bottom edge of the parent.
@@ -232,19 +230,18 @@ define(['jquery','core/log'], function($,log) {
 
             return {
                 init: init,
-                to : scrollToElement,
-                canScroll : canScroll,
-                inUse : inUse
-            }
+                to: scrollToElement,
+                canScroll: canScroll,
+                inUse: inUse
+            };
         },
 
-        scroller:  function(element,config) {
+        scroller: function (element, config) {
             return Object.create(this.scrollerProto(config)).init(element);
         },
 
 
-        /*global config*/
-        trackList: function(config) {
+        trackList: function (config) {
             var activeTrack;
             return {
                 get: function () {
@@ -274,9 +271,8 @@ define(['jquery','core/log'], function($,log) {
             };
         },
 
-        /*globals utils, eventEmitter,scrollable*/
 
-        widget:  function(config) {
+        widget: function (config) {
             var that = this;
             var thewidget = {};
             thewidget.element = {};
@@ -292,7 +288,7 @@ define(['jquery','core/log'], function($,log) {
                 header.textContent = config.title;
                 return header;
             };
-            var createSelector = function (){
+            var createSelector = function () {
                 var selector = that.utils.createEl('select', config.prefix + '-selector');
                 config.validTracks.forEach(function (track, i) {
                     var option = document.createElement('option');
@@ -300,7 +296,7 @@ define(['jquery','core/log'], function($,log) {
                     option.textContent = track.label + ' (' + track.language + ')';
                     selector.appendChild(option);
                 });
-                selector.addEventListener('change', function (e) {
+                selector.addEventListener('change', function () {
                     setTrack(document.querySelector('#' + config.prefix + '-' + config.player.id + ' option:checked').value);
                     trigger('trackchanged');
                 });
@@ -313,13 +309,13 @@ define(['jquery','core/log'], function($,log) {
                     if ((config.settings.clickArea === 'line') || // clickArea: 'line' activates on all elements
                         (config.settings.clickArea === 'timestamp' && clickedClasses.contains(config.prefix + '-timestamp')) ||
                         (config.settings.clickArea === 'text' && clickedClasses.contains(config.prefix + '-text'))) {
-                        config.player.currentTime =clickedTime ;
+                        config.player.currentTime = clickedTime;
                     }
                 }
             };
             var createLine = function (cue) {
-                var line = that.utils.createEl('div', config.prefix +'-line');
-                var timestamp = that.utils.createEl('span',config.prefix + '-timestamp');
+                var line = that.utils.createEl('div', config.prefix + '-line');
+                var timestamp = that.utils.createEl('span', config.prefix + '-timestamp');
                 var text = that.utils.createEl('span', config.prefix + '-text');
                 line.setAttribute('data-begin', cue.startTime);
                 line.setAttribute('tabindex', thewidget._options.tabIndex || 0);
@@ -343,7 +339,7 @@ define(['jquery','core/log'], function($,log) {
                     if (track.mode !== 'showing') {
                         track.mode = 'hidden';
                     }
-                    window.setTimeout(function() {
+                    window.setTimeout(function () {
                         createTranscriptBody(track);
                     }, 100);
                 } else {
@@ -355,7 +351,7 @@ define(['jquery','core/log'], function($,log) {
                     body.innerHTML = '';
                     body.appendChild(fragment);
                     body.setAttribute('lang', track.language);
-                    body.scroll = that.scroller(body,config);
+                    body.scroll = that.scroller(body, config);
                     body.addEventListener('click', clickToSeekHandler);
                     thewidget.element.replaceChild(body, thewidget.body);
                     thewidget.body = body;
@@ -375,7 +371,7 @@ define(['jquery','core/log'], function($,log) {
                     var selector = createSelector();
                     el.appendChild(selector);
                 }
-                thewidget.body = that.utils.createEl('div',config.prefix + '-body');
+                thewidget.body = that.utils.createEl('div', config.prefix + '-body');
                 el.appendChild(thewidget.body);
                 setTrack(config.currentTrack);
                 return this;
@@ -384,7 +380,7 @@ define(['jquery','core/log'], function($,log) {
                 createTranscriptBody(track, trackCreated);
             };
             var setCue = function (time) {
-                var active, i, line, begin, end;
+                var i, line, begin, end;
                 var lines = thewidget.body.children;
                 for (i = 0; i < lines.length; i++) {
                     line = lines[i];
@@ -397,7 +393,8 @@ define(['jquery','core/log'], function($,log) {
                     if (time > begin && time < end) {
                         if (!line.classList.contains('is-active')) { // don't update if it hasn't changed
                             line.classList.add('is-active');
-                            if (config.settings.autoscroll && !(config.settings.stopScrollWhenInUse && thewidget.body.scroll.inUse())) {
+                            if (config.settings.autoscroll &&
+                                !(config.settings.stopScrollWhenInUse && thewidget.body.scroll.inUse())) {
                                 thewidget.body.scroll.to(line);
                             }
                         }
@@ -413,16 +410,16 @@ define(['jquery','core/log'], function($,log) {
                 create: create,
                 setTrack: setTrack,
                 setCue: setCue,
-                el : el,
+                el: el,
                 on: on,
                 trigger: trigger,
             };
         },
 
-        transcript: function(config){
-            var that=this;
-            var options=this.defaults;
-            this.utils.prefix='transcript';
+        transcript: function (config) {
+            var that = this;
+            var options = this.defaults;
+            this.utils.prefix = 'transcript';
 
             config.validTracks = this.trackList(config).get();
             config.currentTrack = this.trackList(config).active(config.validTracks);

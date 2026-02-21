@@ -31,8 +31,9 @@ defined('MOODLE_INTERNAL') || die();
  * @param int $oldversion
  * @return bool
  */
-function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion) {
-	 global $CFG, $DB;
+function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion)
+{
+    global $CFG, $DB;
 
     $dbman = $DB->get_manager();
 
@@ -59,7 +60,20 @@ function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion) {
 
     }
 
+    if ($oldversion < 2026021901) {
+
+        // Define field vectordata to be added to assignsubmission_cpoodll.
+        $table = new xmldb_table(constants::M_TABLE);
+        $field = new xmldb_field('vectordata', XMLDB_TYPE_TEXT, null, null, null, null, null, 'secureplayback');
+
+        // Conditionally launch add field vectordata.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cloud Poodll savepoint reached.
+        upgrade_plugin_savepoint(true, 2026021901, 'assignsubmission', constants::M_SUBPLUGIN);
+    }
+
     return true;
 }
-
-

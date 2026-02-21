@@ -1,0 +1,113 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+
+<div class="assignsubmission_cloudpoodll_whiteboard_cont"
+     id="{{uniqid}}"
+     data-width="{{width}}"
+     data-height="{{height}}"
+     data-updatecontrol="{{updatecontrol}}"
+     data-vectorcontrol="{{vectorcontrol}}"
+     data-backimage="{{backimage}}"
+     data-vdata="{{vdata}}"
+     data-draftitemid="{{draftitemid}}"
+     data-token="{{token}}">
+    <div class="wb-outer-wrapper">
+        <div class="wb-sidebar" id="{{uniqid}}_sidebar">
+            <div class="wb-sidebar-toggle" title="Toggle Sidebar">
+                <i class="fa fa-chevron-left"></i>
+            </div>
+            <div class="wb-tools">
+                <button type="button" class="wb-tool active" data-tool="pencil" title="Pencil"><i class="fa fa-pencil"></i></button>
+                <button type="button" class="wb-tool" data-tool="eraser" title="Eraser"><i class="fa fa-eraser"></i></button>
+                <button type="button" class="wb-tool" data-tool="line" title="Line"><i class="fa fa-minus"></i></button>
+                <button type="button" class="wb-tool" data-tool="rect" title="Rectangle"><i class="fa fa-square-o"></i></button>
+                <button type="button" class="wb-tool" data-tool="circle" title="Circle"><i class="fa fa-circle-o"></i></button>
+                <button type="button" class="wb-tool" data-tool="text" title="Text">Aa</button>
+                <button type="button" class="wb-tool" data-tool="picker" title="Eyedropper"><i class="fa fa-eyedropper"></i></button>
+            </div>
+            <div class="wb-colors">
+                <div class="wb-color-group">
+                    <label>stroke</label>
+                    <div class="wb-color-box wb-stroke-color" style="background-color: #000000;" title="Stroke Color"></div>
+                    <input type="color" class="wb-color-picker wb-stroke-picker" value="#000000" style="display:none">
+                </div>
+                <div class="wb-color-group">
+                    <label>fill</label>
+                    <div class="wb-color-box wb-fill-color" style="background-color: #ffffff;" title="Fill Color"></div>
+                    <input type="color" class="wb-color-picker wb-fill-picker" value="#ffffff" style="display:none">
+                </div>
+                <div class="wb-color-group">
+                    <label>bg</label>
+                    <div class="wb-color-box wb-bg-color" style="background-color: #ffffff;" title="Background Color"></div>
+                    <input type="color" class="wb-color-picker wb-bg-picker" value="#ffffff" style="display:none">
+                </div>
+            </div>
+            <div class="wb-history">
+                <button type="button" class="wb-action undo-whiteboard" title="Undo"><i class="fa fa-undo"></i></button>
+                <button type="button" class="wb-action redo-whiteboard" title="Redo"><i class="fa fa-repeat"></i></button>
+            </div>
+            <div class="wb-zoom">
+                <button type="button" class="wb-action zoom-out" title="Zoom Out"><i class="fa fa-search-minus"></i></button>
+                <button type="button" class="wb-action zoom-in" title="Zoom In"><i class="fa fa-search-plus"></i></button>
+            </div>
+            <button type="button" class="btn btn-link clear-whiteboard" title="Clear Canvas">Clear</button>
+        </div>
+        <div class="wb-main-area">
+            <div class="wb-top-bar">
+                <div class="wb-stroke-sizes">
+                    <div class="wb-size" data-size="1" title="1px"><div class="wb-dot" style="width:2px; height:2px;"></div></div>
+                    <div class="wb-size" data-size="3" title="3px"><div class="wb-dot" style="width:4px; height:4px;"></div></div>
+                    <div class="wb-size active" data-size="5" title="5px"><div class="wb-dot" style="width:6px; height:6px;"></div></div>
+                    <div class="wb-size" data-size="8" title="8px"><div class="wb-dot" style="width:10px; height:10px;"></div></div>
+                    <div class="wb-size" data-size="12" title="12px"><div class="wb-dot" style="width:14px; height:14px;"></div></div>
+                    <div class="wb-size" data-size="18" title="18px"><div class="wb-dot" style="width:20px; height:20px;"></div></div>
+                </div>
+                <div class="wb-text-settings" style="display: none;">
+                    <label class="wb-text-style-label"><input type="checkbox" class="wb-text-italic"> italic</label>
+                    <label class="wb-text-style-label"><input type="checkbox" class="wb-text-bold"> bold</label>
+                    <select class="wb-text-size">
+                        <option value="12">12px</option>
+                        <option value="14">14px</option>
+                        <option value="18" selected>18px</option>
+                        <option value="24">24px</option>
+                        <option value="36">36px</option>
+                        <option value="48">48px</option>
+                    </select>
+                    <select class="wb-text-font">
+                        <option value="sans-serif">sans-serif</option>
+                        <option value="serif">serif</option>
+                        <option value="'Courier New', Courier, monospace" selected>Courier New / monospace</option>
+                        <option value="Arial, Helvetica, sans-serif">Arial / Helvetica</option>
+                        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                        <option value="'Comic Sans MS', cursive, sans-serif">Comic Sans</option>
+                    </select>
+                </div>
+            </div>
+            <div class="wb-canvas-area">
+                <div id="{{uniqid}}_whiteboard" class="assignsubmission_cloudpoodll_whiteboard" style="width: {{width}}px; height: {{height}}px;">
+                    <canvas id="{{uniqid}}_canvas" width="{{width}}" height="{{height}}"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="assignsubmission_cloudpoodll_whiteboard_footer">
+        <button type="button" class="btn btn-primary save-whiteboard">{{#str}}save, assignsubmission_cloudpoodll{{/str}}</button>
+    </div>
+</div>
+
+{{#js}}
+require(['assignsubmission_cloudpoodll/whiteboard'], function(Whiteboard) {
+    Whiteboard.init("{{uniqid}}");
+});
+{{/js}}

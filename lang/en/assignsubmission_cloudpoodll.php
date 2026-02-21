@@ -35,34 +35,49 @@ $string['pluginname'] = 'Cloud Poodll Submissions';
 $string['recorder'] = 'Recorder Type';
 $string['recorderaudio'] = 'Audio Recorder';
 $string['recordervideo'] = 'Video Recorder';
+$string['recorderwhiteboard'] = 'Whiteboard Recorder';
+$string['boardsize'] = 'Whiteboard size';
+$string['backimage'] = 'Background image';
+$string['clear'] = 'Clear';
+$string['save'] = 'Save';
+$string['saving'] = 'Saving...';
+$string['saved'] = 'Saved';
+$string['play'] = 'Play';
+
+$string['recorderwhiteboard'] = 'Whiteboard Recorder';
+$string['boardsize'] = 'Whiteboard size';
+$string['backimage'] = 'Background image';
+$string['clear'] = 'Clear';
+$string['save'] = 'Save';
+$string['play'] = 'Play';
 $string['defaultrecorder'] = 'Recorder Type';
 $string['defaultrecorderdetails'] = '';
 
-$string['apiuser']='Poodll API User ';
-$string['apiuser_details']='The Poodll account username that authorises Poodll on this site.';
-$string['apisecret']='Poodll API Secret ';
-$string['apisecret_details']='The Poodll API secret. See <a href= "https://support.poodll.com/support/solutions/articles/19000083076-cloud-poodll-api-secret">here</a> for more details';
-$string['enabletranscription']='Enable Transcription';
-$string['enabletranscription_details']='Cloud Poodll can transcribe the student speaking if required';
-$string['enabletranscode']='Enable Transcode';
-$string['enabletranscode_details']='Cloud Poodll can transcode the recording to mp3/mp4';
-$string['language']='Cloud Poodll Speaker Language';
+$string['apiuser'] = 'Poodll API User ';
+$string['apiuser_details'] = 'The Poodll account username that authorises Poodll on this site.';
+$string['apisecret'] = 'Poodll API Secret ';
+$string['apisecret_details'] = 'The Poodll API secret. See <a href= "https://support.poodll.com/support/solutions/articles/19000083076-cloud-poodll-api-secret">here</a> for more details';
+$string['enabletranscription'] = 'Enable Transcription';
+$string['enabletranscription_details'] = 'Cloud Poodll can transcribe the student speaking if required';
+$string['enabletranscode'] = 'Enable Transcode';
+$string['enabletranscode_details'] = 'Cloud Poodll can transcode the recording to mp3/mp4';
+$string['language'] = 'Cloud Poodll Speaker Language';
 
-$string['useast1']='US East';
-$string['tokyo']='Tokyo, Japan';
-$string['sydney']='Sydney, Australia';
-$string['dublin']='Dublin, Ireland';
-$string['ottawa']='Ottawa, Canada';
-$string['frankfurt']='Frankfurt, Germany';
-$string['london']='London, U.K';
-$string['saopaulo']='Sao Paulo, Brazil';
-$string['singapore']='Singapore';
-$string['mumbai']='Mumbai, India';
+$string['useast1'] = 'US East';
+$string['tokyo'] = 'Tokyo, Japan';
+$string['sydney'] = 'Sydney, Australia';
+$string['dublin'] = 'Dublin, Ireland';
+$string['ottawa'] = 'Ottawa, Canada';
+$string['frankfurt'] = 'Frankfurt, Germany';
+$string['london'] = 'London, U.K';
+$string['saopaulo'] = 'Sao Paulo, Brazil';
+$string['singapore'] = 'Singapore';
+$string['mumbai'] = 'Mumbai, India';
 $string['capetown'] = 'Capetown, South Africa';
 $string['bahrain'] = 'Bahrain';
 $string['ningxia'] = 'Ningxia, China (req. Poodll China account)';
 
-$string['forever']='Never expire';
+$string['forever'] = 'Never expire';
 $string['en-us'] = 'English (US)';
 $string['en-gb'] = 'English (GB)';
 $string['en-au'] = 'English (AU)';
@@ -123,9 +138,9 @@ $string['vi-vn'] = 'Vietnamese'; // Vietnamese
 
 
 
-$string['awsregion']='AWS Region';
+$string['awsregion'] = 'AWS Region';
 //$string['region']='AWS Region';
-$string['expiredays']='Cloud Poodll Days to keep file';
+$string['expiredays'] = 'Cloud Poodll Days to keep file';
 
 
 $string['timelimit'] = 'Cloud Poodll Rec. Time Limit';
@@ -187,62 +202,62 @@ $string['fallbackupload'] = 'Upload';
 $string['fallbackiosupload'] = 'iOS: upload, else warning';
 $string['fallbackwarning'] = 'Warning';
 
-$string['playertype']='Cloud Poodll Transcript Display (teacher)';
-$string['playertypestudent']='Cloud Poodll Transcript Display(student)';
-$string['playertypedefault']='No transcript.';
-$string['playertypeinteractivetranscript']='Interactive transcript';
-$string['playertypestandardtranscript']='Static transcript';
-$string['defaultplayertype']='Transcript display(teacher)';
-$string['defaultplayertypestudent']='Transcript display(student)';
-$string['defaultplayertypedetails']='Use the interactive or static transcript player if you are transcribing or show no transcript';
-$string['transcripttitle']='Transcript';
+$string['playertype'] = 'Cloud Poodll Transcript Display (teacher)';
+$string['playertypestudent'] = 'Cloud Poodll Transcript Display(student)';
+$string['playertypedefault'] = 'No transcript.';
+$string['playertypeinteractivetranscript'] = 'Interactive transcript';
+$string['playertypestandardtranscript'] = 'Static transcript';
+$string['defaultplayertype'] = 'Transcript display(teacher)';
+$string['defaultplayertypestudent'] = 'Transcript display(student)';
+$string['defaultplayertypedetails'] = 'Use the interactive or static transcript player if you are transcribing or show no transcript';
+$string['transcripttitle'] = 'Transcript';
 
 //these errors are displayed on settings page
 $string['displaysubs'] = '{$a->subscriptionname} : expires {$a->expiredate}';
 $string['noapiuser'] = "No API user entered. This plugin will not work correctly.";
 $string['noapisecret'] = "No API secret entered. This plugin will not work correctly.";
 $string['credentialsinvalid'] = "The API user and secret entered could not be used to get access. Please check them.";
-$string['appauthorised']= "Assign Submission Cloud Poodll is authorised for this site.";
-$string['appnotauthorised']= "Assign Submission Cloud Poodll  is NOT authorised for this site.";
-$string['refreshtoken']= "Refresh license information";
-$string['notokenincache']= "Refresh to see license information. Contact Poodll support if there is a problem.";
+$string['appauthorised'] = "Assign Submission Cloud Poodll is authorised for this site.";
+$string['appnotauthorised'] = "Assign Submission Cloud Poodll  is NOT authorised for this site.";
+$string['refreshtoken'] = "Refresh license information";
+$string['notokenincache'] = "Refresh to see license information. Contact Poodll support if there is a problem.";
 
 //these errors are displayed on activity page
 $string['nocredentials'] = 'API user and secret not entered. Please enter them on <a href="{$a}">the settings page.</a> You can get them from <a href="https://poodll.com/member">Poodll.com.</a>';
 $string['novalidcredentials'] = 'API user and secret were rejected and could not gain access. Please check them on <a href="{$a}">the settings page.</a> You can get them from <a href="https://poodll.com/member">Poodll.com.</a>';
 $string['nosubscriptions'] = "There is no current subscription for this site/plugin.";
 
-$string['clicktohide']= "Hide current submission";
-$string['clicktoshow']= "Show current submission";
+$string['clicktohide'] = "Hide current submission";
+$string['clicktoshow'] = "Show current submission";
 
-$string['transcribernone']= "No transcription";
-$string['transcriberamazon']= "Normal transcription";
-$string['transcribergooglecloud']= "Fast transcription(audio only)";
+$string['transcribernone'] = "No transcription";
+$string['transcriberamazon'] = "Normal transcription";
+$string['transcribergooglecloud'] = "Fast transcription(audio only)";
 
-$string['recorderdisplayname']= "Recorder";
-$string['customname']= "Custom name";
-$string['customnamedetails']= "Set a custom name for the submission field(ie not 'Recorder') as displayed inside the plugin";
+$string['recorderdisplayname'] = "Recorder";
+$string['customname'] = "Custom name";
+$string['customnamedetails'] = "Set a custom name for the submission field(ie not 'Recorder') as displayed inside the plugin";
 
 $string['numwords'] = '({$a} words)';
-$string['divider']= '---------------{$a}----------------';
-$string['customdivider']= '---------------{$a->customname} ("{$a->pluginname}")----------------';
+$string['divider'] = '---------------{$a}----------------';
+$string['customdivider'] = '---------------{$a->customname} ("{$a->pluginname}")----------------';
 
 
-$string['showaudiolightbox']="Show filename(lightbox)";
-$string['showvideolightbox']="Show filename (lightbox)";
-$string['audiosingledisplay']="Show audio player (single)";
-$string['audiolistdisplay']="Show audio player (in lists)";
-$string['videosingledisplay']="Video player size (single)";
-$string['videolistdisplay']="Video player size (in lists)";
+$string['showaudiolightbox'] = "Show filename(lightbox)";
+$string['showvideolightbox'] = "Show filename (lightbox)";
+$string['audiosingledisplay'] = "Show audio player (single)";
+$string['audiolistdisplay'] = "Show audio player (in lists)";
+$string['videosingledisplay'] = "Video player size (single)";
+$string['videolistdisplay'] = "Video player size (in lists)";
 $string['shownovideo'] = 'Show filename';
 $string['shownoaudio'] = 'Show filename';
 //$string['videoplaceholder'] = ' [video submitted] ';
 //$string['audioplaceholder'] = ' [audio submitted] ';
 $string['safesave'] = 'Enable Safe Save - disables assignment submit button until Cloud Poodll upload is complete. ';
-$string['cloudpoodll_cleanup_task']="CloudPoodll Assign Submission cleanup";
+$string['cloudpoodll_cleanup_task'] = "CloudPoodll Assign Submission cleanup";
 //$string['secureplayback']='Restricted playback';
-$string['enablesecureplayback']='Restricted playback';
-$string['enablesecureplayback_details']='If enabled, playback URLs for submissions are time limited and will expire after 60 minutes.';
+$string['enablesecureplayback'] = 'Restricted playback';
+$string['enablesecureplayback_details'] = 'If enabled, playback URLs for submissions are time limited and will expire after 60 minutes.';
 $string['enableaudio'] = "Enable audio recording";
 $string['enablevideo'] = "Enable video recording";
 //$string['managecredsheading'] = "Manage Poodll API Credentials";
@@ -252,7 +267,7 @@ $string['freetrial'] = "Get Cloud Poodll API Credentials and a Free Trial";
 $string['freetrial_desc'] = "A dialog should appear that allows you to register for a free trial with Poodll. After registering you should login to the members dashboard to get your API user and secret. And to register your site URL.";
 //$string['memberdashboard'] = "Member Dashboard";
 //$string['memberdashboard_desc'] = "";
-$string['fillcredentials']="Set API user and secret with existing credentials";
+$string['fillcredentials'] = "Set API user and secret with existing credentials";
 $string['textcopiedtoclipboard'] = 'Text copied to clipboard';
 $string['unabletocopytoclipboard'] = 'Unable to copy text to the clipboard';
 $string['noaudiofilters'] = 'Disable audio noise filters';
@@ -261,3 +276,5 @@ $string['noaudiofilters'] = 'Disable audio noise filters';
 $string['noaudiofilters_desc'] = 'Disable audio noise filters - can be useful when shadowing or recording music.';
 $string['cloudpoodllserver'] = 'Cloud Poodll Server';
 $string['cloudpoodllserver_details'] = 'The server to use for Cloud Poodll. Only change this if Poodll has provided a different one.';
+$string['confirmclearcanvas'] = 'Are you sure you want to clear the canvas?';
+$string['enterthetext'] = 'Enter the text:';

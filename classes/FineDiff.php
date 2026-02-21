@@ -143,8 +143,7 @@ class FineDiffReplaceOp extends FineDiffOp {
 	public function getOpcode() {
 		if ( $this->fromLen === 1 ) {
 			$del_opcode = 'd';
-			}
-		else {
+			} else {
 			$del_opcode = "d{$this->fromLen}";
 			}
 		$to_len = strlen($this->text);
@@ -185,11 +184,9 @@ class FineDiffOps {
 	public function appendOpcode($opcode, $from, $from_offset, $from_len) {
 		if ( $opcode === 'c' ) {
 			$edits[] = new FineDiffCopyOp($from_len);
-			}
-		else if ( $opcode === 'd' ) {
+			} else if ( $opcode === 'd' ) {
 			$edits[] = new FineDiffDeleteOp($from_len);
-			}
-		else /* if ( $opcode === 'i' ) */ {
+			} else /* if ( $opcode === 'i' ) */ {
 			$edits[] = new FineDiffInsertOp(substr($from, $from_offset, $from_len));
 			}
 		}
@@ -244,14 +241,11 @@ class FineDiff {
 			$n = $edit->getFromLen();
 			if ( $edit instanceof FineDiffCopyOp ) {
 				FineDiff::renderDiffToHTMLFromOpcode('c', $this->from_text, $in_offset, $n);
-				}
-			else if ( $edit instanceof FineDiffDeleteOp ) {
+				} else if ( $edit instanceof FineDiffDeleteOp ) {
 				FineDiff::renderDiffToHTMLFromOpcode('d', $this->from_text, $in_offset, $n);
-				}
-			else if ( $edit instanceof FineDiffInsertOp ) {
+				} else if ( $edit instanceof FineDiffInsertOp ) {
 				FineDiff::renderDiffToHTMLFromOpcode('i', $edit->getText(), 0, $edit->getToLen());
-				}
-			else /* if ( $edit instanceof FineDiffReplaceOp ) */ {
+				} else /* if ( $edit instanceof FineDiffReplaceOp ) */ {
 				FineDiff::renderDiffToHTMLFromOpcode('d', $this->from_text, $in_offset, $n);
 				FineDiff::renderDiffToHTMLFromOpcode('i', $edit->getText(), 0, $edit->getToLen());
 				}
@@ -312,19 +306,16 @@ class FineDiff {
 			$n = intval(substr($opcodes, $opcodes_offset));
 			if ( $n ) {
 				$opcodes_offset += strlen(strval($n));
-				}
-			else {
+				} else {
 				$n = 1;
 				}
 			if ( $opcode === 'c' ) { // copy n characters from source
 				call_user_func($callback, 'c', $from, $from_offset, $n, '');
 				$from_offset += $n;
-				}
-			else if ( $opcode === 'd' ) { // delete n characters from source
+				} else if ( $opcode === 'd' ) { // delete n characters from source
 				call_user_func($callback, 'd', $from, $from_offset, $n, '');
 				$from_offset += $n;
-				}
-			else /* if ( $opcode === 'i' ) */ { // insert n characters from opcodes
+				} else /* if ( $opcode === 'i' ) */ { // insert n characters from opcodes
 				call_user_func($callback, 'i', $opcodes, $opcodes_offset + 1, $n);
 				$opcodes_offset += 1 + $n;
 				}
@@ -407,8 +398,7 @@ class FineDiff {
 			else if ( $fragment_edit instanceof FineDiffCopyOp && $this->last_edit instanceof FineDiffCopyOp ) {
 				$this->edits[count($this->edits)-1]->increase($fragment_edit->getFromLen());
 				$this->from_offset += $fragment_edit->getFromLen();
-				}
-			else {
+				} else {
 				/* $fragment_edit instanceof FineDiffCopyOp */
 				/* $fragment_edit instanceof FineDiffDeleteOp */
 				/* $fragment_edit instanceof FineDiffInsertOp */
@@ -457,8 +447,7 @@ class FineDiff {
 			if ( !$from_segment_length || !$to_segment_length ) {
 				if ( $from_segment_length ) {
 					$result[$from_segment_start * 4] = new FineDiffDeleteOp($from_segment_length);
-					}
-				else if ( $to_segment_length ) {
+					} else if ( $to_segment_length ) {
 					$result[$from_segment_start * 4 + 1] = new FineDiffInsertOp(substr($to_text, $to_segment_start, $to_segment_length));
 					}
 				continue;
@@ -478,8 +467,7 @@ class FineDiff {
 				if ( !isset($cached_array_keys_for_current_segment[$from_base_fragment]) ) {
 					if ( !isset($cached_array_keys[$from_base_fragment]) ) {
 						$to_all_fragment_indices = $cached_array_keys[$from_base_fragment] = array_keys($to_fragments, $from_base_fragment, true);
-						}
-					else {
+						} else {
 						$to_all_fragment_indices = $cached_array_keys[$from_base_fragment];
 						}
 					// get only indices which falls within current segment
@@ -491,12 +479,10 @@ class FineDiff {
 							$to_fragment_indices[] = $to_fragment_index;
 							}
 						$cached_array_keys_for_current_segment[$from_base_fragment] = $to_fragment_indices;
-						}
-					else {
+						} else {
 						$to_fragment_indices = $to_all_fragment_indices;
 						}
-					}
-				else {
+					} else {
 					$to_fragment_indices = $cached_array_keys_for_current_segment[$from_base_fragment];
 					}
 				// iterate through collected indices
@@ -541,8 +527,7 @@ class FineDiff {
 				$jobs[] = array($from_segment_start, $best_from_start, $to_segment_start, $best_to_start);
 				$result[$best_from_start * 4 + 2] = new FineDiffCopyOp($best_copy_length);
 				$jobs[] = array($best_from_start + $best_copy_length, $from_segment_end, $best_to_start + $best_copy_length, $to_segment_end);
-				}
-			else {
+				} else {
 				$result[$from_segment_start * 4 ] = new FineDiffReplaceOp($from_segment_length, substr($to_text, $to_segment_start, $to_segment_length));
 				}
 			}
@@ -580,8 +565,7 @@ class FineDiff {
 			if ( !$from_segment_len || !$to_segment_len ) {
 				if ( $from_segment_len ) {
 					$result[$from_segment_start * 4 + 0] = new FineDiffDeleteOp($from_segment_len);
-					}
-				else if ( $to_segment_len ) {
+					} else if ( $to_segment_len ) {
 					$result[$from_segment_start * 4 + 1] = new FineDiffInsertOp(substr($to_text, $to_segment_start, $to_segment_len));
 					}
 				continue;
@@ -601,8 +585,7 @@ class FineDiff {
 						}
 					$copy_len--;
 					}
-				}
-			else {
+				} else {
 				$copy_len = $from_segment_len;
 				while ( $copy_len ) {
 					$from_copy_start = $from_segment_start;
@@ -677,15 +660,13 @@ class FineDiff {
 	private static function renderDiffToHTMLFromOpcode($opcode, $from, $from_offset, $from_len) {
 		if ( $opcode === 'c' ) {
 			echo htmlentities(substr($from, $from_offset, $from_len));
-		}
-		else if ( $opcode === 'd' ) {
+		} else if ( $opcode === 'd' ) {
 			$deletion = substr($from, $from_offset, $from_len);
 			if ( strcspn($deletion, " \n\r") === 0 ) {
 				$deletion = str_replace(array("\n","\r"), array('\n','\r'), $deletion);
 				}
 			echo '<del>', htmlentities($deletion), '</del>';
-		}
-		else /* if ( $opcode === 'i' ) */ {
+		} else /* if ( $opcode === 'i' ) */ {
  			echo '<ins>', htmlentities(substr($from, $from_offset, $from_len)), '</ins>';
 		}
 	}

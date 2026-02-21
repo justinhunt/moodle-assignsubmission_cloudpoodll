@@ -16,6 +16,7 @@
         <FIELD NAME="vttdata" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="vtt data associated with file" />
         <FIELD NAME="fileexpiry" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="file expiry date" />
         <FIELD NAME="secureplayback" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="secure playback" />
+        <FIELD NAME="vectordata" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="the json array of drawing steps" />
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="The unique id for this cloudpoodll submission." NEXT="assignment"/>

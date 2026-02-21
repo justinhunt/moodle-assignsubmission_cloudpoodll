@@ -36,8 +36,9 @@ use assignsubmission_cloudpoodll\constants;
  * @param bool $forcedownload
  * @return bool false if file not found, does not return if found - just send the file
  */
-function assignsubmission_cloudpoodll_pluginfile($course, $cm, context $context, $filearea, $args, $forcedownload) {
-    global $USER, $DB;
+function assignsubmission_cloudpoodll_pluginfile($course, $cm, context $context, $filearea, $args, $forcedownload)
+{
+    global $USER, $DB, $CFG;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
         return false;
@@ -45,8 +46,37 @@ function assignsubmission_cloudpoodll_pluginfile($course, $cm, context $context,
 
     require_login($course, false, $cm);
     $itemid = (int)array_shift($args);
-	
 
+    if (!($itemid == 0 && $filearea == constants::M_WB_FILEAREA)) {
+        require_once($CFG->dirroot . '/mod/assign/locallib.php');
+        $assign = new assign($context, $cm, $course);
+
+        $record = $DB->get_record('assign_submission', array('id' => $itemid), 'userid, assignment, groupid', MUST_EXIST);
+        $userid = $record->userid;
+        $groupid = $record->groupid;
+
+        $instance = $assign->get_instance();
+
+        if ($instance->id != $record->assignment) {
+            return false;
+        }
+
+        if ($instance->teamsubmission && !$assign->can_view_group_submission($groupid)) {
+            return false;
+        }
+
+        if (!$instance->teamsubmission && !$assign->can_view_submission($userid)) {
+            return false;
+        }
+
+        // Check is users submission or has grading permission.
+        if ($USER->id != $userid &&
+        !$instance->teamsubmission &&
+        !has_capability('mod/assign:grade', $context) &&
+        !has_capability('assignsubmission/' . constants::M_SUBPLUGIN . ':reviewsubmissions', $context)) {
+            return false;
+        }
+    }
 
     $relativepath = implode('/', $args);
 
@@ -56,53 +86,56 @@ function assignsubmission_cloudpoodll_pluginfile($course, $cm, context $context,
     if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
         return false;
     }
-    $forcedownload = true;
+
+    // Background image should not be forced down.
+    $forcedownload = ($filearea != constants::M_WB_FILEAREA);
     send_stored_file($file, 0, 0, $forcedownload); // download MUST be forced - security!
 }
 
 
 
-function assignsubmission_cloudpoodll_output_fragment_mform($args) {
+function assignsubmission_cloudpoodll_output_fragment_mform($args)
+{
     global $CFG, $PAGE, $DB, $OUTPUT;
 
-    $args = (object) $args;
+    $args = (object)$args;
     $o = '';
 
     //For right to left languages we want to add the RTL direction and right justify.
-    switch($args->lang){
+    switch ($args->lang) {
         case constants::LANG_ARAE:
         case constants::LANG_ARSA:
         case constants::LANG_FAIR:
         case constants::LANG_HEIL:
-            $rtl = constants::M_COMPONENT. '_rtl';
+            $rtl = constants::M_COMPONENT . '_rtl';
             break;
         default:
             $rtl = '';
     }
 
-    $transcriptopts=array( 'component'=>constants::M_COMPONENT,
-            'playerid'=> html_writer::random_id(constants::M_COMPONENT ) ,
-            'lang'=>$args->lang,
-            'rtl'=>$rtl,
-            'size'=>['width'=>480,'height'=>320],
-            'containerid'=>html_writer::random_id(constants::M_COMPONENT ),
-            'cssprefix'=>constants::M_COMPONENT .'_transcript',
-            'mediaurl'=>$args->mediaurl,
-            'transcripturl'=>$args->transcripturl);
+    $transcriptopts = array('component' => constants::M_COMPONENT,
+        'playerid' => html_writer::random_id(constants::M_COMPONENT),
+        'lang' => $args->lang,
+        'rtl' => $rtl,
+        'size' => ['width' => 480, 'height' => 320],
+        'containerid' => html_writer::random_id(constants::M_COMPONENT),
+        'cssprefix' => constants::M_COMPONENT . '_transcript',
+        'mediaurl' => $args->mediaurl,
+        'transcripturl' => $args->transcripturl);
 
-    if(empty($args->transcripturl)){
-        $transcriptopts['notranscript']=true;
+    if (empty($args->transcripturl)) {
+        $transcriptopts['notranscript'] = true;
     }
 
 
 
-    if($args->mediatype=='video') {
+    if ($args->mediatype == 'video') {
         $player = $OUTPUT->render_from_template(constants::M_COMPONENT . '/videoplayerstandard', $transcriptopts);
 
-    }else{
+    } else {
         $player = $OUTPUT->render_from_template(constants::M_COMPONENT . '/audioplayerstandard', $transcriptopts);
     }
-    if(!empty($args->transcripturl)) {
+    if (!empty($args->transcripturl)) {
         $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/interactivetranscript", 'init', array($transcriptopts));
     }
     //$PAGE->requires->js_call_amd(constants::M_COMPONENT . "/standardtranscript", 'init', array($transcriptopts));

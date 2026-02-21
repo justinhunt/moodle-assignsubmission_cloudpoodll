@@ -48,15 +48,18 @@ class backup_assignsubmission_cloudpoodll_subplugin extends backup_subplugin {
         // create XML elements
         $subplugin = $this->get_subplugin_element(); // virtual optigroup element
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subpluginelement = new backup_nested_element('submission_cloudpoodll', null, array('submission'));
+        $subpluginelement = new backup_nested_element('submission_cloudpoodll',
+        null,
+        ['submission', 'recorder', 'filename', 'transcript', 'fulltranscript',
+         'vttdata', 'fileexpiry', 'secureplayback', 'vectordata' ]);
 
         // connect XML elements into the tree
         $subplugin->add_child($subpluginwrapper);
         $subpluginwrapper->add_child($subpluginelement);
 
         // set source to populate the data
-        $subpluginelement->set_source_table(constants::M_TABLE, array('submission' => backup::VAR_PARENTID));
-
+        $subpluginelement->set_source_table(constants::M_TABLE, ['submission' => backup::VAR_PARENTID]);
+        $subpluginelement->annotate_files(constants::M_COMPONENT, constants::M_FILEAREA, 'submission');
         return $subplugin;
     }
 

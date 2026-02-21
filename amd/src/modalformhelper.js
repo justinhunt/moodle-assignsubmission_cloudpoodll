@@ -3,23 +3,21 @@
  *
  * @module     assignsubmission_cloudpoodll/modalformhelper
  * @class      modalformhelper
- * @package    mod_poodlltime
+ * @package    assignsubmission_cloudpoodll
  * @copyright  2020 Justin Hunt <poodllsupport@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'core/log','core/str', 'core/modal_factory', 'core/modal_events', 'core/fragment', 'core/ajax', 'core/yui'],
-    function($, log,Str, ModalFactory, ModalEvents, Fragment, Ajax, Y) {
+define(['jquery', 'core/log', 'core/str', 'core/modal_factory', 'core/modal_events', 'core/fragment'],
+    function ($, log, Str, ModalFactory, ModalEvents, Fragment) {
 
         /**
          * Constructor
          *
          * @param {String} selector used to find triggers for the new group modal.
-         * @param {int} contextid
-         * @param {Object} callback The function to call after successful deletion (for UI updates)
          *
          * Each call to init gets it's own instance of this class.
          */
-        var TheForm = function(selector) {
+        var TheForm = function (selector) {
 
             //this will init on item click (better for lots of items)
             this.init(selector);
@@ -40,14 +38,14 @@ define(['jquery', 'core/log','core/str', 'core/modal_factory', 'core/modal_event
          * @private
          * @return {Promise}
          */
-        TheForm.prototype.init = function(selector) {
-            var triggers = $(selector);
-            var dd=this;
+        TheForm.prototype.init = function (selector) {
+            var dd = this;
 
-            $('body').on('click',selector,function(e) {
+            $('body').on('click', selector, function (e) {
                 //prevent it doing a real click (which will do the non ajax version of a click)
                 e.preventDefault();
-                dd.modaldata={'contextid':  $(this).data('contextid'),
+                dd.modaldata = {
+                    'contextid': $(this).data('contextid'),
                     'mediaurl': $(this).data('mediaurl'),
                     'mediatype': $(this).data('mediatype'),
                     'transcripturl': $(this).data('transcripturl'),
@@ -62,11 +60,11 @@ define(['jquery', 'core/log','core/str', 'core/modal_factory', 'core/modal_event
                 }).then(function (modal) {
                     // Keep a reference to the modal.
                     dd.modal = modal;
-                   // dd.modal.setLarge();
-                   // dd.modal.setTitle('bananas');
+                    // dd.modal.setLarge();
+                    // dd.modal.setTitle('bananas');
 
                     // We want to reset the form every time it is opened.
-                    dd.modal.getRoot().on(ModalEvents.hidden, function() {
+                    dd.modal.getRoot().on(ModalEvents.hidden, function () {
                         dd.modal.setBody(dd.getBody(dd.modaldata));
                     }.bind(dd));
 
@@ -84,7 +82,7 @@ define(['jquery', 'core/log','core/str', 'core/modal_factory', 'core/modal_event
          * @private
          * @return {Promise}
          */
-        TheForm.prototype.getBody = function(modaldata) {
+        TheForm.prototype.getBody = function (modaldata) {
 
 
             // Get the content of the modal.
@@ -100,11 +98,9 @@ define(['jquery', 'core/log','core/str', 'core/modal_factory', 'core/modal_event
              *
              * @method init
              * @param {string} selector The CSS selector used to find nodes that will trigger this module.
-             * @param {int} contextid The contextid for the course.
-             * @param {function} callback The callback.
              * @return {Promise}
              */
-            init: function(selector) {
+            init: function (selector) {
                 return new TheForm(selector);
             }
         };

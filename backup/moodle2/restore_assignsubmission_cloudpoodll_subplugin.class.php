@@ -42,7 +42,7 @@ class restore_assignsubmission_cloudpoodll_subplugin extends restore_subplugin {
      */
     protected function define_submission_subplugin_structure() {
 
-        $paths = array();
+        $paths = [];
 
         $elename = $this->get_namefor('submission');
         $elepath = $this->get_pathfor('/submission_cloudpoodll'); // we used get_recommended_name() so this works
@@ -66,6 +66,7 @@ class restore_assignsubmission_cloudpoodll_subplugin extends restore_subplugin {
         $data->submission = $this->get_mappingid('submission', $data->submission);
 
         $DB->insert_record(constants::M_TABLE, $data);
+        $this->add_related_files(constants::M_COMPONENT, constants::M_FILEAREA, 'submission', null, $oldsubmissionid);
     }
 
 }

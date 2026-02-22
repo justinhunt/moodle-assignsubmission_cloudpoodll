@@ -290,3 +290,333 @@
     user-select: none;
     pointer-events: none;
 }
+
+/* Stamp Settings */
+.wb-stamp-settings {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wb-stamp-pick {
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+    padding: 4px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wb-stamp-pick:hover {
+    background: #e9ecef;
+}
+
+.wb-stamp-pick.active {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Stamp Overlay */
+.wb-stamp-overlay {
+    position: absolute;
+    box-sizing: border-box;
+    cursor: move;
+    border: 1px dashed #666;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.wb-stamp-overlay svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+}
+
+.wb-stamp-resize {
+    position: absolute;
+    right: -6px;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background: #007bff;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    cursor: nwse-resize;
+}
+
+
+/* Restored Video/Audio Recorder Styles */
+.assignsubmission_cloudpoodll_recording_cont {
+    display: block;
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    background-image: url([[pix:assignsubmission_cloudpoodll|loader]]);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.assignsubmission_cloudpoodll_center {
+    text-align: center;
+}
+
+.assignsubmission_cloudpoodll_center>div,
+.assignsubmission_cloudpoodll_center>table
+
+/* insert any other block-level elements here */
+    {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button.assignsubmission_cloudpoodll_deletesubmissionbutton {
+    margin-top: 10px;
+    max-width: 180px;
+}
+
+/* interactive transcript */
+.assignsubmission_cloudpoodll_transcriptcontainer {
+    max-width: 480px;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    /* overflow-x: scroll; */
+    /* max-height: 298px; */
+    border: 1px solid #111;
+}
+
+.assignsubmission_cloudpoodll_transcript-header {
+    height: 19px;
+    padding: 1px;
+    font-weight: bold;
+    text-align: center;
+    background-color: black;
+    color: white;
+}
+
+.assignsubmission_cloudpoodll_transcript-selector {
+    height: 25px;
+}
+
+.assignsubmission_cloudpoodll_transcript-body {
+    /* width: 600px; */
+    overflow-y: scroll;
+    background-color: #e7e7e7;
+    max-height: 298px;
+    position: relative;
+    margin: auto;
+}
+
+.assignsubmission_cloudpoodll_transcript-line {
+    position: relative;
+    padding: 5px;
+    cursor: pointer;
+    line-height: 1.3;
+}
+
+.assignsubmission_cloudpoodll_transcript-line:nth-child(odd) {
+    background-color: #f5f5f5;
+}
+
+
+.assignsubmission_cloudpoodll_transcript-timestamp {
+    position: absolute;
+    display: inline-block;
+    color: #333;
+    width: 50px;
+}
+
+.assignsubmission_cloudpoodll_transcript-text {
+    display: block;
+    margin-left: 50px;
+}
+
+.assignsubmission_cloudpoodll_transcript-line:hover,
+.assignsubmission_cloudpoodll_transcript-line:hover .assignsubmission_cloudpoodll_transcript-timestamp,
+.assignsubmission_cloudpoodll_transcript-line:hover .assignsubmission_cloudpoodll_transcript-text {
+    background-color: #777;
+    color: #e7e7e7;
+}
+
+.assignsubmission_cloudpoodll_transcript-line.is-active,
+.assignsubmission_cloudpoodll_transcript-line.is-active .assignsubmission_cloudpoodll_transcript-timestamp,
+.assignsubmission_cloudpoodll_transcript-line.is-active .assignsubmission_cloudpoodll_transcript-text {
+    background-color: #555;
+    color: #e7e7e7;
+    width: auto;
+}
+
+.assignsubmission_cloudpoodll_currentsubmission {
+    display: grid;
+}
+
+.assignsubmission_cloudpoodll_togglecontainer .toggletext {
+    padding: 5px;
+}
+
+.assignsubmission_cloudpoodll_togglecontainer {
+    margin-bottom: 8px;
+}
+
+.assignsubmission_cloudpoodll_audiorec_iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    max-width: 400px;
+}
+
+.assignsubmission_cloudpoodll_videorec_iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    max-width: 450px;
+}
+
+.assignsubmission_cloudpoodll_video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.assignsubmission_cloudpoodll_video_cont {
+    position: relative;
+    height: 0;
+    max-width: 480px;
+}
+
+.assignsubmission_cloudpoodll_audio {
+    width: 100%;
+}
+
+.assignsubmission_cloudpoodll_audio_cont {
+    width: 100%;
+    max-width: 480px;
+}
+
+.assignsubmission_cloudpoodll_videorec_cont {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.assignsubmission_cloudpoodll_audiorec_cont {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+@supports (padding-top: min(540px, 150%)) {
+    .assignsubmission_cloudpoodll_audiorec_cont {
+        padding-top: min(300px, 90%);
+    }
+
+    .assignsubmission_cloudpoodll_videorec_cont {
+        padding-top: min(540px, 150%);
+    }
+
+    .assignsubmission_cloudpoodll_video_cont {
+        padding-bottom: min(360px, 75%);
+    }
+}
+
+@supports not (padding-top: min(540px, 150%)) {
+    .assignsubmission_cloudpoodll_audiorec_cont {
+        padding-top: 300px;
+    }
+
+    .assignsubmission_cloudpoodll_videorec_cont {
+        padding-top: 540px;
+    }
+
+    .assignsubmission_cloudpoodll_video_cont {
+        padding-bottom: 360px;
+    }
+}
+
+@media screen and (max-width: 667px) {
+    .assignsubmission_cloudpoodll_videorec_cont {
+        padding-top: 150%;
+    }
+
+    .assignsubmission_cloudpoodll_audiorec_cont {
+        padding-top: 90%;
+    }
+
+    .assignsubmission_cloudpoodll_video_cont {
+        padding-bottom: 75%;
+    }
+}
+
+/* this is not set on some themes and can collapse our responsive stuff */
+.form-control-static {
+    width: 100%;
+}
+
+.assignsubmission_cloudpoodll_transcript-difftext {
+    display: block;
+    padding: .5em 1em;
+    color: #716f6f;
+    background-color: #e6e6e6;
+    margin-bottom: 0;
+    font-family: monospace;
+}
+
+.assignsubmission_cloudpoodll_transcript-difftext:empty {
+    display: none;
+}
+
+.assignsubmission_cloudpoodll_transcript-difftext ins {
+    color: green;
+    background: #dfd;
+    text-decoration: none;
+}
+
+.assignsubmission_cloudpoodll_transcript-difftext del {
+    color: red;
+    background: #fdd;
+    text-decoration: none;
+}
+
+.assignsubmission_cloudpoodll_transcript-difftext code {
+    font-size: smaller;
+}
+
+.assignsubmission_cloudpoodll_transcript-text,
+.assignsubmission_cloudpoodll_transcript-difftext {
+    position: relative;
+}
+
+.assignsubmission_cloudpoodll_actionbar a {
+    /*  position: absolute;
+    right: -30px; */
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+    margin-right: 8px;
+}
+
+.assignsubmission_cloudpoodll_actionbar {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid darkgrey;
+}
+
+.assignsubmission_cloudpoodll_rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+.assignsubmission_cloudpoodll_rtl .assignsubmission_cloudpoodll_transcript-text {
+    margin-left: 0px;
+    margin-right: 50px;
+}

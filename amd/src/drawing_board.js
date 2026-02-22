@@ -28,8 +28,8 @@ define(['jquery'], function ($) {
         var that = this;
 
         $(this.canvas).on('mousedown touchstart', function (e) {
-            if (that.tool === 'text') {
-                return; // Let whiteboard.js handle text exclusively
+            if (that.tool === 'text' || that.tool === 'stamp') {
+                return; // Let whiteboard.js handle these exclusively
             }
             that.drawing = true;
             var pos = that.getPos(e);
@@ -42,12 +42,6 @@ define(['jquery'], function ($) {
                 strokeSize: that.strokeSize
             };
 
-            if (that.tool === 'picker') {
-                that.pickColor(pos);
-                that.drawing = false;
-                return;
-            }
-
             that.redraw();
         });
 
@@ -57,7 +51,7 @@ define(['jquery'], function ($) {
             }
             var pos = that.getPos(e);
 
-            if (that.tool === 'pencil' || that.tool === 'eraser') {
+            if (that.tool === 'pencil' || that.tool === 'eraser' || that.tool === 'highlighter') {
                 that.currentStep.points.push(pos);
             } else {
                 // For shapes, we only care about start and end
@@ -150,12 +144,20 @@ define(['jquery'], function ($) {
         switch (step.type) {
             case 'pencil':
             case 'eraser':
+            case 'highlighter':
                 this.ctx.beginPath();
                 this.ctx.moveTo(step.points[0].x, step.points[0].y);
                 step.points.forEach(function (p) {
                     this.ctx.lineTo(p.x, p.y);
                 }.bind(this));
-                this.ctx.stroke();
+
+                if (step.type === 'highlighter') {
+                    this.ctx.globalAlpha = 0.5;
+                    this.ctx.stroke();
+                    this.ctx.globalAlpha = 1.0;
+                } else {
+                    this.ctx.stroke();
+                }
                 break;
             case 'line':
                 if (step.points.length < 2) return;
@@ -182,6 +184,34 @@ define(['jquery'], function ($) {
                 this.ctx.arc(step.points[0].x, step.points[0].y, radius, 0, 2 * Math.PI);
                 this.ctx.fill();
                 this.ctx.stroke();
+                break;
+            case 'stamp':
+                if (step.stamp && step.paths && step.paths[step.stamp]) {
+                    this.ctx.save();
+                    if (step.strokeColor !== 'transparent') {
+                        this.ctx.fillStyle = step.strokeColor;
+                    }
+                    var p = new Path2D(step.paths[step.stamp]);
+
+                    var x = step.points[0].x;
+                    var y = step.points[0].y;
+
+                    var cx = x + step.width / 2;
+                    var cy = y + step.height / 2;
+
+                    this.ctx.translate(cx, cy);
+                    var scaleX = step.width / 512;
+                    var scaleY = step.height / 512;
+                    this.ctx.scale(scaleX, scaleY);
+
+                    // Move back to draw path at origin (-256, -256) since viewBox is 512x512
+                    this.ctx.translate(-256, -256);
+
+                    if (step.strokeColor !== 'transparent') {
+                        this.ctx.fill(p);
+                    }
+                    this.ctx.restore();
+                }
                 break;
             case 'text':
                 if (step.text) {
@@ -222,17 +252,6 @@ define(['jquery'], function ($) {
                 }
                 break;
         }
-    };
-
-    DrawingBoard.prototype.pickColor = function (pos) {
-        var imgData = this.ctx.getImageData(pos.x, pos.y, 1, 1).data;
-        var hex = "#" + ("000000" + this.rgbToHex(imgData[0], imgData[1], imgData[2])).slice(-6);
-        $(this.canvas).trigger('wb:colorpicked', [hex]);
-    };
-
-    DrawingBoard.prototype.rgbToHex = function (r, g, b) {
-        if (r > 255 || g > 255 || b > 255) throw "Invalid color component";
-        return ((r << 16) | (g << 8) | b).toString(16);
     };
 
     DrawingBoard.prototype.clear = function () {

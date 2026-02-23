@@ -113,7 +113,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $audiosingledisplay = $this->get_config('audiosingledisplay') !== false ? $this->get_config('audiosingledisplay') : $adminconfig->displayaudioplayer_single;
         $videolistdisplay = $this->get_config('videolistdisplay') !== false ? $this->get_config('videolistdisplay') : $adminconfig->displaysize_list;
         $videosingledisplay = $this->get_config('videosingledisplay') !== false ? $this->get_config('videosingledisplay') : $adminconfig->displaysize_single;
-        $boardsize = $this->get_config('boardsize') !== false ? $this->get_config('boardsize') : '600x400';
+        $boardsize = $this->get_config('boardsize') !== false ? $this->get_config('boardsize') : $adminconfig->boardsize;
         $secureplayback = $this->get_config('secureplayback') !== false ? $this->get_config('secureplayback') : $adminconfig->secureplayback;
         $noaudiofilters = $this->get_config('noaudiofilters') !== false ? $this->get_config('noaudiofilters') : $adminconfig->noaudiofilters;
         // We made transcoding compulsory: Justin 20210428

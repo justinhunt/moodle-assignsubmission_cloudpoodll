@@ -28,7 +28,7 @@ use assignsubmission_cloudpoodll\utils;
 
 defined('MOODLE_INTERNAL') || die();
 
-//enable by default
+// enable by default
 $settings->add(new admin_setting_configcheckbox(
     constants::M_COMPONENT . '/default',
     get_string('default', constants::M_COMPONENT),
@@ -44,17 +44,17 @@ $settings->add(new admin_setting_configtext(
     PARAM_TEXT
 ));
 
-$cloudpoodll_apiuser = get_config(constants::M_COMPONENT, 'apiuser');
-$cloudpoodll_apisecret = get_config(constants::M_COMPONENT, 'apisecret');
-$show_below_apisecret = '';
-//if we have an API user and secret we fetch token
-if (!empty($cloudpoodll_apiuser) && !empty($cloudpoodll_apisecret)) {
-    $tokeninfo = utils::fetch_token_for_display($cloudpoodll_apiuser, $cloudpoodll_apisecret);
-    $show_below_apisecret = $tokeninfo;
-    //if we have no API user and secret we show a "fetch from elsewhere on site" or "take a free trial" link
+$cloudpoodllapiuser = get_config(constants::M_COMPONENT, 'apiuser');
+$cloudpoodllapisecret = get_config(constants::M_COMPONENT, 'apisecret');
+$showbelowapisecret = '';
+// if we have an API user and secret we fetch token
+if (!empty($cloudpoodllapiuser) && !empty($cloudpoodllapisecret)) {
+    $tokeninfo = utils::fetch_token_for_display($cloudpoodllapiuser, $cloudpoodllapisecret);
+    $showbelowapisecret = $tokeninfo;
+    // if we have no API user and secret we show a "fetch from elsewhere on site" or "take a free trial" link
 } else {
     $amddata = ['apppath' => $CFG->wwwroot . '/' . constants::M_URL];
-    $cp_components = [
+    $cpcomponents = [
         'filter_poodll',
         'qtype_cloudpoodll',
         'mod_readaloud',
@@ -66,10 +66,10 @@ if (!empty($cloudpoodll_apiuser) && !empty($cloudpoodll_apisecret)) {
         'atto_cloudpoodll',
         'tiny_poodll',
         'tinymce_cloudpoodll',
-        'assignfeedback_cloudpoodll'
+        'assignfeedback_cloudpoodll',
     ];
-    foreach ($cp_components as $cp_component) {
-        switch ($cp_component) {
+    foreach ($cpcomponents as $cpcomponent) {
+        switch ($cpcomponent) {
             case 'filter_poodll':
                 $apiusersetting = 'cpapiuser';
                 $apisecretsetting = 'cpapisecret';
@@ -82,24 +82,24 @@ if (!empty($cloudpoodll_apiuser) && !empty($cloudpoodll_apisecret)) {
                 $apiusersetting = 'apiuser';
                 $apisecretsetting = 'apisecret';
         }
-        $cloudpoodll_apiuser = get_config($cp_component, $apiusersetting);
-        if (!empty($cloudpoodll_apiuser)) {
-            $cloudpoodll_apisecret = get_config($cp_component, $apisecretsetting);
-            if (!empty($cloudpoodll_apisecret)) {
-                $amddata['apiuser'] = $cloudpoodll_apiuser;
-                $amddata['apisecret'] = $cloudpoodll_apisecret;
+        $cloudpoodllapiuser = get_config($cpcomponent, $apiusersetting);
+        if (!empty($cloudpoodllapiuser)) {
+            $cloudpoodllapisecret = get_config($cpcomponent, $apisecretsetting);
+            if (!empty($cloudpoodllapisecret)) {
+                $amddata['apiuser'] = $cloudpoodllapiuser;
+                $amddata['apisecret'] = $cloudpoodllapisecret;
                 break;
             }
         }
     }
-    $show_below_apisecret = $OUTPUT->render_from_template(constants::M_COMPONENT . '/managecreds', $amddata);
+    $showbelowapisecret = $OUTPUT->render_from_template(constants::M_COMPONENT . '/managecreds', $amddata);
 }
 
-//get_string('apisecret_details', constants::M_COMPONENT)
+// get_string('apisecret_details', constants::M_COMPONENT)
 $settings->add(new admin_setting_configtext(
     constants::M_COMPONENT . '/apisecret',
     get_string('apisecret', constants::M_COMPONENT),
-    $show_below_apisecret,
+    $showbelowapisecret,
     '',
     PARAM_TEXT
 ));
@@ -126,80 +126,89 @@ $settings->add(new admin_setting_configselect(
 $expiredays = utils::get_expiredays_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT . '/expiredays', get_string('expiredays', constants::M_COMPONENT), '', '365', $expiredays));
 
-//transcode settings
-//hard coded transcoding behaviour: Justin 20210428
+// transcode settings
+// hard coded transcoding behaviour: Justin 20210428
 /*
 $settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enabletranscode',
     get_string('enabletranscode', constants::M_COMPONENT), get_string('enabletranscode_details',constants::M_COMPONENT), 1));
 */
 
-//player type
-$playertype_options = utils::fetch_options_interactivetranscript();
+// player type
+$playertypeoptions = utils::fetch_options_interactivetranscript();
 $settings->add(new admin_setting_configselect(
     constants::M_COMPONENT . '/defaultplayertype',
     get_string('defaultplayertype', constants::M_COMPONENT),
     get_string('defaultplayertypedetails', constants::M_COMPONENT),
     constants::PLAYERTYPE_INTERACTIVETRANSCRIPT,
-    $playertype_options
+    $playertypeoptions
 ));
 
-//student player type
-$playertype_options = utils::fetch_options_interactivetranscript();
+// student player type
+$playertypeoptions = utils::fetch_options_interactivetranscript();
 $settings->add(new admin_setting_configselect(
     constants::M_COMPONENT . '/defaultplayertypestudent',
     get_string('defaultplayertypestudent', constants::M_COMPONENT),
     get_string('defaultplayertypedetails', constants::M_COMPONENT),
     constants::PLAYERTYPE_INTERACTIVETRANSCRIPT,
-    $playertype_options
+    $playertypeoptions
 ));
 
 
 
-//transcription settings
-$transcriber_options = utils::get_transcriber_options();
-$settings->add(new admin_setting_configselect(constants::M_COMPONENT . '/enabletranscription', get_string('enabletranscription_details', constants::M_COMPONENT), '', constants::TRANSCRIBER_NONE, $transcriber_options));
+// transcription settings
+$transcriberoptions = utils::get_transcriber_options();
+$settings->add(new admin_setting_configselect(constants::M_COMPONENT . '/enabletranscription', get_string('enabletranscription_details', constants::M_COMPONENT), '', constants::TRANSCRIBER_NONE, $transcriberoptions));
 
 $langoptions = utils::get_lang_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT . '/language', get_string('language', constants::M_COMPONENT), '', 'en-US', $langoptions));
 
 
 
-//Default recorders
-$rec_options = utils::fetch_options_recorders();
+// Default recorders
+$recoptions = utils::fetch_options_recorders();
 $settings->add(new admin_setting_configselect(
     constants::M_COMPONENT . '/defaultrecorder',
     get_string('defaultrecorder', constants::M_COMPONENT),
     get_string('defaultrecorderdetails', constants::M_COMPONENT),
     constants::REC_AUDIO,
-    $rec_options
+    $recoptions
 ));
 
-//Default html5 fallback
-$fallback_options = utils::fetch_options_fallback();
+// Default html5 fallback
+$fallbackoptions = utils::fetch_options_fallback();
 $settings->add(new admin_setting_configselect(
     constants::M_COMPONENT . '/fallback',
     get_string('fallback', constants::M_COMPONENT),
     get_string('fallbackdetails', constants::M_COMPONENT),
     constants::FALLBACK_IOSUPLOAD,
-    $fallback_options
+    $fallbackoptions
 ));
 
 
 
-$yesno_options = array(
+$yesnooptions = [
     constants::SIZE_AUDIO_LIGHTBOX => get_string("no", constants::M_COMPONENT),
-    constants::SIZE_AUDIO_SHOW => get_string("yes", constants::M_COMPONENT)
-);
-$audio_size_options = utils::fetch_options_audiosize();
-$video_size_options = utils::fetch_options_videosize();
-//show current submission on submission form
+    constants::SIZE_AUDIO_SHOW => get_string("yes", constants::M_COMPONENT),
+];
+$audiosizeoptions = utils::fetch_options_audiosize();
+$videosizeoptions = utils::fetch_options_videosize();
+// show current submission on submission form
 /*
-	$settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/showcurrentsubmission',
-					get_string('showcurrentsubmission', constants::M_COMPONENT),
-					get_string('showcurrentsubmissiondetails', constants::M_COMPONENT), 1, $yesno_options));
+    $settings->add(new admin_setting_configselect(constants::M_COMPONENT .'/showcurrentsubmission',
+                    get_string('showcurrentsubmission', constants::M_COMPONENT),
+                    get_string('showcurrentsubmissiondetails', constants::M_COMPONENT), 1, $yesno_options));
 */
 
-//allow user to set a custom name for the plugin as displayed to users
+$wbsizeoptions = utils::fetch_options_boardsizes();
+$settings->add(new admin_setting_configselect(
+    constants::M_COMPONENT . '/boardsize',
+    get_string('boardsize', constants::M_COMPONENT),
+    '',
+    '450x300',
+    $wbsizeoptions
+));
+
+// allow user to set a custom name for the plugin as displayed to users
 $settings->add(new admin_setting_configtext(
     constants::M_COMPONENT . '/customname',
     get_string('customname', constants::M_COMPONENT),
@@ -209,7 +218,7 @@ $settings->add(new admin_setting_configtext(
 ));
 
 
-//Settings for audio recordings
+// Settings for audio recordings
 $settings->add(new admin_setting_heading(
     constants::M_COMPONENT . '/audio_heading',
     get_string('setting_audio_heading', constants::M_COMPONENT),
@@ -221,7 +230,7 @@ $settings->add(new admin_setting_configselect(
     get_string('displayaudioplayersingle', constants::M_COMPONENT),
     '',
     '1',
-    $audio_size_options
+    $audiosizeoptions
 ));
 
 $settings->add(new admin_setting_configselect(
@@ -229,10 +238,10 @@ $settings->add(new admin_setting_configselect(
     get_string('displayaudioplayerlist', constants::M_COMPONENT),
     '',
     '1',
-    $audio_size_options
+    $audiosizeoptions
 ));
 
-//Settings for video recordings
+// Settings for video recordings
 $settings->add(new admin_setting_heading(
     constants::M_COMPONENT . '/video_heading',
     get_string('setting_video_heading', constants::M_COMPONENT),
@@ -240,18 +249,18 @@ $settings->add(new admin_setting_heading(
 ));
 
 
-//The size of the video player on the various screens
-$size_options = array(
+// The size of the video player on the various screens
+$sizeoptions = [
     constants::SIZE_LIGHTBOX => get_string('shownovideo', constants::M_COMPONENT),
-    '480' => '480x360'
-);
+    '480' => '480x360',
+];
 
 $settings->add(new admin_setting_configselect(
     constants::M_COMPONENT . '/displaysize_single',
     get_string('displaysizesingle', constants::M_COMPONENT),
     get_string('displaysizesingledetails', constants::M_COMPONENT),
     '480',
-    $video_size_options
+    $videosizeoptions
 ));
 
 $settings->add(new admin_setting_configselect(
@@ -259,10 +268,10 @@ $settings->add(new admin_setting_configselect(
     get_string('displaysizelist', constants::M_COMPONENT),
     get_string('displaysizelistdetails', constants::M_COMPONENT),
     '480',
-    $video_size_options
+    $videosizeoptions
 ));
 
-//use non public media urls
+// use non public media urls
 $settings->add(new admin_setting_configcheckbox(
     constants::M_COMPONENT . '/secureplayback',
     get_string('enablesecureplayback', constants::M_COMPONENT),
@@ -270,7 +279,7 @@ $settings->add(new admin_setting_configcheckbox(
     0
 ));
 
-//enable recorders
+// enable recorders
 $settings->add(new admin_setting_configcheckbox(
     constants::M_COMPONENT . '/enableaudio',
     get_string('enableaudio', constants::M_COMPONENT),
@@ -284,7 +293,7 @@ $settings->add(new admin_setting_configcheckbox(
     1
 ));
 
-//use non public media urls
+// use non public media urls
 $settings->add(new admin_setting_configcheckbox(
     constants::M_COMPONENT . '/noaudiofilters',
     get_string('noaudiofilters', constants::M_COMPONENT),

@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.43 (Build 2026021901)
+- Added a whiteboard recorder
+
 Version 1.0.41 (Build 2025100500)
 - better default settings
 

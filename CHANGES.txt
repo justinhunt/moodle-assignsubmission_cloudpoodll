@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.44 (Build 2026042000)
+- removed deprecated modal_factory and modal_registry
+
 Version 1.0.43 (Build 2026021901)
 - Added a whiteboard recorder
 

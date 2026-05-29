@@ -7,8 +7,8 @@
  * @copyright  2020 Justin Hunt <poodllsupport@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'core/log', 'core/str', 'core/modal_factory', 'core/modal_events', 'core/fragment'],
-    function ($, log, Str, ModalFactory, ModalEvents, Fragment) {
+define(['jquery', 'core/log', 'core/str', 'core/modal_cancel', 'core/modal_events', 'core/fragment'],
+    function ($, log, Str, ModalCancel, ModalEvents, Fragment) {
 
         /**
          * Constructor
@@ -53,8 +53,7 @@ define(['jquery', 'core/log', 'core/str', 'core/modal_factory', 'core/modal_even
                 };
 
 
-                ModalFactory.create({
-                    type: ModalFactory.types.CANCEL,
+                ModalCancel.create({
                     title: dd.formtitle,
                     body: dd.getBody(dd.modaldata)
                 }).then(function (modal) {

@@ -258,11 +258,19 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->disabledIf('backimage_filemanager', constants::M_COMPONENT . '_enabled', 'notchecked');
         $mform->disabledIf('backimage_filemanager', constants::M_COMPONENT . '_recordertype', 'neq', constants::REC_WHITEBOARD);
 
+        // Show upload option.
+        $show_upload_option = $this->get_config('show_upload_option') ? $this->get_config('show_upload_option') : 0;
+        $mform->addElement('advcheckbox', constants::M_COMPONENT . '_show_upload_option', get_string("show_upload_option", constants::M_COMPONENT), get_string("show_upload_option_details", constants::M_COMPONENT));
+        $mform->setDefault(constants::M_COMPONENT . '_show_upload_option', $show_upload_option);
+        $mform->disabledIf(constants::M_COMPONENT . '_show_upload_option', constants::M_COMPONENT . '_enabled', 'notchecked');
+
+
         // Safe save settings.
         $mform->addElement('advcheckbox', constants::M_COMPONENT . '_safesave', get_string("safesave", constants::M_COMPONENT));
         $mform->setDefault(constants::M_COMPONENT . '_safesave', $safesave);
         $mform->disabledIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
 
+        
         // Secure playback settings.
         $mform->addElement(
             'advcheckbox',
@@ -305,6 +313,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $mform->hideIf(constants::M_COMPONENT . '_boardsize', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf('backimage_filemanager', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_show_upload_option', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_secureplayback', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_noaudiofilters', constants::M_COMPONENT . '_enabled', 'notchecked');
         }
@@ -335,6 +344,13 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $this->set_config('safesave', $data->{ constants::M_COMPONENT . '_safesave'});
         } else {
             $this->set_config('safesave', 0);
+        }
+
+        // show upload option
+        if (isset($data->{ constants::M_COMPONENT . '_show_upload_option'})) {
+            $this->set_config('show_upload_option', $data->{ constants::M_COMPONENT . '_show_upload_option'});
+        } else {
+            $this->set_config('show_upload_option', 0);
         }
 
         // secureplayback
@@ -443,7 +459,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             "recordertype" => $this->get_config('recordertype'),
         ];
         $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/submissionhelper", 'init', [$opts]);
-        $PAGE->requires->strings_for_js(['reallydeletesubmission', 'clicktohide', 'clicktoshow'], constants::M_COMPONENT);
+        $PAGE->requires->strings_for_js(['reallydeletesubmission', 'clicktohide', 'clicktoshow', 'startagainupload', 'startagainrecorder', 'yes', 'no'], constants::M_COMPONENT);
 
         // Get our renderers.
         $renderer = $PAGE->get_renderer(constants::M_COMPONENT);
@@ -555,6 +571,14 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $displayname = get_config(constants::M_COMPONENT, 'customname');
         if (empty($displayname)) {
             $displayname = get_string('recorderdisplayname', constants::M_COMPONENT);
+        }
+
+        if ($this->get_config('show_upload_option') && 
+            ($this->get_config('recordertype') == constants::REC_AUDIO || $this->get_config('recordertype') == constants::REC_VIDEO)) {
+            
+            $uploadlink = html_writer::link('#', get_string('uploadlocalfile', constants::M_COMPONENT), ['class' => constants::M_COMPONENT . '_uploadfile', 'style' => 'display:block']);
+            $recorderlink = html_writer::link('#', get_string('showrecorder', constants::M_COMPONENT), ['class' => constants::M_COMPONENT . '_showrecorder', 'style' => 'display:none']);
+            $recorderhtml .= html_writer::div($uploadlink . $recorderlink, 'mt-2');
         }
 
         $mform->addElement(

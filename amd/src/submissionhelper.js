@@ -1,4 +1,4 @@
-define(['jquery', 'core/log', 'assignsubmission_cloudpoodll/cloudpoodllloader', "core/str"], function ($, log, cloudpoodll, str) {
+define(['jquery', 'core/log', 'assignsubmission_cloudpoodll/cloudpoodllloader', "core/str", 'core/notification'], function ($, log, cloudpoodll, str, notification) {
     "use strict"; // jshint ;_;
 
     log.debug('submission helper: initialising');
@@ -62,6 +62,10 @@ define(['jquery', 'core/log', 'assignsubmission_cloudpoodll/cloudpoodllloader', 
             this.controls.updatecontrol = $('#' + this.component + '_updatecontrol');
             this.controls.currentcontainer = $('.' + this.component + '_currentsubmission');
             this.controls.togglecontainer = $('.' + this.component + '_togglecontainer');
+            this.controls.uploadfile = $('.' + this.component + '_uploadfile');
+            this.controls.showrecorder = $('.' + this.component + '_showrecorder');
+            this.controls.recordercontainer = $('#' + this.component + '_therecorder');
+            this.original_data_type = this.controls.recordercontainer.attr('data-type');
             this.controls.togglebutton = $('.' + this.component + '_togglecontainer .togglebutton');
             this.controls.toggletext = $('.' + this.component + '_togglecontainer .toggletext');
             str.get_string('clicktohide', that.component).done(function (s) {
@@ -84,6 +88,46 @@ define(['jquery', 'core/log', 'assignsubmission_cloudpoodll/cloudpoodllloader', 
             });
             this.controls.togglebutton.click(function () { that.toggle_currentsubmission(that); });
             this.controls.toggletext.click(function () { that.toggle_currentsubmission(that); });
+
+            this.controls.uploadfile.click(function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                notification.confirm(
+                    M.util.get_string('confirm', 'core'),
+                    M.util.get_string('startagainupload', that.component),
+                    M.util.get_string('yes', that.component),
+                    M.util.get_string('no', that.component),
+                    function() {
+                        btn.css('pointer-events', 'none');
+                        setTimeout(function() {
+                            btn.css('pointer-events', '');
+                            btn.hide();
+                            that.controls.showrecorder.show();
+                            that.controls.recordercontainer.empty();
+                            that.controls.recordercontainer.attr('data-type', 'upload').attr('data-alreadyparsed', 'false');
+                            that.setup_recorder();
+                        }, 100);
+                    }
+                );
+            });
+
+            this.controls.showrecorder.click(function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                notification.confirm(
+                    M.util.get_string('confirm', 'core'),
+                    M.util.get_string('startagainrecorder', that.component),
+                    M.util.get_string('yes', that.component),
+                    M.util.get_string('no', that.component),
+                    function() {
+                        btn.hide();
+                        that.controls.uploadfile.show();
+                        that.controls.recordercontainer.empty();
+                        that.controls.recordercontainer.attr('data-type', that.original_data_type).attr('data-alreadyparsed', 'false');
+                        that.setup_recorder();
+                    }
+                );
+            });
         },
 
         toggle_currentsubmission: function (that) {

@@ -144,8 +144,8 @@ $string['expiredays'] = 'Cloud Poodll Days to keep file';
 
 $string['timelimit'] = 'Cloud Poodll Rec. Time Limit';
 $string['currentsubmission'] = 'Current Submission:';
-$string['yes'] = 'yes';
-$string['no'] = 'no';
+$string['yes'] = 'Yes';
+$string['no'] = 'No';
 
 // $string['showcurrentsubmission'] = 'Show Current Submission';
 // $string['showcurrentsubmissiondetails'] = 'Show previously recorded submission on submission form.';
@@ -228,6 +228,12 @@ $string['nosubscriptions'] = "There is no current subscription for this site/plu
 
 $string['clicktohide'] = "Hide current submission";
 $string['clicktoshow'] = "Show current submission";
+$string['show_upload_option'] = 'Show upload option';
+$string['show_upload_option_details'] = 'Allow users to choose to upload a locally recorded file rather than record from webcam/mic.';
+$string['uploadlocalfile'] = 'Show local file uploader';
+$string['showrecorder'] = 'Show recorder';
+$string['startagainupload'] = 'Start again and upload local file?';
+$string['startagainrecorder'] = 'Start again and show recorder?';
 
 $string['transcribernone'] = "No transcription";
 $string['transcriberamazon'] = "Normal transcription";

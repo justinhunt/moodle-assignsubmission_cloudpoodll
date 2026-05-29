@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.44 (Build 2026052900)
+- Added option to toggle recorder and show a file uploader
+
 Version 1.0.43 (Build 2026021901)
 - Added a whiteboard recorder
 

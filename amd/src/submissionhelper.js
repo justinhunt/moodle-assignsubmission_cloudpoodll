@@ -74,6 +74,24 @@ define(['jquery', 'core/log', 'assignsubmission_cloudpoodll/cloudpoodllloader', 
             str.get_string('clicktoshow', that.component).done(function (s) {
                 that.strings['clicktoshow'] = s;
             });
+            str.get_string('reallydeletesubmission', that.component).done(function (s) {
+                that.strings['reallydeletesubmission'] = s;
+            });
+            str.get_string('confirm', that.component).done(function (s) {
+                that.strings['confirm'] = s;
+            });
+            str.get_string('startagainupload', that.component).done(function (s) {
+                that.strings['startagainupload'] = s;
+            });
+            str.get_string('startagainrecorder', that.component).done(function (s) {
+                that.strings['startagainrecorder'] = s;
+            });
+            str.get_string('yes', that.component).done(function (s) {
+                that.strings['yes'] = s;
+            });
+            str.get_string('no', that.component).done(function (s) {
+                that.strings['no'] = s;
+            });
         },
 
         register_events: function () {
@@ -93,13 +111,13 @@ define(['jquery', 'core/log', 'assignsubmission_cloudpoodll/cloudpoodllloader', 
                 e.preventDefault();
                 var btn = $(this);
                 notification.confirm(
-                    M.util.get_string('confirm', 'core'),
-                    M.util.get_string('startagainupload', that.component),
-                    M.util.get_string('yes', that.component),
-                    M.util.get_string('no', that.component),
-                    function() {
+                    that.strings['confirm'],
+                    that.strings['startagainupload'],
+                    that.strings['yes'],
+                    that.strings['no'],
+                    function () {
                         btn.css('pointer-events', 'none');
-                        setTimeout(function() {
+                        setTimeout(function () {
                             btn.css('pointer-events', '');
                             btn.hide();
                             that.controls.showrecorder.show();
@@ -115,11 +133,11 @@ define(['jquery', 'core/log', 'assignsubmission_cloudpoodll/cloudpoodllloader', 
                 e.preventDefault();
                 var btn = $(this);
                 notification.confirm(
-                    M.util.get_string('confirm', 'core'),
-                    M.util.get_string('startagainrecorder', that.component),
-                    M.util.get_string('yes', that.component),
-                    M.util.get_string('no', that.component),
-                    function() {
+                    that.strings['confirm'],
+                    that.strings['startagainupload'],
+                    that.strings['yes'],
+                    that.strings['no'],
+                    function () {
                         btn.hide();
                         that.controls.uploadfile.show();
                         that.controls.recordercontainer.empty();

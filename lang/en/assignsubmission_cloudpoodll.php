@@ -234,6 +234,7 @@ $string['uploadlocalfile'] = 'Show local file uploader';
 $string['showrecorder'] = 'Show recorder';
 $string['startagainupload'] = 'Start again and upload local file?';
 $string['startagainrecorder'] = 'Start again and show recorder?';
+$string['confirm'] = 'Confirm';
 
 $string['transcribernone'] = "No transcription";
 $string['transcriberamazon'] = "Normal transcription";

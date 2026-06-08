@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.46 (Build 2026060800)
+- Fixed broken lang string in uploa-local-file confirmation modal
+
 Version 1.0.45 (Build 2026052900)
 - Added option to toggle recorder and show a file uploader
 

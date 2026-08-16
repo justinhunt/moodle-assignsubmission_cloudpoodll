@@ -53,46 +53,11 @@ if (!empty($cloudpoodllapiuser) && !empty($cloudpoodllapisecret)) {
     $showbelowapisecret = $tokeninfo;
     // if we have no API user and secret we show a "fetch from elsewhere on site" or "take a free trial" link
 } else {
-    $amddata = ['apppath' => $CFG->wwwroot . '/' . constants::M_URL];
-    $cpcomponents = [
-        'filter_poodll',
-        'qtype_cloudpoodll',
-        'mod_readaloud',
-        'mod_wordcards',
-        'mod_solo',
-        'mod_minilesson',
-        'mod_englishcentral',
-        'mod_pchat',
-        'atto_cloudpoodll',
-        'tiny_poodll',
-        'tinymce_cloudpoodll',
-        'assignfeedback_cloudpoodll',
-    ];
-    foreach ($cpcomponents as $cpcomponent) {
-        switch ($cpcomponent) {
-            case 'filter_poodll':
-                $apiusersetting = 'cpapiuser';
-                $apisecretsetting = 'cpapisecret';
-                break;
-            case 'mod_englishcentral':
-                $apiusersetting = 'poodllapiuser';
-                $apisecretsetting = 'poodllapisecret';
-                break;
-            default:
-                $apiusersetting = 'apiuser';
-                $apisecretsetting = 'apisecret';
-        }
-        $cloudpoodllapiuser = get_config($cpcomponent, $apiusersetting);
-        if (!empty($cloudpoodllapiuser)) {
-            $cloudpoodllapisecret = get_config($cpcomponent, $apisecretsetting);
-            if (!empty($cloudpoodllapisecret)) {
-                $amddata['apiuser'] = $cloudpoodllapiuser;
-                $amddata['apisecret'] = $cloudpoodllapisecret;
-                break;
-            }
-        }
-    }
-    $showbelowapisecret = $OUTPUT->render_from_template(constants::M_COMPONENT . '/managecreds', $amddata);
+    $amddata = \assignsubmission_cloudpoodll\cbcredentials::export_buttons_data(
+        '#id_s_assignsubmission_cloudpoodll_apiuser',
+        '#id_s_assignsubmission_cloudpoodll_apisecret'
+    );
+    $showbelowapisecret = $OUTPUT->render_from_template(constants::M_COMPONENT . '/cbmanagecreds', $amddata);
 }
 
 // get_string('apisecret_details', constants::M_COMPONENT)

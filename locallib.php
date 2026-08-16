@@ -545,26 +545,16 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $apiuser = get_config(constants::M_COMPONENT, 'apiuser');
         $apisecret = get_config(constants::M_COMPONENT, 'apisecret');
 
-        // Check user has entered credentials.
-        if (empty($apiuser) || empty($apisecret)) {
-            $message = get_string(
-                'nocredentials',
-                constants::M_COMPONENT,
-                $CFG->wwwroot . constants::M_PLUGINSETTINGS
-            );
-            $recorderhtml = $renderer->show_problembox($message);
+        // Check the credentials are set and that Cloud Poodll accepts them. Administrators are
+        // pointed at the settings page and the free trial, everybody else is told who to ask.
+        // The recorder sits inside the submission form, so this notice must not contain a form.
+        $errormessage = \assignsubmission_cloudpoodll\cbcredentials::credentials_error();
+        if (!empty($errormessage)) {
+            $recorderhtml = $renderer->show_cbcredentials_notice($errormessage);
         } else {
             $token = utils::fetch_token($apiuser, $apisecret);
-
-            // Check token authenticated and no errors in it.
-            $errormessage = utils::fetch_token_error($token);
-            if (!empty($errormessage)) {
-                $recorderhtml = $renderer->show_problembox($errormessage);
-
-            } else {
-                // All good. So lets fetch recorder html
-                $recorderhtml = $renderer->fetch_recorder($recoptions, $token);
-            }
+            // All good. So lets fetch recorder html
+            $recorderhtml = $renderer->fetch_recorder($recoptions, $token);
         }
 
         // Get recorder onscreen title.

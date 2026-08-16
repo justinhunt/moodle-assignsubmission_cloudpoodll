@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.47 (Build 2026081600)
+- Added in-plugin free trial set up
+
 Version 1.0.46 (Build 2026060800)
 - Fixed broken lang string in uploa-local-file confirmation modal
 

@@ -41,6 +41,10 @@ class constants
     const M_VECTORCONTROL = 'assignsubmission_cloudpoodll_vectorcontrol';
     const M_PLUGINSETTINGS = '/admin/settings.php?section=assignsubmission_cloudpoodll';
 
+    // Chargebee details for the in-app free trial (see fetchcbpage.php).
+    const M_CB_SITE = 'poodllcom';
+    const M_CB_TRIAL_PRICEID = 'Poodll-Free-Trial-USD-Daily';
+
     const APPID = 'assignsubmission_cloudpoodll';
 
     const REC_AUDIO = 'audio';

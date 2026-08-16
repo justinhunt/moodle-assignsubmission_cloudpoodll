@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026060800;
+$plugin->version = 2026081600;
 $plugin->requires = 2023100900; // Requires Moodle 4.3
 $plugin->component = 'assignsubmission_cloudpoodll';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.46 (Build 2026060800)';
+$plugin->release = '1.0.47 (Build 2026081600)';

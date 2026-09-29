@@ -325,20 +325,42 @@ define(['jquery', 'core/log'], function ($, log) {
                 line.appendChild(text);
                 return line;
             };
+            // The <track> element that owns a TextTrack, it knows whether the vtt file has loaded.
+            var findTrackElement = function (track) {
+                var trackels = config.player.querySelectorAll('track');
+                for (var t = 0; t < trackels.length; t++) {
+                    if (trackels[t].track === track) {
+                        return trackels[t];
+                    }
+                }
+                return null;
+            };
             var createTranscriptBody = function (track) {
                 if (typeof track !== 'object') {
-                    track = config.player.textTracks()[track];
+                    track = config.player.textTracks[track];
                 }
                 var body = that.utils.createEl('div', config.prefix + '-body');
                 var line, i;
                 var fragment = document.createDocumentFragment();
-                // activeCues returns null when the track isn't loaded (for now?)
-                if (!track.activeCues) {
-                    // If cues aren't loaded, set mode to hidden, wait, and try again.
-                    // But don't hide an active track. In that case, just wait and try again.
-                    if (track.mode !== 'showing') {
-                        track.mode = 'hidden';
-                    }
+                // A disabled track never loads, so set it to hidden. But don't hide an active track.
+                if (track.mode === 'disabled') {
+                    track.mode = 'hidden';
+                }
+                // Wait for the vtt file to load before reading the cues. We can not use activeCues for this,
+                // it is an empty list (not null) as soon as the track is not disabled, loaded or not.
+                // readyState: 0 = none, 1 = loading, 2 = loaded, 3 = error.
+                var trackel = findTrackElement(track);
+                if (trackel && trackel.readyState === 3) {
+                    log.debug('Interactive Transcript: could not load ' + trackel.src);
+                } else if (trackel && trackel.readyState !== 2) {
+                    trackel.addEventListener('load', function () {
+                        createTranscriptBody(track);
+                    }, {once: true});
+                    trackel.addEventListener('error', function () {
+                        log.debug('Interactive Transcript: could not load ' + trackel.src);
+                    }, {once: true});
+                } else if (!trackel && !track.cues) {
+                    // No <track> element to listen to, so wait and try again.
                     window.setTimeout(function () {
                         createTranscriptBody(track);
                     }, 100);

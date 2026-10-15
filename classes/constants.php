@@ -33,7 +33,7 @@ class constants
 
     const M_COMPONENT = 'assignsubmission_cloudpoodll';
     const M_DEFAULT_CLOUDPOODLL = "cloud.poodll.com";
-    const M_TABLE = 'assignsubmission_cpoodll';
+    const M_TABLE = 'assignsubmission_cloudpoodll';
     const M_URL = '/mod/assign/submission/cloudpoodll';
     const M_FILEAREA = 'submissions_cloudpoodll';
     const M_SUBPLUGIN = 'cloudpoodll';

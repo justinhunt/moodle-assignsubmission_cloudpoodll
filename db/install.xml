@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="assignsubmission_cpoodll" COMMENT="Info about cloudpoodll submission">
+    <TABLE NAME="assignsubmission_cloudpoodll" COMMENT="Info about cloudpoodll submission">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" />
         <FIELD NAME="assignment" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" />

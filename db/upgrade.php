@@ -46,7 +46,8 @@ function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion)
 
     //add filename field.
     if ($oldversion < 2021062400) {
-        $table = new xmldb_table(constants::M_TABLE);
+        // The table is still named with the legacy name at this point; it is renamed in a later step.
+        $table = new xmldb_table('assignsubmission_cpoodll');
         $field = new xmldb_field('secureplayback', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, 0);
 
 
@@ -62,8 +63,8 @@ function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion)
 
     if ($oldversion < 2026021901) {
 
-        // Define field vectordata to be added to assignsubmission_cpoodll.
-        $table = new xmldb_table(constants::M_TABLE);
+        // Define field vectordata to be added to the legacy assignsubmission_cpoodll table (renamed in a later step).
+        $table = new xmldb_table('assignsubmission_cpoodll');
         $field = new xmldb_field('vectordata', XMLDB_TYPE_TEXT, null, null, null, null, null, 'secureplayback');
 
         // Conditionally launch add field vectordata.
@@ -73,6 +74,18 @@ function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion)
 
         // Cloud Poodll savepoint reached.
         upgrade_plugin_savepoint(true, 2026021901, 'assignsubmission', constants::M_SUBPLUGIN);
+    }
+
+    if ($oldversion < 2026101500) {
+        // Rename the table to begin with the plugin's frankenstyle name.
+        $oldtable = new xmldb_table('assignsubmission_cpoodll');
+        $newtable = new xmldb_table(constants::M_TABLE);
+        if ($dbman->table_exists($oldtable) && !$dbman->table_exists($newtable)) {
+            $dbman->rename_table($oldtable, constants::M_TABLE);
+        }
+
+        // Cloud Poodll savepoint reached.
+        upgrade_plugin_savepoint(true, 2026101500, 'assignsubmission', constants::M_SUBPLUGIN);
     }
 
     return true;

@@ -1,0 +1,25 @@
+# camp listing manifest — the descriptive content for this plugin's page on
+# camp-registry.org. Edit and commit as normal; camp ingests and hash-pins it
+# at each tagged release. Schema: https://camp-registry.org/schema/listing.schema.json
+name: Cloud Poodll Assignment Submission
+summary: Audio, video and whiteboard recording as a native Moodle Assignment submission type.
+description: |
+  Students record their submission directly in the browser with a Cloud Poodll recorder: no
+  separate app and no large upload. Recordings are processed and stored in the Cloud Poodll
+  cloud, so the Moodle server and course backups stay small.
+
+  Because it is a real assignment submission plugin, not an LTI or external activity, it works
+  with Moodle's normal grading workflow, assignment feedback and portfolio export. Optional
+  transcription shows an interactive transcript alongside the recording.
+
+  **Requires a Cloud Poodll account.** Recording, transcription and transcoding run through the Cloud
+  Poodll service, so the plugin needs an API user and secret from https://poodll.com to function.
+labels:
+  - paid-service
+  - external-account
+  - commercial-support-available
+category: assignment-submission
+links:
+  docs: https://support.poodll.com
+  issues: https://github.com/justinhunt/moodle-assignsubmission_cloudpoodll/issues
+  changelog: https://github.com/justinhunt/moodle-assignsubmission_cloudpoodll/blob/master/CHANGES.txt

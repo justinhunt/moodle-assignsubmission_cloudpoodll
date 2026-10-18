@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.50 (Build 2026101800)
+- Load recorder scripts from the configured Cloud Poodll server
+
 Version 1.0.49 (Build 2026101500)
 - Renamed database table to assignsubmission_cloudpoodll to match Moodle naming conventions
 

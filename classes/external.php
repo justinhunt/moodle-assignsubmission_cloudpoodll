@@ -11,18 +11,9 @@ namespace assignsubmission_cloudpoodll;
 
 global $CFG;
 
-//This is for pre M4.0 and post M4.0 to work on same code base
-require_once($CFG->libdir . '/externallib.php');
-use external_api;
-use external_function_parameters;
-use external_value;
-
-/*
- * This is for M4.0 and later
- use core_external\external_api;
- use core_external\external_function_parameters;
- use core_external\external_value;
- */
+use core_external\external_api;
+use core_external\external_function_parameters;
+use core_external\external_value;
 
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
 require_once($CFG->dirroot . '/mod/assign/submission/cloudpoodll/locallib.php');

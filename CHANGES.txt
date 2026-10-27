@@ -1,5 +1,10 @@
 Change List
 =========
+Version 1.0.51 (Build 2026102700)
+- Use the core_external web service classes (the old global names log debugging notices on Moodle 5.3)
+- Declared the properties of the text diff classes (PHP 8.2 dynamic property deprecations when showing corrections)
+- Tested with Moodle 5.3
+
 Version 1.0.50 (Build 2026101800)
 - Load recorder scripts from the configured Cloud Poodll server
 

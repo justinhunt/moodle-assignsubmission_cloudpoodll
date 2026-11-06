@@ -72,8 +72,7 @@ function assignsubmission_cloudpoodll_pluginfile($course, $cm, context $context,
         // Check is users submission or has grading permission.
         if ($USER->id != $userid &&
         !$instance->teamsubmission &&
-        !has_capability('mod/assign:grade', $context) &&
-        !has_capability('assignsubmission/' . constants::M_SUBPLUGIN . ':reviewsubmissions', $context)) {
+        !has_capability('mod/assign:grade', $context)) {
             return false;
         }
     }

@@ -91,13 +91,6 @@ $settings->add(new admin_setting_configselect(
 $expiredays = utils::get_expiredays_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT . '/expiredays', get_string('expiredays', constants::M_COMPONENT), '', '365', $expiredays));
 
-// transcode settings
-// hard coded transcoding behaviour: Justin 20210428
-/*
-$settings->add(new admin_setting_configcheckbox(constants::M_COMPONENT .'/enabletranscode',
-    get_string('enabletranscode', constants::M_COMPONENT), get_string('enabletranscode_details',constants::M_COMPONENT), 1));
-*/
-
 // player type
 $playertypeoptions = utils::fetch_options_interactivetranscript();
 $settings->add(new admin_setting_configselect(

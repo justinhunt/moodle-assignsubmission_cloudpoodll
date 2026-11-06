@@ -62,8 +62,8 @@ Poodll Submissions**:
 - Separate **audio** and **video** settings groups controlling default recorder, player
   appearance (single view and list view: shown inline, in a lightbox, as a link, or not at all),
   and player size.
-- **Transcription**, **transcoding** (to mp3/mp4) and **secure playback** (time-limited playback
-  URLs) can each be enabled independently.
+- **Transcription** and **secure playback** (time-limited playback URLs) can each be enabled
+  independently. Recordings are always transcoded to mp3/mp4.
 - **Fallback behaviour** for browsers without HTML5 recording support: fall back to a file
   upload screen, an iOS-specific upload screen, or just a warning.
 - **Show local file uploader** — let students upload an existing recording alongside (or instead
@@ -81,7 +81,7 @@ a choice of visual skins so the recorder isn't a one-size-fits-all widget.
 - **Transcription** — Cloud Poodll can transcribe what the student says and display it beneath
   the player (and as captions), speeding up grading and helping language learners see their own
   speech written down. Transcripts can also be run through AI grammar correction.
-- **Transcoding** — recordings can be converted to mp3/mp4 for broad compatibility.
+- **Transcoding** — recordings are always converted to mp3/mp4 for broad compatibility.
 - **Player type** — play back with a plain player, or one that shows an interactive or standard
   transcript alongside it.
 

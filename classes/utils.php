@@ -521,12 +521,24 @@ class utils
         }
     }
 
-    //transcripts become ready in their own time, fetch them here
+    /**
+     * Fetch a transcript file. They become ready in their own time.
+     *
+     * curl returns its error message as the result of a failed request, so the result can only be
+     * trusted when the request itself succeeded.
+     *
+     * @param string $fileurl the URL of the transcript file
+     * @return string|false the file contents, or false if they could not be fetched
+     */
     public static function fetch_transcriptdata($fileurl)
     {
-        $url = $fileurl;
-        $transcript = self::curl_fetch($url);
-        if (strpos($transcript, "<Error><Code>AccessDenied</Code>") > 0) {
+        global $CFG;
+
+        require_once($CFG->libdir . '/filelib.php');
+        $curl = new \curl();
+        $transcript = $curl->get($fileurl);
+        $info = $curl->get_info();
+        if ($curl->get_errno() || ($info['http_code'] ?? 0) != 200) {
             return false;
         }
         return $transcript;

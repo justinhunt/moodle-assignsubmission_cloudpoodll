@@ -88,5 +88,26 @@ function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2026101500, 'assignsubmission', constants::M_SUBPLUGIN);
     }
 
+    if ($oldversion < 2026103100) {
+        // Recordings are always transcoded, so the setting is gone.
+        unset_config('enabletranscode', constants::M_COMPONENT);
+        $DB->delete_records('assign_plugin_config', [
+            'plugin' => constants::M_SUBPLUGIN,
+            'subtype' => 'assignsubmission',
+            'name' => 'enabletranscode',
+        ]);
+
+        // The transcript task used to run on whiteboard images and save curl's error message as the
+        // transcript. A whiteboard image never has a transcript, so clear them all.
+        $select = "recorder = :recorder AND " . $DB->sql_like('filename', ':url', false, true, true);
+        $params = ['recorder' => constants::REC_WHITEBOARD, 'url' => 'http%'];
+        foreach (['transcript', 'fulltranscript', 'vttdata'] as $field) {
+            $DB->set_field_select(constants::M_TABLE, $field, null, $select, $params);
+        }
+
+        // Cloud Poodll savepoint reached.
+        upgrade_plugin_savepoint(true, 2026103100, 'assignsubmission', constants::M_SUBPLUGIN);
+    }
+
     return true;
 }

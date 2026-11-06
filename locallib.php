@@ -116,8 +116,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $boardsize = $this->get_config('boardsize') !== false ? $this->get_config('boardsize') : $adminconfig->boardsize;
         $secureplayback = $this->get_config('secureplayback') !== false ? $this->get_config('secureplayback') : $adminconfig->secureplayback;
         $noaudiofilters = $this->get_config('noaudiofilters') !== false ? $this->get_config('noaudiofilters') : $adminconfig->noaudiofilters;
-        // We made transcoding compulsory: Justin 20210428
-        // $enabletranscode = $this->get_config('enabletranscode')!==false ? $this->get_config('enabletranscode') : $adminconfig->enabletranscode;
 
         // to enable/disable recorders from the admin
         $recoptions = [];
@@ -158,24 +156,12 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->setDefault(constants::M_COMPONENT . '_expiredays', $expiredays);
         $mform->disabledIf(constants::M_COMPONENT . '_expiredays', constants::M_COMPONENT . '_enabled', 'notchecked');
 
-        // Transcode settings.
-        // We force transcoding to be always on: Justin 20210428
-        $mform->addElement('hidden', constants::M_COMPONENT . '_enabletranscode', 1);
-        $mform->setType(constants::M_COMPONENT . '_enabletranscode', PARAM_INT);
-        /*
-         $mform->addElement('advcheckbox', constants::M_COMPONENT . '_enabletranscode', get_string("enabletranscode", constants::M_COMPONENT));
-         $mform->setDefault(constants::M_COMPONENT . '_enabletranscode', $enabletranscode);
-         $mform->disabledIf(constants::M_COMPONENT . '_enabletranscode', constants::M_COMPONENT . '_enabled', 'notchecked');
-         */
-
         // Transcription settings.
         // Here add googlecloudspeech or amazontranscrobe options.
         $transcriberoptions = utils::get_transcriber_options();
         $mform->addElement('select', constants::M_COMPONENT . '_enabletranscription', get_string("enabletranscription", constants::M_COMPONENT), $transcriberoptions);
         $mform->setDefault(constants::M_COMPONENT . '_enabletranscription', $enabletranscription);
         $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabled', 'notchecked');
-        // We force transcoding to be always on: Justin 20210428
-        // $mform->disabledIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
         // Language options.
         $langoptions = utils::get_lang_options();
@@ -183,8 +169,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->setDefault(constants::M_COMPONENT . '_language', $language);
         $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabled', 'notchecked');
         $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabletranscription', 'eq', 0);
-        // We force transcoding to be always on: Justin 20210428
-        // $mform->disabledIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
         // playertype : teacher
         $playertypeoptions = utils::fetch_options_interactivetranscript();
@@ -192,8 +176,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->setDefault(constants::M_COMPONENT . '_playertype', $playertype);
         $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabled', 'notchecked');
         $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabletranscription', 'eq', 0);
-        // we force transcoding to be always on: Justin 20210428
-        // $mform->disabledIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabletranscode', 'notchecked');
 
         // playertype: student
         $playertypeoptions = utils::fetch_options_interactivetranscript();
@@ -300,8 +282,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $mform->hideIf(constants::M_COMPONENT . '_recorderskin', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_timelimit', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_expiredays', constants::M_COMPONENT . '_enabled', 'notchecked');
-            // we force transcoding to be always on: Justin 20210428
-            // $mform->hideIf(constants::M_COMPONENT . '_enabletranscode', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_enabletranscription', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_language', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_playertype', constants::M_COMPONENT . '_enabled', 'notchecked');
@@ -404,8 +384,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $this->set_config('language', $data->{ constants::M_COMPONENT . '_language'});
         // trancribe
         $this->set_config('enabletranscription', $data->{ constants::M_COMPONENT . '_enabletranscription'});
-        // transcode
-        $this->set_config('enabletranscode', $data->{ constants::M_COMPONENT . '_enabletranscode'});
         // No audio filters
         $this->set_config('noaudiofilters', $data->{ constants::M_COMPONENT . '_noaudiofilters'});
         // playertype
@@ -518,8 +496,6 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $recoptions->recorderskin = $this->get_config('recorderskin');
         $recoptions->timelimit = $this->get_config('timelimit');
         $recoptions->expiredays = $this->get_config('expiredays');
-        // we made this compulsory Justin 20210428
-        $recoptions->transcode = 1; // $this->get_config('enabletranscode');
         $recoptions->transcribe = $this->get_config('enabletranscription');
         $recoptions->language = $this->get_config('language');
         $recoptions->awsregion = get_config(constants::M_COMPONENT, 'awsregion');
@@ -1048,10 +1024,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                 $cloudpoodllsubmission->vttdata = '';
                 $cloudpoodllsubmission->vectordata = $vectordata;
                 $ret = $DB->update_record(constants::M_TABLE, $cloudpoodllsubmission);
-                // If its an audio or video recording we look for a transcript
-                if ($this->get_config('recordertype') !== constants::REC_WHITEBOARD) {
-                    $this->register_fetch_transcript_task($cloudpoodllsubmission);
-                }
+                $this->register_fetch_transcript_task($cloudpoodllsubmission);
             }
 
         } else {
@@ -1073,8 +1046,23 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
 
     }
 
-    // register an adhoc task to pick up transcripts
+    /**
+     * Register an adhoc task to pick up the transcript of a recording, if it will have one.
+     *
+     * Whiteboards never have a transcript, and neither do recordings made while transcription is
+     * off, so a task for those would only poll for 24 hours and find nothing.
+     *
+     * @param stdClass $cloudpoodllsubmission the row of the submission
+     * @return bool true if a task was queued
+     */
     public function register_fetch_transcript_task($cloudpoodllsubmission) {
+        if (
+            $this->get_config('recordertype') === constants::REC_WHITEBOARD ||
+            !$this->get_config('enabletranscription')
+        ) {
+            return false;
+        }
+
         $fetchtask = new \assignsubmission_cloudpoodll\task\cloudpoodll_s3_adhoc();
         $fetchtask->set_component(constants::M_COMPONENT);
 

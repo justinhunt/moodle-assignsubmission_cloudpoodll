@@ -58,8 +58,6 @@ $string['apisecret'] = 'Poodll API Secret ';
 $string['apisecret_details'] = 'The Poodll API secret. See <a href= "https://support.poodll.com/support/solutions/articles/19000083076-cloud-poodll-api-secret">here</a> for more details';
 $string['enabletranscription'] = 'Enable Transcription';
 $string['enabletranscription_details'] = 'Cloud Poodll can transcribe the student speaking if required';
-$string['enabletranscode'] = 'Enable Transcode';
-$string['enabletranscode_details'] = 'Cloud Poodll can transcode the recording to mp3/mp4';
 $string['language'] = 'Cloud Poodll Speaker Language';
 
 $string['useast1'] = 'US East';

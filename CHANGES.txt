@@ -1,5 +1,12 @@
 Change List
 =========
+Version 1.0.52 (Build 2026110601)
+- Fixed failed transcript fetches saving the error message as the transcript
+- Fixed a pending transcript fetch overwriting a newer or deleted recording
+- Stopped fetching transcripts for whiteboards and for recordings made with transcription off
+- Removed a check for a capability that did not exist when viewing whiteboard images
+- Removed the unused enabletranscode setting. Recordings are always transcoded
+
 Version 1.0.51 (Build 2026102700)
 - Use the core_external web service classes (the old global names log debugging notices on Moodle 5.3)
 - Declared the properties of the text diff classes (PHP 8.2 dynamic property deprecations when showing corrections)

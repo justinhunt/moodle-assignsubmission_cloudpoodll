@@ -40,42 +40,57 @@ use \assignsubmission_cloudpoodll\utils;
  */
 class cloudpoodll_s3_adhoc extends \core\task\adhoc_task {
                                                                      
-   	 /**
-     *  Run the tasks
+    /**
+     * Fetch the transcript files for a recording and save them on its submission row.
      */
-	 public function execute(){
-	     global $DB;
-		$trace = new \text_progress_trace();
+    public function execute() {
+        global $DB;
+        $trace = new \text_progress_trace();
 
-		//CD should contain activityid / attemptid and modulecontextid
-		$cd =  $this->get_custom_data();
-		$submission = $cd->submission;
-		//$trace->output($cd->somedata)
+        $cd = $this->get_custom_data();
+        $submission = $cd->submission;
 
-         $transcript = utils::fetch_transcriptdata($submission->filename . '.txt');
-         $fulltranscript = false;
-         $vttdata = false;
-         if($transcript) {
-             $fulltranscript = utils::fetch_transcriptdata($submission->filename . '.json');
-             $vttdata = utils::fetch_transcriptdata($submission->filename . '.vtt');
-         }
-         if($transcript===false){
-             if($cd->taskcreationtime + (HOURSECS * 24) < time()){
-                 $this->do_forever_fail('No transcript could be found',$trace);
-                 return;
-             }else{
-                 $this->do_retry('Transcript appears to not be ready yet',$trace,$cd);
-                 return;
-             }
-         } else {
-             //yay we have transcript data, let us save that shall we ...
-             $submission->transcript = $transcript;
-             if($fulltranscript){$submission->fulltranscript = $fulltranscript;}
-             if($vttdata){$submission->vttdata = $vttdata;}
-             $DB->update_record(constants::M_TABLE, $submission);
-             return;
-         }
-     }
+        // The custom data is a copy of the row from when this task was queued, so check that it still
+        // describes the current recording. Re-recording queues a new task for the new file.
+        $current = $DB->get_record(constants::M_TABLE, ['id' => $submission->id], 'id, filename');
+        if (!$current || $current->filename !== $submission->filename) {
+            $trace->output('The recording has been replaced or removed. Not fetching its transcript.');
+            return;
+        }
+
+        // Only recordings stored on Cloud Poodll have a URL and a transcript. Whiteboard images do
+        // not, though older versions queued this task for them.
+        if (!preg_match('#^https?://#i', $current->filename)) {
+            $trace->output('This submission is not a Cloud Poodll recording. It has no transcript.');
+            return;
+        }
+
+        $transcript = utils::fetch_transcriptdata($current->filename . '.txt');
+        if ($transcript === false) {
+            if ($cd->taskcreationtime + (HOURSECS * 24) < time()) {
+                $this->do_forever_fail('No transcript could be found', $trace);
+            } else {
+                $this->do_retry('Transcript appears to not be ready yet', $trace, $cd);
+            }
+            return;
+        }
+
+        // Update only the transcript fields, so that nothing else on the row can be overwritten.
+        $update = new \stdClass();
+        $update->id = $current->id;
+        $update->transcript = $transcript;
+        if ($transcript) {
+            $fulltranscript = utils::fetch_transcriptdata($current->filename . '.json');
+            if ($fulltranscript) {
+                $update->fulltranscript = $fulltranscript;
+            }
+            $vttdata = utils::fetch_transcriptdata($current->filename . '.vtt');
+            if ($vttdata) {
+                $update->vttdata = $vttdata;
+            }
+        }
+        $DB->update_record(constants::M_TABLE, $update);
+    }
 
     protected function do_retry($reason, $trace, $customdata) {
         if($customdata->taskcreationtime + (HOURSECS * 24) < time()){

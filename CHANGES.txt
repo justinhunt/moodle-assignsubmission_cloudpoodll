@@ -1,6 +1,10 @@
 Change List
 =========
 Version 1.0.52 (Build 2026110601)
+- Added new One Two Three and Once recorders that run in the plugin, not in an iframe from Cloud Poodll
+- Added an Allow pausing setting for the new recorders
+- New assignments allow uploading a file instead of recording
+- Added a web service that gets the upload details for the new local recorders from Cloud Poodll
 - Fixed failed transcript fetches saving the error message as the transcript
 - Fixed a pending transcript fetch overwriting a newer or deleted recording
 - Stopped fetching transcripts for whiteboards and for recordings made with transcription off

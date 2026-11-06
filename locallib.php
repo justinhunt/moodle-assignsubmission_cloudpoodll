@@ -240,12 +240,26 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $mform->disabledIf('backimage_filemanager', constants::M_COMPONENT . '_enabled', 'notchecked');
         $mform->disabledIf('backimage_filemanager', constants::M_COMPONENT . '_recordertype', 'neq', constants::REC_WHITEBOARD);
 
-        // Show upload option.
-        $show_upload_option = $this->get_config('show_upload_option') ? $this->get_config('show_upload_option') : 0;
+        // Show upload option. New assignments have it on.
+        $show_upload_option = $this->get_config('show_upload_option') !== false ? $this->get_config('show_upload_option') : 1;
         $mform->addElement('advcheckbox', constants::M_COMPONENT . '_show_upload_option', get_string("show_upload_option", constants::M_COMPONENT), get_string("show_upload_option_details", constants::M_COMPONENT));
         $mform->setDefault(constants::M_COMPONENT . '_show_upload_option', $show_upload_option);
         $mform->disabledIf(constants::M_COMPONENT . '_show_upload_option', constants::M_COMPONENT . '_enabled', 'notchecked');
 
+
+        // Allow pausing. Only the local recorders have this. Exams may turn it off.
+        $allowpause = $this->get_config('allowpause') !== false ? $this->get_config('allowpause') : 1;
+        $pausename = constants::M_COMPONENT . '_allowpause';
+        $mform->addElement(
+            'advcheckbox',
+            $pausename,
+            get_string('allowpause', constants::M_COMPONENT),
+            get_string('allowpause_details', constants::M_COMPONENT)
+        );
+        $mform->setDefault($pausename, $allowpause);
+        $mform->disabledIf($pausename, constants::M_COMPONENT . '_enabled', 'notchecked');
+        $mform->hideIf($pausename, constants::M_COMPONENT . '_recorderskin', 'in', utils::fetch_legacy_skins());
+        $mform->hideIf($pausename, constants::M_COMPONENT . '_recordertype', 'eq', constants::REC_WHITEBOARD);
 
         // Safe save settings.
         $mform->addElement('advcheckbox', constants::M_COMPONENT . '_safesave', get_string("safesave", constants::M_COMPONENT));
@@ -294,6 +308,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $mform->hideIf('backimage_filemanager', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_safesave', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_show_upload_option', constants::M_COMPONENT . '_enabled', 'notchecked');
+            $mform->hideIf(constants::M_COMPONENT . '_allowpause', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_secureplayback', constants::M_COMPONENT . '_enabled', 'notchecked');
             $mform->hideIf(constants::M_COMPONENT . '_noaudiofilters', constants::M_COMPONENT . '_enabled', 'notchecked');
         }
@@ -331,6 +346,13 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $this->set_config('show_upload_option', $data->{ constants::M_COMPONENT . '_show_upload_option'});
         } else {
             $this->set_config('show_upload_option', 0);
+        }
+
+        // Allow pausing in the local recorders.
+        if (isset($data->{ constants::M_COMPONENT . '_allowpause'})) {
+            $this->set_config('allowpause', $data->{ constants::M_COMPONENT . '_allowpause'});
+        } else {
+            $this->set_config('allowpause', 1);
         }
 
         // secureplayback
@@ -431,10 +453,13 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         global $CFG, $USER, $PAGE;
 
         // Prepare the AMD javascript for deletesubmission and showing the recorder.
+        $islocal = utils::is_local_skin($this->get_config('recorderskin')) &&
+            in_array($this->get_config('recordertype'), [constants::REC_AUDIO, constants::REC_VIDEO]);
         $opts = [
             "component" => constants::M_COMPONENT,
             "safesave" => $this->get_config('safesave'),
             "recordertype" => $this->get_config('recordertype'),
+            "localrecorder" => $islocal ? 1 : 0,
         ];
         $PAGE->requires->js_call_amd(constants::M_COMPONENT . "/submissionhelper", 'init', [$opts]);
         $PAGE->requires->strings_for_js(['reallydeletesubmission', 'clicktohide', 'clicktoshow', 'startagainupload', 'startagainrecorder', 'yes', 'no'], constants::M_COMPONENT);
@@ -506,6 +531,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $recoptions->boardsize = $this->get_config('boardsize');
         $recoptions->draftitemid = $draftitemid;
         $recoptions->vdata = $vdata;
+        // Local recorders only. Older assignments have no setting for these, so they get them.
+        $recoptions->allowpause = $this->get_config('allowpause') !== false ? $this->get_config('allowpause') : 1;
+        $recoptions->allowupload = $this->get_config('show_upload_option') ? 1 : 0;
 
         // Backimage URL.
         $backimageurl = '';
@@ -527,6 +555,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $errormessage = \assignsubmission_cloudpoodll\cbcredentials::credentials_error();
         if (!empty($errormessage)) {
             $recorderhtml = $renderer->show_cbcredentials_notice($errormessage);
+        } else if ($islocal) {
+            // The local recorder gets its upload details through a web service, so no token is fetched here.
+            $recorderhtml = $renderer->fetch_local_recorder($recoptions, $this->assignment->get_course_module()->id);
         } else {
             $token = utils::fetch_token($apiuser, $apisecret);
             // All good. So lets fetch recorder html
@@ -539,7 +570,9 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             $displayname = get_string('recorderdisplayname', constants::M_COMPONENT);
         }
 
-        if ($this->get_config('show_upload_option') && 
+        // The local recorders have their own upload link.
+        if (
+            !$islocal && $this->get_config('show_upload_option') &&
             ($this->get_config('recordertype') == constants::REC_AUDIO || $this->get_config('recordertype') == constants::REC_VIDEO)) {
             
             $uploadlink = html_writer::link('#', get_string('uploadlocalfile', constants::M_COMPONENT), ['class' => constants::M_COMPONENT . '_uploadfile', 'style' => 'display:block']);

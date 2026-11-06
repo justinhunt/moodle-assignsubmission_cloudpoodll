@@ -23,5 +23,13 @@ $functions = array(
                 'capabilities' => 'assignsubmission/cloudpoodll:use',
                 'type' => 'write',
                 'ajax' => true,
-        )
+        ),
+        'assignsubmission_cloudpoodll_fetch_upload_details' => array(
+                'classname' => '\assignsubmission_cloudpoodll\external\fetch_upload_details',
+                'methodname' => 'execute',
+                'description' => 'Get the S3 upload details for one local recorder recording',
+                'capabilities' => 'mod/assign:submit',
+                'type' => 'write',
+                'ajax' => true,
+        ),
 );

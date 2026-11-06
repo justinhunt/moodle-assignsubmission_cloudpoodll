@@ -58,6 +58,10 @@ class constants
     const SKIN_ONCE = 'once';
     const SKIN_UPLOAD = 'upload';
     const SKIN_SCREEN = 'screen';
+    /** @var string The local 123 recorder, which runs in the plugin itself, not in a Cloud Poodll iframe. */
+    const SKIN_LOCAL123 = 'local123';
+    /** @var string The local once recorder, which uploads as soon as Stop is pressed. */
+    const SKIN_LOCALONCE = 'localonce';
 
     const FALLBACK_UPLOAD = 'upload';
     const FALLBACK_IOSUPLOAD = 'iosupload';

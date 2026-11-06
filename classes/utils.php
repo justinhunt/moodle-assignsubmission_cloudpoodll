@@ -104,7 +104,9 @@ class utils
 
     public static function fetch_options_skins()
     {
-        $rec_options = array(constants::SKIN_PLAIN => get_string("skinplain", constants::M_COMPONENT),
+        $rec_options = array(constants::SKIN_LOCAL123 => get_string("skinlocal123", constants::M_COMPONENT),
+            constants::SKIN_LOCALONCE => get_string("skinlocalonce", constants::M_COMPONENT),
+            constants::SKIN_PLAIN => get_string("skinplain", constants::M_COMPONENT),
             constants::SKIN_BMR => get_string("skinbmr", constants::M_COMPONENT),
             constants::SKIN_123 => get_string("skin123", constants::M_COMPONENT),
             constants::SKIN_FRESH => get_string("skinfresh", constants::M_COMPONENT),
@@ -112,6 +114,27 @@ class utils
             constants::SKIN_UPLOAD => get_string("skinupload", constants::M_COMPONENT),
             constants::SKIN_SCREEN => get_string("skinscreen", constants::M_COMPONENT));
         return $rec_options;
+    }
+
+    /**
+     * Is this skin one of the local recorders, which run in the plugin instead of a Cloud Poodll iframe?
+     *
+     * @param string $skin the recorderskin setting
+     * @return bool
+     */
+    public static function is_local_skin($skin) {
+        return $skin === constants::SKIN_LOCAL123 || $skin === constants::SKIN_LOCALONCE;
+    }
+
+    /**
+     * The skins that still load the recorder from Cloud Poodll in an iframe.
+     *
+     * @return array of skin names
+     */
+    public static function fetch_legacy_skins() {
+        return array_values(array_filter(array_keys(self::fetch_options_skins()), function ($skin) {
+            return !self::is_local_skin($skin);
+        }));
     }
 
     public static function get_region_options()

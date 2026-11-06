@@ -1,0 +1,207 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template localrecorder/recorder
+
+    The local audio and video recorder. Every state is in the markup, and the skin
+    module shows one at a time. Strings come in the context as "s" so this file never
+    names a component: it is shared by several Poodll plugins and kept in sync.
+
+    Context variables required for this template:
+    * uniqid - Unique id for this recorder
+    * isvideo - Video, not audio
+    * steps - List of {label, number}
+    * limittext - The time limit, or "No time limit"
+    * allowpause - Show the Pause button
+    * allowupload - Show "Upload a file instead"
+    * accept - The accept attribute for the file picker
+    * s - The strings
+
+    Example context (json):
+    {
+        "uniqid": "plr1",
+        "isvideo": false,
+        "steps": [{"label": "Record", "number": 1}, {"label": "Check", "number": 2}, {"label": "Save", "number": 3}],
+        "limittext": "Limit 1:00",
+        "allowpause": true,
+        "allowupload": true,
+        "accept": "audio/*",
+        "s": {"startrecording": "Start recording"}
+    }
+}}
+<div class="plr-card" data-region="card" data-media="{{#isvideo}}video{{/isvideo}}{{^isvideo}}audio{{/isvideo}}" role="group" aria-label="{{s.recorder}}">
+    <div class="plr-head">
+        <ol class="plr-steps" data-region="steps">
+            {{#steps}}
+            <li data-step="{{number}}"><span class="plr-mark" aria-hidden="true">{{number}}</span><span class="plr-steplabel">{{label}}</span><span class="plr-sr" data-region="stepdone" hidden> {{s.stepdone}}</span></li>
+            {{/steps}}
+        </ol>
+        <span class="plr-limit">{{limittext}}</span>
+    </div>
+
+    <div class="plr-body">
+        <div class="plr-split">
+            {{#isvideo}}
+            <div class="plr-media" data-region="media">
+                <div class="plr-stage">
+                    <video data-region="video" playsinline muted></video>
+                    <div class="plr-placeholder" data-region="placeholder" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M3 7h12v10H3z M15 10l6-3v10l-6-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                    </div>
+                    <span class="plr-badge" data-region="recbadge" hidden><i></i>REC</span>
+                </div>
+            </div>
+            {{/isvideo}}
+            {{^isvideo}}
+            <audio data-region="audio" preload="auto" hidden></audio>
+            {{/isvideo}}
+
+            <div class="plr-ctrl">
+                <div data-state="ready" hidden>
+                    <div class="plr-line">
+                        <button type="button" class="plr-recbtn" data-action="record" data-focus aria-label="{{s.startrecording}}"><span></span></button>
+                        <div class="plr-txt"><b>{{s.startrecording}}</b><span data-region="readyhelp">{{s.willask}}</span></div>
+                    </div>
+                </div>
+
+                <div data-state="permission" hidden>
+                    <div class="plr-line">
+                        <span class="plr-spinner" aria-hidden="true"></span>
+                        <div class="plr-txt"><b>{{s.waiting}}</b><span>{{s.chooseallow}}</span></div>
+                    </div>
+                </div>
+
+                <div data-state="deviceerror" hidden>
+                    <div class="plr-errbox" role="alert"><strong data-region="errortitle"></strong><p data-region="errorhelp"></p></div>
+                    <div class="plr-row"><button type="button" class="btn btn-primary" data-action="record" data-focus data-region="errorretry">{{s.tryagain}}</button></div>
+                </div>
+
+                <div data-state="countdown" hidden>
+                    <div class="plr-line">
+                        <div class="plr-count" data-region="count" aria-hidden="true">3</div>
+                        <div class="plr-txt"><b>{{s.getready}}</b><span data-region="countmsg"></span></div>
+                        <button type="button" class="btn btn-secondary" data-action="cancel" data-focus>{{s.cancel}}</button>
+                    </div>
+                </div>
+
+                <div data-state="recording" hidden>
+                    <div class="plr-line">
+                        <button type="button" class="plr-stopbtn" data-action="stop" data-focus aria-label="{{s.stop}}"><span></span></button>
+                        <div class="plr-txt">
+                            <div class="plr-rechead">
+                                <span class="plr-recflag" data-region="recflag"><i></i><span data-region="recflagtext">{{s.recording}}</span></span>
+                                <span class="plr-clock" data-region="clock">0:00</span>
+                            </div>
+                            {{^isvideo}}<canvas class="plr-meter" data-region="meter" aria-hidden="true"></canvas>{{/isvideo}}
+                            <div class="plr-bar plr-bar-rec" data-region="limitbar" aria-hidden="true" hidden><i></i></div>
+                        </div>
+                        {{#allowpause}}
+                        <button type="button" class="btn btn-secondary" data-action="pause" data-region="pausebtn">{{s.pause}}</button>
+                        {{/allowpause}}
+                    </div>
+                </div>
+
+                <div data-state="donemsg" hidden>
+                    <div class="plr-okline">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".15"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div><strong data-region="donetitle"></strong><span data-region="donehelp"></span></div>
+                        <button type="button" class="btn btn-secondary plr-push" data-action="askreplace" data-region="againrow" data-focus>{{s.recordagain}}</button>
+                    </div>
+                </div>
+
+                <div data-state="filechip" hidden>
+                    <div class="plr-filechip">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14 3v5h5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                        <span data-region="filename"></span>
+                    </div>
+                </div>
+
+                <div data-state="player" hidden>
+                    <div class="plr-player">
+                        <button type="button" class="plr-playbtn" data-action="play" data-region="playbtn" aria-label="{{s.play}}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" data-region="playicon"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true" data-region="pauseicon" hidden><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>
+                        </button>
+                        <canvas class="plr-wave" data-region="wave" role="slider" tabindex="0" aria-label="{{s.position}}" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"></canvas>
+                        <span class="plr-ptime" data-region="ptime">0:00 / 0:00</span>
+                    </div>
+                </div>
+
+                <div data-state="checkbuttons" hidden>
+                    <div class="plr-row plr-end">
+                        <button type="button" class="btn btn-secondary" data-action="again">{{s.recordagain}}</button>
+                        <button type="button" class="btn btn-primary" data-action="use" data-focus>{{s.usethis}}</button>
+                    </div>
+                </div>
+
+                <div data-state="saving" hidden>
+                    <div class="plr-status" data-region="uploadstatus">
+                        <p>{{s.uploading}}<span data-region="pct">0%</span></p>
+                        <div class="plr-bar" role="progressbar" aria-label="{{s.uploadprogress}}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-region="upbar"><i></i></div>
+                    </div>
+                    <div class="plr-line" data-region="processing" hidden>
+                        <span class="plr-spinner" aria-hidden="true"></span>
+                        <div class="plr-txt"><b data-region="preparingtitle"></b><span>{{s.preparinghelp}}</span></div>
+                    </div>
+                </div>
+
+                <div data-state="uploaderror" hidden>
+                    <div class="plr-errbox" role="alert"><strong>{{s.uploadfailed}}</strong><p>{{s.uploadfailedhelp}}</p></div>
+                    <div class="plr-row plr-end">
+                        <button type="button" class="btn btn-secondary" data-action="again">{{s.startover}}</button>
+                        <button type="button" class="btn btn-primary" data-action="retry" data-focus>{{s.tryagain}}</button>
+                    </div>
+                </div>
+
+                <div data-state="donebuttons" hidden>
+                    <div class="plr-confirm" data-region="confirm" hidden>
+                        <p>{{s.replaceq}}</p>
+                        <div class="plr-row">
+                            <button type="button" class="btn btn-primary" data-action="replace">{{s.replace}}</button>
+                            <button type="button" class="btn btn-secondary" data-action="keep">{{s.keep}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-state="nosupport" hidden>
+                    <div class="plr-errbox" role="alert"><strong>{{s.nosupport}}</strong><p>{{s.nosupporthelp}}</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="plr-foot" data-region="foot" hidden>
+        <label>{{#isvideo}}{{s.camera}}{{/isvideo}}{{^isvideo}}{{s.microphone}}{{/isvideo}}
+            <select class="custom-select form-select" data-region="devices"></select>
+        </label>
+    </div>
+</div>
+{{#allowupload}}
+<div class="plr-alt" data-region="alt" hidden>
+    <button type="button" class="btn btn-link p-0" data-action="pickfile">{{s.uploadinstead}}</button>
+    <input type="file" data-region="file" accept="{{accept}}" hidden>
+</div>
+{{/allowupload}}
+<div class="plr-mini" data-region="mini" role="group" aria-label="{{s.recordercontrols}}" hidden>
+    <span class="plr-recflag" data-region="minirecflag"><i></i><span data-region="minirecflagtext">{{s.recording}}</span></span>
+    <span class="plr-clock" data-region="miniclock">0:00</span>
+    {{#allowpause}}
+    <button type="button" class="btn btn-secondary btn-sm" data-action="pause" data-region="minipausebtn">{{s.pause}}</button>
+    {{/allowpause}}
+    <button type="button" class="plr-stopbtn" data-action="ministop" aria-label="{{s.stop}}"><span></span></button>
+</div>
+<div class="plr-sr" aria-live="polite" data-region="live"></div>

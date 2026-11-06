@@ -139,8 +139,8 @@ class renderer extends \plugin_renderer_base
                 break;
         }
 
-        // Transcode.
-        $recoptions->transcode = $recoptions->transcode ? "1" : "0";
+        // We always transcode.
+        $recoptions->transcode = "1";
 
         $recoptions->localloader = '/mod/assign/submission/cloudpoodll/poodlllocalloader.php';
         $recoptions->cloudpoodllurl = utils::get_cloud_poodll_server();
@@ -161,6 +161,34 @@ class renderer extends \plugin_renderer_base
         }
         return $recorderhtml;
 
+    }
+
+    /**
+     * The html of a local recorder, which runs in the plugin instead of a Cloud Poodll iframe.
+     *
+     * No token goes to the page. The recorder asks for its upload URL through the
+     * fetch_upload_details web service when the recording is finished.
+     *
+     * @param \stdClass $recoptions the recorder settings, as made in get_form_elements()
+     * @param int $cmid the course module id of the assignment
+     * @return string html
+     */
+    public function fetch_local_recorder($recoptions, $cmid) {
+        $rootid = \html_writer::random_id('plr');
+        $config = [
+            'rootid' => $rootid,
+            'component' => constants::M_COMPONENT,
+            'wsfunction' => constants::M_COMPONENT . '_fetch_upload_details',
+            'wsargs' => ['cmid' => (int)$cmid],
+            'mediatype' => $recoptions->recordertype == constants::REC_VIDEO ? 'video' : 'audio',
+            'timelimit' => (int)$recoptions->timelimit,
+            'allowpause' => !empty($recoptions->allowpause),
+            'allowupload' => !empty($recoptions->allowupload),
+            'asktouse' => $recoptions->recorderskin !== constants::SKIN_LOCALONCE,
+            'noaudiofilters' => !empty($recoptions->shadowing),
+        ];
+        $this->page->requires->js_call_amd(constants::M_COMPONENT . '/localrecorder/skin_123', 'init', [$config]);
+        return \html_writer::div('', 'plr-root', ['id' => $rootid]);
     }
 
     /**

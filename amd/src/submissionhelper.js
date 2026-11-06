@@ -17,9 +17,38 @@ define(['jquery', 'core/log', 'assignsubmission_cloudpoodll/cloudpoodllloader', 
 
             this.register_controls();
             this.register_events();
-            if (this.recordertype !== 'whiteboard') {
+            if (opts['localrecorder']) {
+                this.setup_localrecorder();
+            } else if (this.recordertype !== 'whiteboard') {
                 this.setup_recorder();
             }
+        },
+
+        // The local recorder runs in the page and reports with a bubbling "localrecorder" event.
+        setup_localrecorder: function () {
+            var that = this;
+            document.addEventListener('localrecorder', function (e) {
+                var detail = e.detail || {};
+                switch (detail.type) {
+                    case 'recording':
+                        if (that.safesave == 1) {
+                            that.controls.formsubmitbutton.attr('disabled', 'disabled');
+                        }
+                        break;
+                    case 'awaitingprocessing':
+                        // Unlike the iframe recorders, a second recording replaces the first.
+                        that.controls.updatecontrol.val(detail.mediaurl);
+                        if (that.safesave == 1) {
+                            that.controls.formsubmitbutton.removeAttr('disabled');
+                        }
+                        break;
+                    case 'idle':
+                        if (that.safesave == 1) {
+                            that.controls.formsubmitbutton.removeAttr('disabled');
+                        }
+                        break;
+                }
+            });
         },
 
         setup_recorder: function () {

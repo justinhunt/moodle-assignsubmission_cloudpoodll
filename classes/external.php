@@ -47,7 +47,8 @@ class external extends external_api
         $siteconfig = get_config(constants::M_COMPONENT);
         $token = utils::fetch_token($siteconfig->apiuser, $siteconfig->apisecret);
 
-        $region = $cp_sub->get_config('region');
+        // The region is a site setting. Assignments do not have one.
+        $region = $siteconfig->awsregion;
         $language = $cp_sub->get_config('language');
         $corrections = utils::fetch_grammar_correction($token, $region, $language, $text);
         $ret = new \stdClass();

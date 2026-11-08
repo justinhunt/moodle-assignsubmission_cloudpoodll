@@ -304,8 +304,10 @@ $string['cloudpoodllserver_details'] = 'The server to use for Cloud Poodll. Only
 $string['confirmclearcanvas'] = 'Are you sure you want to clear the canvas?';
 $string['enterthetext'] = 'Enter the text:';
 
-// Local recorder strings. Keep the lr_ strings the same in every plugin that uses the local recorder.
-$string['lr_cannotrecord'] = 'You can not record a submission for this assignment right now.';
+// localrecorder:start
+// The local recorder strings. They are the same in every Poodll plugin with the local recorder,
+// and are copied from assignsubmission_cloudpoodll. Change them there, not here.
+$string['lr_cannotrecord'] = 'You can not record here right now.';
 $string['lr_uploaddetailsfailed'] = 'Cloud Poodll could not prepare the upload: {$a}';
 $string['lr_blockedaudio'] = 'Your microphone is blocked';
 $string['lr_blockedhelp'] = 'Click the icon at the left of the address bar, choose Allow, then try again.';
@@ -373,6 +375,7 @@ $string['lr_willaskaudio'] = 'Your browser will ask to use your microphone.';
 $string['lr_willaskvideo'] = 'Your browser will ask to use your camera and microphone.';
 $string['lr_wrongfileaudio'] = 'Choose an audio file.';
 $string['lr_wrongfilevideo'] = 'Choose a video file.';
+// localrecorder:end
 
 // Settings for the local recorders. These are not shared.
 $string['allowpause'] = 'Allow pausing';

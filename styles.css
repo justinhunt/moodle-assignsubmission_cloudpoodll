@@ -609,7 +609,8 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     margin-right: 50px;
 }
 /* localrecorder:start */
-/* The local recorder. This block is shared by several Poodll plugins and kept in sync. */
+/* The local recorder. This block is the same in every Poodll plugin with the local recorder,
+   and is copied from assignsubmission_cloudpoodll. Change it there, not here. */
 .plr-root {
     --plr-accent: var(--bs-primary, var(--primary, #0f6cbf));
     --plr-fg: var(--bs-body-color, #1d2125);

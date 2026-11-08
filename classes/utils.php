@@ -47,7 +47,8 @@ class utils
         $size_options = array(
             constants::SIZE_NONE => get_string('shownovideo', constants::M_COMPONENT),
             constants::SIZE_LIGHTBOX => get_string('showvideolightbox', constants::M_COMPONENT),
-            '480' => '480x360');
+            // The value is a size from when the player had one. It now keeps the shape of the video.
+            '480' => get_string('yes', constants::M_COMPONENT));
         return $size_options;
     }
 
@@ -102,18 +103,67 @@ class utils
         return $options;
     }
 
-    public static function fetch_options_skins()
-    {
-        $rec_options = array(constants::SKIN_LOCAL123 => get_string("skinlocal123", constants::M_COMPONENT),
-            constants::SKIN_LOCALONCE => get_string("skinlocalonce", constants::M_COMPONENT),
-            constants::SKIN_PLAIN => get_string("skinplain", constants::M_COMPONENT),
-            constants::SKIN_BMR => get_string("skinbmr", constants::M_COMPONENT),
-            constants::SKIN_123 => get_string("skin123", constants::M_COMPONENT),
-            constants::SKIN_FRESH => get_string("skinfresh", constants::M_COMPONENT),
-            constants::SKIN_ONCE => get_string("skinonce", constants::M_COMPONENT),
-            constants::SKIN_UPLOAD => get_string("skinupload", constants::M_COMPONENT),
-            constants::SKIN_SCREEN => get_string("skinscreen", constants::M_COMPONENT));
-        return $rec_options;
+    /**
+     * The recorder skins a teacher can choose from.
+     *
+     * Normally the local recorders replace the old Cloud Poodll skins, which are left out. If the site
+     * has gone back to the old recorders, it is the other way round.
+     *
+     * @return array of skin => name
+     */
+    public static function fetch_options_skins() {
+        if (self::use_legacy_recorders()) {
+            $options = [
+                constants::SKIN_PLAIN => get_string("skinplain", constants::M_COMPONENT),
+                constants::SKIN_BMR => get_string("skinbmr", constants::M_COMPONENT),
+                constants::SKIN_123 => get_string("skin123", constants::M_COMPONENT),
+                constants::SKIN_FRESH => get_string("skinfresh", constants::M_COMPONENT),
+                constants::SKIN_ONCE => get_string("skinonce", constants::M_COMPONENT),
+            ];
+        } else {
+            $options = [
+                constants::SKIN_LOCAL123 => get_string("skinlocal123", constants::M_COMPONENT),
+                constants::SKIN_LOCALONCE => get_string("skinlocalonce", constants::M_COMPONENT),
+            ];
+        }
+        // These have no local version yet, so they always come from Cloud Poodll.
+        $options[constants::SKIN_UPLOAD] = get_string("skinupload", constants::M_COMPONENT);
+        $options[constants::SKIN_SCREEN] = get_string("skinscreen", constants::M_COMPONENT);
+        return $options;
+    }
+
+    /**
+     * Has the site gone back to the old recorders, which load in an iframe from Cloud Poodll?
+     *
+     * @return bool
+     */
+    public static function use_legacy_recorders() {
+        return !empty(get_config(constants::M_COMPONENT, 'uselegacyrecorders'));
+    }
+
+    /**
+     * The skin to show, given the skin an assignment was saved with.
+     *
+     * The local recorders replace the old skins, so assignments made before them get the local
+     * recorder closest to their old skin: once uploads straight after Stop, the rest become One Two
+     * Three. If the site uses the old recorders, the local skins go back the other way. The saved
+     * setting is never changed, so turning the old recorders on or off loses nothing.
+     *
+     * @param string|false $skin the saved recorderskin setting, or false if there is none
+     * @return string the skin to show
+     */
+    public static function effective_skin($skin) {
+        $legacy = self::use_legacy_recorders();
+        switch ($skin) {
+            case constants::SKIN_UPLOAD:
+            case constants::SKIN_SCREEN:
+                return $skin;
+            case constants::SKIN_ONCE:
+            case constants::SKIN_LOCALONCE:
+                return $legacy ? constants::SKIN_ONCE : constants::SKIN_LOCALONCE;
+            default:
+                return $legacy ? constants::SKIN_123 : constants::SKIN_LOCAL123;
+        }
     }
 
     /**
@@ -127,14 +177,45 @@ class utils
     }
 
     /**
-     * The skins that still load the recorder from Cloud Poodll in an iframe.
+     * The skins that load the recorder from Cloud Poodll in an iframe.
      *
      * @return array of skin names
      */
     public static function fetch_legacy_skins() {
-        return array_values(array_filter(array_keys(self::fetch_options_skins()), function ($skin) {
-            return !self::is_local_skin($skin);
-        }));
+        return [constants::SKIN_PLAIN, constants::SKIN_BMR, constants::SKIN_123, constants::SKIN_FRESH,
+            constants::SKIN_ONCE, constants::SKIN_UPLOAD, constants::SKIN_SCREEN];
+    }
+
+    /**
+     * Could this be the URL of a recording stored by Cloud Poodll?
+     *
+     * The recorder writes the URL into a hidden form field, so a student could post any URL instead.
+     * Cloud Poodll keeps recordings in its own S3 buckets, all named poodll-..., in the global and
+     * China partitions of AWS. Both path style (s3.region.amazonaws.com/bucket/key) and virtual
+     * host style (bucket.s3.region.amazonaws.com/key) URLs are accepted.
+     *
+     * @param string $url the URL to check
+     * @return bool
+     */
+    public static function is_cloudpoodll_media_url($url) {
+        if (!is_string($url) || clean_param($url, PARAM_URL) !== $url) {
+            return false;
+        }
+        $parts = parse_url($url);
+        if (
+            ($parts['scheme'] ?? '') !== 'https' || empty($parts['host']) || empty($parts['path']) ||
+            isset($parts['user']) || isset($parts['port'])
+        ) {
+            return false;
+        }
+        $host = strtolower($parts['host']);
+        if (!preg_match('/^([a-z0-9.-]+\.)?amazonaws\.com(\.cn)?$/', $host)) {
+            return false;
+        }
+        if (strpos($host, 'poodll-') === 0) {
+            return true;
+        }
+        return (bool)preg_match('#^/poodll-[a-z0-9.-]+/.+#', $parts['path']);
     }
 
     public static function get_region_options()

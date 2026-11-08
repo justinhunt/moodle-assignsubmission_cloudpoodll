@@ -151,9 +151,9 @@ $string['no'] = 'No';
 $string['displayaudioplayersingle'] = 'Show audio player(normal)';
 $string['displayaudioplayerlist'] = 'Show audio player(lists)';
 
-$string['displaysizesingle'] = 'Video player size(normal)';
+$string['displaysizesingle'] = 'Show video player(normal)';
 $string['displaysizesingledetails'] = '';
-$string['displaysizelist'] = 'Video player size(in lists)';
+$string['displaysizelist'] = 'Show video player(lists)';
 $string['displaysizelistdetails'] = '';
 
 // $string['shownoimage'] = 'Do not display image';
@@ -251,8 +251,8 @@ $string['showaudiolightbox'] = "Show filename(lightbox)";
 $string['showvideolightbox'] = "Show filename (lightbox)";
 $string['audiosingledisplay'] = "Show audio player (single)";
 $string['audiolistdisplay'] = "Show audio player (in lists)";
-$string['videosingledisplay'] = "Video player size (single)";
-$string['videolistdisplay'] = "Video player size (in lists)";
+$string['videosingledisplay'] = "Show video player (single)";
+$string['videolistdisplay'] = "Show video player (in lists)";
 $string['shownovideo'] = 'Show filename';
 $string['shownoaudio'] = 'Show filename';
 // $string['videoplaceholder'] = ' [video submitted] ';
@@ -377,5 +377,8 @@ $string['lr_wrongfilevideo'] = 'Choose a video file.';
 // Settings for the local recorders. These are not shared.
 $string['allowpause'] = 'Allow pausing';
 $string['allowpause_details'] = 'Show a Pause button while recording. Turn this off for exams.';
-$string['skinlocal123'] = 'One Two Three (new)';
-$string['skinlocalonce'] = 'Once (new)';
+$string['skinlocal123'] = 'One Two Three';
+$string['skinlocalonce'] = 'Once';
+$string['uselegacyrecorders'] = 'Use the old recorders';
+$string['uselegacyrecorders_details'] = 'The audio and video recorders now run in Moodle. Turn this on to go back to the old recorders, which load in a frame from Cloud Poodll, for example if the new ones do not work on your site. Each assignment keeps its own recorder setting, so you can turn this off again later.';
+$string['invalidmediaurl'] = 'The recording could not be saved because its address was not one from Cloud Poodll. Please record or upload it again.';

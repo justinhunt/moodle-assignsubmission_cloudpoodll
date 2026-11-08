@@ -480,17 +480,17 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     max-width: 450px;
 }
 
+/* The video keeps the shape it was recorded in: wide, 4:3 or portrait. Tall videos are capped
+   in height and shown with bars at the sides. */
 .assignsubmission_cloudpoodll_video {
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
+    max-height: 360px;
+    background: #000;
 }
 
 .assignsubmission_cloudpoodll_video_cont {
-    position: relative;
-    height: 0;
     max-width: 480px;
 }
 
@@ -523,10 +523,6 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     .assignsubmission_cloudpoodll_videorec_cont {
         padding-top: min(540px, 150%);
     }
-
-    .assignsubmission_cloudpoodll_video_cont {
-        padding-bottom: min(360px, 75%);
-    }
 }
 
 @supports not (padding-top: min(540px, 150%)) {
@@ -537,10 +533,6 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
     .assignsubmission_cloudpoodll_videorec_cont {
         padding-top: 540px;
     }
-
-    .assignsubmission_cloudpoodll_video_cont {
-        padding-bottom: 360px;
-    }
 }
 
 @media screen and (max-width: 667px) {
@@ -550,10 +542,6 @@ button.assignsubmission_cloudpoodll_deletesubmissionbutton {
 
     .assignsubmission_cloudpoodll_audiorec_cont {
         padding-top: 90%;
-    }
-
-    .assignsubmission_cloudpoodll_video_cont {
-        padding-bottom: 75%;
     }
 }
 

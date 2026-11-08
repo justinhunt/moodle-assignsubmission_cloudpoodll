@@ -91,6 +91,14 @@ $settings->add(new admin_setting_configselect(
 $expiredays = utils::get_expiredays_options();
 $settings->add(new admin_setting_configselect(constants::M_COMPONENT . '/expiredays', get_string('expiredays', constants::M_COMPONENT), '', '365', $expiredays));
 
+// The local recorders replace the Cloud Poodll iframe recorders. This goes back to the old ones.
+$settings->add(new admin_setting_configcheckbox(
+    constants::M_COMPONENT . '/uselegacyrecorders',
+    get_string('uselegacyrecorders', constants::M_COMPONENT),
+    get_string('uselegacyrecorders_details', constants::M_COMPONENT),
+    0
+));
+
 // player type
 $playertypeoptions = utils::fetch_options_interactivetranscript();
 $settings->add(new admin_setting_configselect(
@@ -206,12 +214,6 @@ $settings->add(new admin_setting_heading(
     get_string('setting_video_heading_details', constants::M_COMPONENT)
 ));
 
-
-// The size of the video player on the various screens
-$sizeoptions = [
-    constants::SIZE_LIGHTBOX => get_string('shownovideo', constants::M_COMPONENT),
-    '480' => '480x360',
-];
 
 $settings->add(new admin_setting_configselect(
     constants::M_COMPONENT . '/displaysize_single',

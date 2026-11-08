@@ -99,7 +99,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         }
 
         $recordertype = $this->get_config('recordertype') ? $this->get_config('recordertype') : $adminconfig->defaultrecorder;
-        $recorderskin = $this->get_config('recorderskin') ? $this->get_config('recorderskin') : constants::SKIN_123;
+        // Old skins show as the local recorder that replaces them, and new assignments get One Two Three.
+        $recorderskin = utils::effective_skin($this->get_config('recorderskin'));
         $timelimit = $this->get_config('timelimit') ? $this->get_config('timelimit') : 0;
         $safesave = $this->get_config('safesave') ? $this->get_config('safesave') : 0;
         $expiredays = $this->get_config('expiredays') ? $this->get_config('expiredays') : $adminconfig->expiredays;
@@ -388,8 +389,10 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                 $adminconfig->displaysize_list;
         }
 
-        // expiredays
-        $this->set_config('expiredays', $data->{ constants::M_COMPONENT . '_expiredays'});
+        // Fields that are disabled in the form are not posted: board size unless the type is whiteboard,
+        // and the transcript settings while transcription is off. These keep the value they had, or
+        // get the site default if they never had one.
+        $this->save_setting_or_default('expiredays', $data, $adminconfig->expiredays);
 
         // audio size display
         $this->set_config('audiosingledisplay', $data->{ constants::M_COMPONENT . '_audiosingledisplay'});
@@ -399,20 +402,11 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $this->set_config('videosingledisplay', $data->{ constants::M_COMPONENT . '_videosingledisplay'});
         $this->set_config('videolistdisplay', $data->{ constants::M_COMPONENT . '_videolistdisplay'});
 
-        // whiteboard size display
-        $this->set_config('boardsize', $data->{ constants::M_COMPONENT . '_boardsize'});
-
-        // language
-        $this->set_config('language', $data->{ constants::M_COMPONENT . '_language'});
-        // trancribe
-        $this->set_config('enabletranscription', $data->{ constants::M_COMPONENT . '_enabletranscription'});
-        // No audio filters
-        $this->set_config('noaudiofilters', $data->{ constants::M_COMPONENT . '_noaudiofilters'});
-        // playertype
-        $this->set_config('playertype', $data->{ constants::M_COMPONENT . '_playertype'});
-
-        // playertype student
-        $this->set_config('playertypestudent', $data->{ constants::M_COMPONENT . '_playertypestudent'});
+        $this->save_setting_or_default('boardsize', $data, $adminconfig->boardsize);
+        $this->save_setting_or_default('language', $data, $adminconfig->language);
+        $this->save_setting_or_default('enabletranscription', $data, $adminconfig->enabletranscription);
+        $this->save_setting_or_default('playertype', $data, $adminconfig->defaultplayertype);
+        $this->save_setting_or_default('playertypestudent', $data, $adminconfig->defaultplayertypestudent);
 
         // save backimage
         if (isset($data->backimage_filemanager)) {
@@ -427,6 +421,25 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         }
 
         return true;
+    }
+
+    /**
+     * Save one setting from the settings form, if it was posted.
+     *
+     * A field that was disabled in the form is not posted. The setting then keeps the value it had,
+     * or gets the default if it never had one.
+     *
+     * @param string $name the setting name, without the component prefix
+     * @param stdClass $data the form data
+     * @param mixed $default the value for a setting that was not posted and has no value yet
+     */
+    private function save_setting_or_default(string $name, stdClass $data, $default): void {
+        $field = constants::M_COMPONENT . '_' . $name;
+        if (isset($data->$field)) {
+            $this->set_config($name, $data->$field);
+        } else if ($this->get_config($name) === false) {
+            $this->set_config($name, $default);
+        }
     }
 
     /**
@@ -453,7 +466,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         global $CFG, $USER, $PAGE;
 
         // Prepare the AMD javascript for deletesubmission and showing the recorder.
-        $islocal = utils::is_local_skin($this->get_config('recorderskin')) &&
+        $recorderskin = utils::effective_skin($this->get_config('recorderskin'));
+        $islocal = utils::is_local_skin($recorderskin) &&
             in_array($this->get_config('recordertype'), [constants::REC_AUDIO, constants::REC_VIDEO]);
         $opts = [
             "component" => constants::M_COMPONENT,
@@ -518,7 +532,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         // recorder data
         $recoptions = new stdClass();
         $recoptions->recordertype = $this->get_config('recordertype');
-        $recoptions->recorderskin = $this->get_config('recorderskin');
+        $recoptions->recorderskin = $recorderskin;
         $recoptions->timelimit = $this->get_config('timelimit');
         $recoptions->expiredays = $this->get_config('expiredays');
         $recoptions->transcribe = $this->get_config('enabletranscription');
@@ -945,7 +959,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
                 }
                 $singlesize = $this->get_config('videosingledisplay');
                 if ($singlesize === false) {
-                    $singlesize = $adminconfig->displayaudioplayer_single;
+                    $singlesize = $adminconfig->displaysize_single;
                 }
 
                 // build our sizes array
@@ -1021,6 +1035,20 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         $filename = $data->filename;
         if ($filename === false || empty($filename)) {
             return true;
+        }
+
+        // The recorder writes the filename into a hidden field, so check it is one we could have made.
+        // Recordings must be in Cloud Poodll's buckets, whiteboards are a plain filename and -1 deletes.
+        if ($filename != '-1') {
+            if ($this->get_config('recordertype') === constants::REC_WHITEBOARD) {
+                $valid = clean_param($filename, PARAM_FILE) === $filename;
+            } else {
+                $valid = utils::is_cloudpoodll_media_url($filename);
+            }
+            if (!$valid) {
+                $this->set_error(get_string('invalidmediaurl', constants::M_COMPONENT));
+                return false;
+            }
         }
 
         // Move the file from draft to permanent storage.

@@ -1,22 +1,14 @@
 Change List
 =========
 Version 1.0.52 (Build 2026110800)
-- The new recorders replace the old skins: Once becomes the new Once and the others become the new One Two Three
+- New recorders replace the old skins: Once becomes the new "Once" and the others become the new "One Two Three"
 - Added a Use the old recorders site setting to go back to the Cloud Poodll recorders
-- Saving checks that a recording's address is in Cloud Poodll's storage
-- Safe Save is now on by default, and the upgrade turns it on in existing assignments that use Cloud Poodll submissions
-- Videos play in the shape they were recorded in, not in a 4:3 box. The video display settings no longer show a size
+- Safe Save is now on by default.
+- Videos play in the aspect ration they were recorded in, not in a 4:3 box.
 - Fixed an error when saving the assignment settings with a recorder other than whiteboard, or with transcription off
-- Fixed the video player setting falling back to the audio player's site default
-- Added new One Two Three and Once recorders that run in the plugin, not in an iframe from Cloud Poodll
 - Added an Allow pausing setting for the new recorders
 - New assignments allow uploading a file instead of recording
-- Added a web service that gets the upload details for the new local recorders from Cloud Poodll
-- Fixed failed transcript fetches saving the error message as the transcript
-- Fixed a pending transcript fetch overwriting a newer or deleted recording
-- Stopped fetching transcripts for whiteboards and for recordings made with transcription off
-- Removed a check for a capability that did not exist when viewing whiteboard images
-- Removed the unused enabletranscode setting. Recordings are always transcoded
+- various bug fixes
 
 Version 1.0.51 (Build 2026102700)
 - Use the core_external web service classes (the old global names log debugging notices on Moodle 5.3)

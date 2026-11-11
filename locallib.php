@@ -102,7 +102,8 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
         // Old skins show as the local recorder that replaces them, and new assignments get One Two Three.
         $recorderskin = utils::effective_skin($this->get_config('recorderskin'));
         $timelimit = $this->get_config('timelimit') ? $this->get_config('timelimit') : 0;
-        $safesave = $this->get_config('safesave') ? $this->get_config('safesave') : 0;
+        // Safe save is on unless the assignment has turned it off.
+        $safesave = $this->get_config('safesave') !== false ? $this->get_config('safesave') : 1;
         $expiredays = $this->get_config('expiredays') ? $this->get_config('expiredays') : $adminconfig->expiredays;
         $language = $this->get_config('language') ? $this->get_config('language') : $adminconfig->language;
         $playertype = $this->get_config('playertype') ? $this->get_config('playertype') : $adminconfig->defaultplayertype;
@@ -471,7 +472,7 @@ class assign_submission_cloudpoodll extends assign_submission_plugin {
             in_array($this->get_config('recordertype'), [constants::REC_AUDIO, constants::REC_VIDEO]);
         $opts = [
             "component" => constants::M_COMPONENT,
-            "safesave" => $this->get_config('safesave'),
+            "safesave" => $this->get_config('safesave') !== false ? $this->get_config('safesave') : 1,
             "recordertype" => $this->get_config('recordertype'),
             "localrecorder" => $islocal ? 1 : 0,
         ];

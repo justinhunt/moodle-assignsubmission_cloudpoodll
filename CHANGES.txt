@@ -4,6 +4,7 @@ Version 1.0.52 (Build 2026110800)
 - The new recorders replace the old skins: Once becomes the new Once and the others become the new One Two Three
 - Added a Use the old recorders site setting to go back to the Cloud Poodll recorders
 - Saving checks that a recording's address is in Cloud Poodll's storage
+- Safe Save is now on by default, and the upgrade turns it on in existing assignments that use Cloud Poodll submissions
 - Videos play in the shape they were recorded in, not in a 4:3 box. The video display settings no longer show a size
 - Fixed an error when saving the assignment settings with a recorder other than whiteboard, or with transcription off
 - Fixed the video player setting falling back to the audio player's site default

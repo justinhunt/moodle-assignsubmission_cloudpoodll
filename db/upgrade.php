@@ -109,5 +109,32 @@ function xmldb_assignsubmission_cloudpoodll_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2026103100, 'assignsubmission', constants::M_SUBPLUGIN);
     }
 
+    if ($oldversion < 2026110800) {
+        // The new recorders do not make the student click "Use this recording" before they can
+        // submit, so turn safe save on in every assignment that uses Cloud Poodll submissions.
+        // MySQL cannot update a table from a subquery on itself, so fetch the assignments first.
+        $enabledparams = [
+            'plugin' => constants::M_SUBPLUGIN,
+            'subtype' => 'assignsubmission',
+            'name' => 'enabled',
+            'value' => '1',
+        ];
+        $assignmentids = $DB->get_fieldset_select(
+            'assign_plugin_config',
+            'assignment',
+            'plugin = :plugin AND subtype = :subtype AND name = :name AND value = :value',
+            $enabledparams
+        );
+        foreach (array_chunk($assignmentids, 1000) as $chunk) {
+            [$insql, $params] = $DB->get_in_or_equal($chunk, SQL_PARAMS_NAMED);
+            $params += ['plugin' => constants::M_SUBPLUGIN, 'subtype' => 'assignsubmission', 'name' => 'safesave'];
+            $select = "plugin = :plugin AND subtype = :subtype AND name = :name AND assignment $insql";
+            $DB->set_field_select('assign_plugin_config', 'value', '1', $select, $params);
+        }
+
+        // Cloud Poodll savepoint reached.
+        upgrade_plugin_savepoint(true, 2026110800, 'assignsubmission', constants::M_SUBPLUGIN);
+    }
+
     return true;
 }

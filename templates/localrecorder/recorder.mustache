@@ -29,6 +29,7 @@
     * allowpause - Show the Pause button
     * allowupload - Show "Upload a file instead"
     * accept - The accept attribute for the file picker
+    * insecure - The page is not https, so the browser will not allow recording
     * s - The strings
 
     Example context (json):
@@ -40,6 +41,7 @@
         "allowpause": true,
         "allowupload": true,
         "accept": "audio/*",
+        "insecure": false,
         "s": {"startrecording": "Start recording"}
     }
 }}
@@ -178,7 +180,10 @@
                 </div>
 
                 <div data-state="nosupport" hidden>
-                    <div class="plr-errbox" role="alert"><strong>{{s.nosupport}}</strong><p>{{s.nosupporthelp}}</p></div>
+                    <div class="plr-errbox" role="alert">
+                        {{#insecure}}<strong>{{s.nosecure}}</strong><p>{{s.nosecurehelp}}</p>{{/insecure}}
+                        {{^insecure}}<strong>{{s.nosupport}}</strong><p>{{s.nosupporthelp}}</p>{{/insecure}}
+                    </div>
                 </div>
             </div>
         </div>

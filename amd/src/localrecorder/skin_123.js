@@ -40,7 +40,8 @@ import UploadTransport from './transport_upload';
 const STRINGS = ['recorder', 'stepdone', 'steprecord', 'stepcheck', 'stepsave', 'limit', 'nolimit',
     'startrecording', 'willaskaudio', 'willaskvideo', 'readywhenyouare', 'waitingaudio', 'waitingvideo', 'chooseallow',
     'blockedaudio', 'blockedvideo', 'blockedhelp', 'notfoundaudio', 'notfoundvideo', 'notfoundhelp',
-    'deviceerror', 'deviceerrorhelp', 'tryagain', 'nosupport', 'nosupporthelp', 'getready', 'startsin', 'cancel',
+    'deviceerror', 'deviceerrorhelp', 'tryagain', 'nosupport', 'nosupporthelp', 'nosecure', 'nosecurehelp', 'getready',
+    'startsin', 'cancel',
     'recording', 'paused', 'stop', 'pause', 'resume', 'recordagain', 'usethisaudio', 'usethisvideo', 'play',
     'pauseplayback', 'position', 'uploading', 'uploadprogress', 'preparingaudio', 'preparingvideo', 'preparingfile',
     'preparinghelp', 'uploadfailed', 'uploadfailedhelp', 'startover', 'readyaudio', 'readyvideo', 'readyfile',
@@ -146,6 +147,8 @@ class Skin {
             limittext: this.config.timelimit ? this.str('limit', fmt(this.config.timelimit)) : this.str('nolimit'),
             allowpause: this.config.allowpause,
             allowupload: this.config.allowupload,
+            // Browsers only allow recording on https pages (and localhost), so say that rather than blame the browser.
+            insecure: !window.isSecureContext,
             accept: this.isvideo ? 'video/*' : 'audio/*,.webm,.m4a,.mp4,.ogg',
             s: strings,
         };

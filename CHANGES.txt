@@ -1,5 +1,8 @@
 Change List
 =========
+Version 1.0.53 (Build 2026111300)
+- On a site without https the recorder says that recording needs https, instead of blaming the browser
+
 Version 1.0.52 (Build 2026110800)
 - New recorders replace the old skins: Once becomes the new "Once" and the others become the new "One Two Three"
 - Added a Use the old recorders site setting to go back to the Cloud Poodll recorders

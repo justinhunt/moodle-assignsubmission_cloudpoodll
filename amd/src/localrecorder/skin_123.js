@@ -46,7 +46,7 @@ const STRINGS = ['recorder', 'stepdone', 'steprecord', 'stepcheck', 'stepsave', 
     'recording', 'paused', 'stop', 'pause', 'resume', 'recordagain', 'usethisaudio', 'usethisvideo', 'play',
     'pauseplayback', 'position', 'uploading', 'uploadprogress', 'preparingaudio', 'preparingvideo', 'preparingfile',
     'preparinghelp', 'uploadfailed', 'uploadfailedhelp', 'startover', 'readyaudio', 'readyvideo', 'readyfile',
-    'clicksave', 'stillpreparing', 'replaceq', 'replace', 'keep', 'uploadinstead', 'wrongfileaudio', 'wrongfilevideo',
+    'stillpreparing', 'replaceq', 'replace', 'keep', 'discardq', 'uploadinstead', 'wrongfileaudio', 'wrongfilevideo',
     'microphone', 'camera', 'recordercontrols', 'stoppedcheck', 'timeup', 'cancelled', 'uploaded'];
 
 // The parts of the template shown in each state.
@@ -160,6 +160,8 @@ class Skin {
         this.registerEvents();
         await this.watchPermission();
         this.go(Recorder.isSupported(this.config.mediatype) ? 'ready' : 'nosupport');
+        // The browser only names the devices once it allows them, so this shows nothing until then.
+        this.showDevices();
     }
 
     registerEvents() {
@@ -211,6 +213,20 @@ class Skin {
             }, {threshold: 0.9}).observe(this.root.querySelector('[data-state="recording"] .plr-line'));
         }
         window.addEventListener('resize', () => this.drawWave());
+        if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+            navigator.mediaDevices.addEventListener('devicechange', () => this.showDevices());
+        }
+
+        // Leaving the page now would lose the recording. Browsers show their own message, not ours.
+        this.watchForm();
+        window.addEventListener('beforeunload', (e) => {
+            if (this.unsaved() && !this.timeUp()) {
+                e.preventDefault();
+                e.returnValue = '';
+                // This only runs if the student chose to stay on the page.
+                setTimeout(() => this.undoSubmit(), 50);
+            }
+        });
     }
 
     /**
@@ -241,6 +257,9 @@ class Skin {
             if (this.state === 'ready') {
                 this.region('readyhelp').textContent = this.readyHelp();
             }
+            if (this.permission === 'granted') {
+                this.showDevices();
+            }
         };
         statuses.forEach((status) => status.addEventListener('change', update));
         update();
@@ -261,6 +280,81 @@ class Skin {
         return this.media('willask');
     }
 
+    /**
+     * Whether there is a recording that leaving the page would lose.
+     *
+     * @returns {Boolean}
+     */
+    unsaved() {
+        if (['recording', 'paused', 'check', 'uploaderror'].indexOf(this.state) !== -1) {
+            return true;
+        }
+        return this.state === 'saving' && !this.mediaurl;
+    }
+
+    /**
+     * Note what submitting the form changes, so it can be put back if the student stays on the page.
+     * Moodle disables the submit buttons and stops the quiz timer when the form is submitted, and
+     * the quiz navigation renames the Next button and changes the page to go to.
+     */
+    watchForm() {
+        const form = this.root.closest('form');
+        if (!form) {
+            return;
+        }
+        const buttons = () => [...form.querySelectorAll('input[type="submit"], button[type="submit"], button:not([type])')];
+        const following = form.querySelector('#followingpage');
+        this.formstate = {
+            form: form,
+            names: buttons().map((button) => [button, button.getAttribute('name')]),
+            following: following ? [following, following.value] : null,
+            disabled: [],
+        };
+        form.addEventListener('submit', () => {
+            this.formstate.disabled = buttons().map((button) => [button, button.disabled]);
+        }, true);
+    }
+
+    /**
+     * Put the form back as it was before it was submitted, after the student chose to stay.
+     */
+    undoSubmit() {
+        const state = this.formstate;
+        if (!state) {
+            return;
+        }
+        delete state.form.dataset.formSubmitted;
+        state.names.forEach(([button, name]) => {
+            if (name === null) {
+                button.removeAttribute('name');
+            } else {
+                button.setAttribute('name', name);
+            }
+        });
+        state.disabled.forEach(([button, disabled]) => {
+            button.disabled = disabled;
+        });
+        if (state.following) {
+            state.following[0].value = state.following[1];
+        }
+        const timer = window.M && M.mod_quiz && M.mod_quiz.timer;
+        if (timer && timer.endtime && timer.update) {
+            timer.stop();
+            timer.update();
+        }
+    }
+
+    /**
+     * Whether a quiz is submitting itself because the time ran out, which must not be stopped.
+     *
+     * @returns {Boolean}
+     */
+    timeUp() {
+        const form = this.root.closest('form');
+        const timeup = form && form.querySelector('input[name="timeup"]');
+        return !!(timeup && timeup.value === '1');
+    }
+
     onAction(action) {
         switch (action) {
             case 'record':
@@ -275,6 +369,17 @@ class Skin {
                 } else {
                     this.startRecordFlow();
                 }
+                break;
+            case 'askagain':
+                this.stopPlayback();
+                this.region('checkrow').hidden = true;
+                this.region('againconfirm').hidden = false;
+                this.root.querySelector('[data-action="keepcheck"]').focus();
+                break;
+            case 'keepcheck':
+                this.region('againconfirm').hidden = true;
+                this.region('checkrow').hidden = false;
+                this.root.querySelector('[data-action="askagain"]').focus();
                 break;
             case 'cancel':
                 this.cancelCountdown();
@@ -343,6 +448,10 @@ class Skin {
         }
         if (state === 'ready') {
             this.region('readyhelp').textContent = this.readyHelp();
+        }
+        if (state === 'check') {
+            this.region('againconfirm').hidden = true;
+            this.region('checkrow').hidden = false;
         }
         if (state === 'done') {
             this.region('confirm').hidden = true;
@@ -673,8 +782,8 @@ class Skin {
             return;
         }
         this.region('donetitle').textContent = this.str('ready' + this.thing());
-        this.region('donehelp').textContent = ready ? this.str('clicksave') : this.str('stillpreparing');
-        this.go('done', this.str('ready' + this.thing()) + ' ' + this.region('donehelp').textContent);
+        this.region('donehelp').textContent = ready ? '' : this.str('stillpreparing');
+        this.go('done', (this.str('ready' + this.thing()) + ' ' + this.region('donehelp').textContent).trim());
     }
 
     setProgress(fraction) {

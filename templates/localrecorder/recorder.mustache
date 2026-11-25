@@ -144,9 +144,16 @@
                 </div>
 
                 <div data-state="checkbuttons" hidden>
-                    <div class="plr-row plr-end">
-                        <button type="button" class="btn btn-secondary" data-action="again">{{s.recordagain}}</button>
+                    <div class="plr-row plr-end" data-region="checkrow">
+                        <button type="button" class="btn btn-secondary" data-action="askagain">{{s.recordagain}}</button>
                         <button type="button" class="btn btn-primary" data-action="use" data-focus>{{s.usethis}}</button>
+                    </div>
+                    <div class="plr-confirm" data-region="againconfirm" hidden>
+                        <p>{{s.discardq}}</p>
+                        <div class="plr-row">
+                            <button type="button" class="btn btn-primary" data-action="keepcheck">{{s.keep}}</button>
+                            <button type="button" class="btn btn-secondary" data-action="again">{{s.recordagain}}</button>
+                        </div>
                     </div>
                 </div>
 

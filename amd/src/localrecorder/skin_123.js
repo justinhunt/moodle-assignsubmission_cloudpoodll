@@ -207,26 +207,56 @@ class Skin {
         // The mini bar appears when the Stop and Pause buttons scroll out of view. On a phone a
         // video card can be mostly on screen with its buttons below the fold.
         if ('IntersectionObserver' in window) {
-            new IntersectionObserver((entries) => {
+            this.observer = new IntersectionObserver((entries) => {
                 this.cardvisible = entries[0].isIntersecting;
                 this.showMini();
-            }, {threshold: 0.9}).observe(this.root.querySelector('[data-state="recording"] .plr-line'));
-        }
-        window.addEventListener('resize', () => this.drawWave());
-        if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
-            navigator.mediaDevices.addEventListener('devicechange', () => this.showDevices());
+            }, {threshold: 0.9});
+            this.observer.observe(this.root.querySelector('[data-state="recording"] .plr-line'));
         }
 
         // Leaving the page now would lose the recording. Browsers show their own message, not ours.
         this.watchForm();
-        window.addEventListener('beforeunload', (e) => {
-            if (this.unsaved() && !this.timeUp()) {
-                e.preventDefault();
-                e.returnValue = '';
-                // This only runs if the student chose to stay on the page.
-                setTimeout(() => this.undoSubmit(), 50);
+        this.handlers = {
+            resize: () => this.drawWave(),
+            devicechange: () => this.showDevices(),
+            beforeunload: (e) => {
+                if (this.unsaved() && !this.timeUp()) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                    // This only runs if the student chose to stay on the page.
+                    setTimeout(() => this.undoSubmit(), 50);
+                }
+            },
+        };
+        window.addEventListener('resize', this.handlers.resize);
+        window.addEventListener('beforeunload', this.handlers.beforeunload);
+        if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+            navigator.mediaDevices.addEventListener('devicechange', this.handlers.devicechange);
+        }
+    }
+
+    /**
+     * Stop everything and let go of the microphone and camera, for a page that removes the recorder,
+     * such as a dialog that closes. A recording that was not uploaded is lost.
+     */
+    destroy() {
+        clearTimeout(this.counttimer);
+        this.counttimer = null;
+        this.uploadseq++;
+        this.stopPlayback();
+        this.recorder.cancel();
+        this.transport.cancel();
+        this.state = null;
+        if (this.observer) {
+            this.observer.disconnect();
+        }
+        if (this.handlers) {
+            window.removeEventListener('resize', this.handlers.resize);
+            window.removeEventListener('beforeunload', this.handlers.beforeunload);
+            if (navigator.mediaDevices && navigator.mediaDevices.removeEventListener) {
+                navigator.mediaDevices.removeEventListener('devicechange', this.handlers.devicechange);
             }
-        });
+        }
     }
 
     /**
@@ -771,7 +801,7 @@ class Skin {
             return;
         }
         this.mediaurl = mediaurl;
-        this.emit('awaitingprocessing', {mediaurl: mediaurl});
+        this.emit('awaitingprocessing', Object.assign({mediaurl: mediaurl}, this.sourceDetails(mediaurl)));
         this.region('uploadstatus').hidden = true;
         this.region('processing').hidden = false;
         this.region('preparingtitle').textContent = this.str('preparing' + this.thing());
@@ -784,6 +814,27 @@ class Skin {
         this.region('donetitle').textContent = this.str('ready' + this.thing());
         this.region('donehelp').textContent = ready ? '' : this.str('stillpreparing');
         this.go('done', (this.str('ready' + this.thing()) + ' ' + this.region('donehelp').textContent).trim());
+    }
+
+    /**
+     * Where Cloud Poodll keeps a copy of the file as it was uploaded, next to the converted one. It
+     * names the copy after the part of the mime type that follows the slash.
+     *
+     * @param {String} mediaurl the URL of the converted file
+     * @returns {Object} mediafilename, sourceurl and sourcemimetype
+     */
+    sourceDetails(mediaurl) {
+        let mimetype = (this.take.mimetype || '').split(';')[0].trim().toLowerCase();
+        if (this.config.mediatype === 'audio' && mimetype === 'video/mp4') {
+            mimetype = 'audio/mp4';
+        }
+        const mediafilename = mediaurl.split('/').pop();
+        const base = mediaurl.replace(/\.[^./]*$/, '');
+        return {
+            mediafilename: mediafilename,
+            sourceurl: base + '.' + mimetype.split('/').pop(),
+            sourcemimetype: mimetype,
+        };
     }
 
     setProgress(fraction) {
@@ -975,12 +1026,12 @@ class Skin {
  * @param {Boolean} config.allowupload offer "Upload a file instead"
  * @param {Boolean} config.asktouse 123 skin (true) or once skin (false)
  * @param {Boolean} config.noaudiofilters turn off the browser's noise filters
- * @returns {Promise}
+ * @returns {Promise<Skin|null>} the recorder, which has a destroy() method
  */
 export const init = async(config) => {
     const root = document.getElementById(config.rootid);
     if (!root) {
-        return;
+        return null;
     }
     try {
         const values = await getStrings(STRINGS.map((key) => ({key: 'lr_' + key, component: config.component})));
@@ -990,7 +1041,9 @@ export const init = async(config) => {
         });
         const skin = new Skin(root, config, s);
         await skin.render();
+        return skin;
     } catch (e) {
         Notification.exception(e);
+        return null;
     }
 };

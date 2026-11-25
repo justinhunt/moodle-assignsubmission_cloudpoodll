@@ -39,7 +39,8 @@ import UploadTransport from './transport_upload';
 // The strings the skin uses. Each is lr_<key> in the component's language file.
 const STRINGS = ['recorder', 'stepdone', 'steprecord', 'stepcheck', 'stepsave', 'limit', 'nolimit',
     'startrecording', 'willaskaudio', 'willaskvideo', 'readywhenyouare', 'waitingaudio', 'waitingvideo', 'chooseallow',
-    'blockedaudio', 'blockedvideo', 'blockedhelp', 'notfoundaudio', 'notfoundvideo', 'notfoundhelp',
+    'blockedaudio', 'blockedvideo', 'blockedhelp', 'blockednowaudio', 'blockednowvideo',
+    'notfoundaudio', 'notfoundvideo', 'notfoundhelp',
     'deviceerror', 'deviceerrorhelp', 'tryagain', 'nosupport', 'nosupporthelp', 'nosecure', 'nosecurehelp', 'getready',
     'startsin', 'cancel',
     'recording', 'paused', 'stop', 'pause', 'resume', 'recordagain', 'usethisaudio', 'usethisvideo', 'play',
@@ -95,6 +96,7 @@ class Skin {
         this.uploadseq = 0;
         this.counttimer = null;
         this.cardvisible = true;
+        this.permission = null;
         this.recorder = new Recorder({
             mediatype: config.mediatype,
             noaudiofilters: config.noaudiofilters,
@@ -156,6 +158,7 @@ class Skin {
         Templates.replaceNodeContents(this.root, html, js);
         this.mediael = this.region(this.isvideo ? 'video' : 'audio');
         this.registerEvents();
+        await this.watchPermission();
         this.go(Recorder.isSupported(this.config.mediatype) ? 'ready' : 'nosupport');
     }
 
@@ -208,6 +211,54 @@ class Skin {
             }, {threshold: 0.9}).observe(this.root.querySelector('[data-state="recording"] .plr-line'));
         }
         window.addEventListener('resize', () => this.drawWave());
+    }
+
+    /**
+     * Watch whether the browser already remembers a yes or no for the microphone (and camera), so the
+     * ready message can be true. Asking for the status does not open the permission box. Older
+     * browsers do not know these permission names, and then the message stays "will ask".
+     */
+    async watchPermission() {
+        if (!navigator.permissions || !navigator.permissions.query) {
+            return;
+        }
+        const names = this.isvideo ? ['camera', 'microphone'] : ['microphone'];
+        let statuses;
+        try {
+            statuses = await Promise.all(names.map((name) => navigator.permissions.query({name: name})));
+        } catch (e) {
+            return;
+        }
+        const update = () => {
+            const states = statuses.map((status) => status.state);
+            if (states.indexOf('denied') !== -1) {
+                this.permission = 'denied';
+            } else if (states.every((state) => state === 'granted')) {
+                this.permission = 'granted';
+            } else {
+                this.permission = 'prompt';
+            }
+            if (this.state === 'ready') {
+                this.region('readyhelp').textContent = this.readyHelp();
+            }
+        };
+        statuses.forEach((status) => status.addEventListener('change', update));
+        update();
+    }
+
+    /**
+     * The help under Start recording, which depends on what the browser will do when it is pressed.
+     *
+     * @returns {String}
+     */
+    readyHelp() {
+        if (this.permission === 'denied') {
+            return this.media('blockednow');
+        }
+        if (this.devicesknown || this.permission === 'granted') {
+            return this.str('readywhenyouare');
+        }
+        return this.media('willask');
     }
 
     onAction(action) {
@@ -291,7 +342,7 @@ class Skin {
             alt.hidden = !(state === 'ready' || state === 'deviceerror' || state === 'nosupport');
         }
         if (state === 'ready') {
-            this.region('readyhelp').textContent = this.devicesknown ? this.str('readywhenyouare') : this.media('willask');
+            this.region('readyhelp').textContent = this.readyHelp();
         }
         if (state === 'done') {
             this.region('confirm').hidden = true;

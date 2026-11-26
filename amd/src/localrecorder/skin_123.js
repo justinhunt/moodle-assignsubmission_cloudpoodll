@@ -236,6 +236,21 @@ class Skin {
     }
 
     /**
+     * Some pages swap the recorder out without loading a new page, such as the assignment grader
+     * when it moves to the next student. Stop if that happened, so the microphone and camera do not
+     * stay on.
+     *
+     * @returns {Boolean} whether the recorder has been removed from the page
+     */
+    removed() {
+        if (this.root.isConnected) {
+            return false;
+        }
+        this.destroy();
+        return true;
+    }
+
+    /**
      * Stop everything and let go of the microphone and camera, for a page that removes the recorder,
      * such as a dialog that closes. A recording that was not uploaded is lost.
      */
@@ -316,6 +331,9 @@ class Skin {
      * @returns {Boolean}
      */
     unsaved() {
+        if (!this.root.isConnected) {
+            return false;
+        }
         if (['recording', 'paused', 'check', 'uploaderror'].indexOf(this.state) !== -1) {
             return true;
         }
@@ -649,6 +667,9 @@ class Skin {
         show();
         this.go('countdown', this.str('startsin', count));
         const step = () => {
+            if (this.removed()) {
+                return;
+            }
             count--;
             if (count <= 0) {
                 this.counttimer = null;
@@ -682,6 +703,9 @@ class Skin {
     }
 
     onTick(elapsed, paused) {
+        if (this.removed()) {
+            return;
+        }
         let clock = fmt(elapsed);
         if (this.config.timelimit) {
             clock += ' / ' + fmt(this.config.timelimit);
